@@ -1,0 +1,7 @@
+timestamp,Register,raw_uint16,raw_int16,hex,name,interpreted
+08:47:28,42020,2500,2500,0x09C4,set_chg_power,2500 W
+08:47:28,42021,2500,2500,0x09C4,set_dsg_power,2500 W
+08:47:30,42020,2500,2500,0x09C4,set_chg_power,2500 W
+08:47:30,42021,2500,2500,0x09C4,set_dsg_power,2500 W
+08:47:31,42020,2500,2500,0x09C4,set_chg_power,2500 W
+08:47:31,42021,2500,2500,0x09C4,set_dsg_power,2500 W

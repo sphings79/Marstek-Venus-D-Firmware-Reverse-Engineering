@@ -1,0 +1,420 @@
+Register,Key,Description,Type,Scale,Unit,scan1_newFW_idle_14pct,scan2_oldFW_standby_95pct,scan3_oldFW_discharge_500W,scan4_charge,scan5_6pack_charge2kW_peaktemp,scan6_nach_bms_upgrade_117_7,Confidence,Notes
+30000,dc_bus_voltage_1,DC bus voltage (point 1),uint16,0.1,V,509,530,523,545,543,530,📊 multi-scan,
+30001,battery_power,Battery power (neg=discharge),int16,1,W,65526,65525,64992,2039,2030,159,✅ confirmed,"int16: +2039W(charge), -11W(standby), -544W(discharge)"
+30002,internal_temp_filtered,Inverter-Innentemperatur (Spiegel 35000),int16,0.1,°C,179,240,246,325,513,279,✅ 6-Pack-Test,"Spiegel von 35000. Langzeit: 50-54°C bei 2kW, 37°C bei 1.4kW, 30°C bei 440W. Korreliert direkt mit Ladeleistung"
+30003,mos_temp_filtered,MOS-Temperatur (Spiegel 35001),int16,0.1,°C,181,243,248,334,542,285,✅ 6-Pack-Test,Spiegel von 35001. Peak 54.2°C bei 2kW Dauerlast. ~2°C über 30002/35000
+30004,ac_voltage,AC grid voltage,uint16,0.1,V,2410,2393,2408,2396,2409,2418,✅ confirmed,Mirrors 32200; scan4: 2396≈2395(32200)
+30005,backup_voltage,Backup-Ausgangsspannung,uint16,0.1,V,2,4,9,5,8,8,🔍 Vermutung → ✅ Backup-Test,Ohne Backup: ~1V (inaktiv). Mit Backup: 236-242V. Spannungsabfall unter Last: 242V@100W → 237V@3kW. Vorher fälschlich als comm_queue_depth vermutet
+30006,ac_power,AC Inverter-Ausgangsleistung (int16),int16,1,W,0,0,500,63364,63363,65329,✅ confirmed,"int16: negativ=Netzbezug(Laden), positiv=Ausgang(Entladen), 0=Idle. ACHTUNG: Ohne Backup = Grid-Einspeisung. Mit Backup: tatsächliche Netzleistung = 30006 - 30007. Backup-Test: 30006 bleibt ~2208W konstant auch bei 3kW Backup-Last"
+30007,backup_power,Backup-Ausgangsleistung,uint16,1,W,0,0,0,0,0,0,✅ Backup-Test,Ohne Backup: immer 0. Mit Backup: 0-3271W je nach Last am Backup-Ausgang. Wenn >30006 → Differenz wird aus dem Netz gezogen
+30010,,,,,,0,0,0,0,0,0,❓ unknown,
+30020,mppt1_voltage,MPPT1 voltage,uint16,0.1,V,99,99,99,100,101,100,📊 scan,
+30021,mppt2_voltage,MPPT2 voltage,uint16,0.1,V,99,99,99,99,100,99,📊 scan,
+30022,mppt3_voltage,MPPT3 voltage,uint16,0.1,V,99,99,99,99,100,99,📊 scan,
+30023,mppt4_voltage,MPPT4 voltage,uint16,0.1,V,98,99,99,99,100,99,📊 scan,
+30024,mppt1_current,MPPT1 current,uint16,0.1,A,0,0,0,0,0,0,📊 scan,
+30025,mppt2_current,MPPT2 current,uint16,0.1,A,0,0,0,0,0,0,📊 scan,
+30026,mppt3_current,MPPT3 current,uint16,0.1,A,0,0,0,0,0,0,📊 scan,
+30027,mppt4_current,MPPT4 current,uint16,0.1,A,0,0,0,0,0,0,📊 scan,
+30028,dc_bus_voltage_2,DC bus voltage (point 2),uint16,0.1,V,513,534,527,547,546,532,📊 multi-scan,Tracks active pack voltage; slightly higher than 30000
+30029,battery_power_factor,Leistungsfaktor/Skalierung,int16,1,-,65535,65534,65531,11,12,0,🔍 Vermutung,"int16; proportional zu battery_power aber kein linearer Faktor: 2035W→12, 1260W→6, 480W→1, idle→-1"
+30030,,,,,,0,0,0,0,0,0,❓ unknown,
+30031,,,,,,0,0,0,0,0,0,❓ unknown,
+30032,,,,,,0,0,0,0,0,0,❓ unknown,
+30033,,,,,,0,0,0,0,0,0,❓ unknown,
+30034,,,,,,0,0,0,0,0,0,❓ unknown,
+30035,,,,,,0,0,0,0,0,0,❓ unknown,
+30036,hardware_version,Hardware Version?,uint16,1,-,219,219,219,219,219,219,🔍 Vermutung,Konstant 219 über alle Scans; evtl. HW-Revision oder Konfigurationsparameter
+30037,mppt1_power,MPPT1 power,uint16,0.1,W,0,0,0,0,0,0,📊 scan,
+30038,mppt2_power,MPPT2 power,uint16,0.1,W,0,0,0,0,0,0,📊 scan,
+30039,mppt3_power,MPPT3 power,uint16,0.1,W,0,0,0,0,0,0,📊 scan,
+30040,mppt4_power,MPPT4 power,uint16,0.1,W,0,0,0,0,0,0,📊 scan,
+30100,battery_voltage,Battery voltage,uint16,0.01,V,5114,5322,5322,5291,5429,5280,📊 scan,
+30101,pack1_current_mirror,Pack 1 Strom Spiegel (=34001),int16,0.1,A,0,0,0,0,377,0,🔍 Vermutung,"Discharge-Steps: exakt =34001 wenn Pack1 aktiv, =0 wenn anderer Pack aktiv. Kein System-Strom sondern Pack1-Mirror"
+30102,pack1_cell_v_max_mirror,Pack 1 max cell voltage (mirror of 34005),uint16,0.001,V,3198,3327,3327,3308,3396,3301,📊 multi-scan,Matches 34005 within 1
+30103,pack1_cell_v_min_mirror,Pack 1 min cell voltage (mirror of 34006),uint16,0.001,V,3194,3326,3325,3306,3390,3299,📊 multi-scan,Matches 34006 within 1
+30104,max_cell_temp_hp,Max cell temp (high precision),uint16,0.01,°C,1950,2290,2300,2760,3030,2630,📊 multi-scan,≈ 35010 × 10; 0.01°C precision
+30105,cell_temp_hp_2,Cell temp 2 (high precision),uint16,0.01,°C,1920,2270,2290,2670,2970,2602,📊 multi-scan,≈ 35011 × 10
+30106,,,,,,0,0,0,0,0,0,❓ unknown,
+30107,pack1_ntc0_mirror,Pack 1 NTC 0 (mirror of 34011),uint16,0.1,°C,264,299,298,335,403,324,📊 multi-scan,Matches 34011 within 1-3
+30108,pack1_ntc1_mirror,Pack 1 NTC 1 (mirror of 34012),uint16,0.1,°C,199,234,235,322,396,266,📊 multi-scan,Matches 34012 within 1-3
+30109,,,,,,0,0,0,0,0,0,❓ unknown,
+30110,,,,,,0,0,0,0,0,0,❓ unknown,
+30200,ems_version,EMS firmware version (x10),uint16,1,-,147,147,147,147,1492,1492,✅ OTA-confirmed,OTA: EMS:142→147→148→149.2 (1492). Ab FW149 als x10 codiert: 1492=v149.2. Einziges Register das sich beim FW-Update ändert; MPPT/VNS/BMS blieben unverändert
+30201,ems_build,EMS Build oder unbekanntes FW-Modul(?),uint16,1,-,18,18,18,18,18,18,🔍 Vermutung,"Konstant 18; nicht in OTA sichtbar. Evtl. Build-Suffix, oder Version eines unbekannten FW-Moduls (Flash-Bereiche ohne Zuordnung existieren)"
+30202,vns_version,VNS firmware version,uint16,-,-,115,115,115,115,115,115,✅ OTA-confirmed,OTA: VNS:114→115 (App zeigt VNS nicht VMS)
+30203,vns_build,VNS Build oder unbekanntes FW-Modul(?),uint16,1,-,106,106,106,106,106,106,🔍 Vermutung,"Konstant 106; nicht in OTA sichtbar. Evtl. Build-Suffix, oder Version eines unbekannten FW-Moduls"
+30204,bms_version,BMS firmware version,uint16,-,-,116,116,116,116,116,1177,✅ OTA-confirmed,"OTA: BMS 116 -> 117.7 (Update bestaetigt 2026-07-09, scan6/nach_bms_upgrade_auf_117_7_fw.csv). Raw-Wert 1177 = v117.7 -> Encoding wechselt bei Dezimalversion auf x10, analog zu ems_version bei Control-FW v149.2 (1492=v149.2). Bei reiner Ganzzahlversion (v116) war Rohwert = Version direkt, ohne x10."
+30205,mppt_version,MPPT firmware version,uint16,1,-,104,104,104,104,104,104,✅ OTA-confirmed,OTA: MPPT:104 (unverändert). War fälschlich als bms_version_sub geführt
+30210,active_pack_charge_status,Spiegel des aktiven Pack charge_status,uint16,1,-,3,0,0,0,3,0,🔍 Vermutung,Spiegelt 34x04 des gerade ladenden Packs; 0=idle 3=aktiv laden
+30211,,,,,,0,0,0,0,0,0,❓ unknown,
+30212,pack_config,Pack-Konfiguration,uint16,1,-,2,5,5,5,5,5,🔍 Vermutung,"2 bei 4 Packs, 5 bei 6 Packs — hängt von angeschlossener Pack-Anzahl ab, nicht von FW-Version"
+30213,,,,,,0,0,0,0,0,0,❓ unknown,
+30214,,,,,,0,0,0,0,0,0,❓ unknown,
+30300,wifi_status,WiFi connected (0/1),uint16,1,-,1,1,1,1,1,1,📊 scan,
+30301,active_inverter_state,Inverter-Zustand/Routing?,uint16,1,-,1,1,1,1,3,3,🔍 Vermutung,Backup-Test: wechselt 1→2→3→2→3. Korreliert zeitlich mit Pack-Rotation aber kein 1:1-Mapping zum Pack-Index. Nicht Bluetooth! Evtl. Inverter-Routing-State
+30302,cloud_status,Cloud connected (0/1),uint16,1,-,0,0,0,0,1,1,📊 scan,
+30303,wifi_signal_strength,WiFi RSSI,uint16,-1,dBm,53,53,56,54,55,58,📊 scan,Negate raw; 53→-53dBm
+30304,mac_address,MAC address (6 regs),char,-,-,13880,13880,13880,13880,13880,13880,📊 scan,30304-30309: AA:BB:CC:DD:EE:FF
+30305,,,,,,12852,12852,12852,12852,12852,12852,❓ unknown,
+30306,,,,,,14649,14649,14649,14649,14649,14649,❓ unknown,
+30307,,,,,,17733,17733,17733,17733,17733,17733,❓ unknown,
+30308,,,,,,17975,17975,17975,17975,17975,17975,❓ unknown,
+30309,,,,,,13635,13635,13635,13635,13635,13635,❓ unknown,
+30350,comm_module_firmware,Comm module FW (6 regs),char,-,-,12848,12848,12848,12848,12848,12848,📊 scan,30350-30355: 20240909_0159
+30351,,,,,,12852,12852,12852,12852,12852,12852,❓ unknown,
+30352,,,,,,12345,12345,12345,12345,12345,12345,❓ unknown,
+30353,,,,,,12345,12345,12345,12345,12345,12345,❓ unknown,
+30354,,,,,,12337,12337,12337,12337,12337,12337,❓ unknown,
+30355,,,,,,13625,13625,13625,13625,13625,13625,❓ unknown,
+30400,ip_address,IP address,uint16,-,-,49320,49320,49320,49320,49320,49320,❓ unknown,30400-30403: IP/gateway?
+30401,,,,,,46490,46490,46490,46490,46490,46490,❓ unknown,
+30402,,,,,,49320,49320,49320,49320,49320,49320,❓ unknown,
+30403,,,,,,46337,46337,46337,46337,46337,46337,❓ unknown,
+31000,device_name,Device name (string),char,-,-,22094,22094,22094,22094,22094,22094,📊 scan,31000-31002: VNSD-0
+31001,,,,,,21316,21316,21316,21316,21316,21316,❓ unknown,
+31002,,,,,,11568,11568,11568,11568,11568,11568,❓ unknown,
+31003,pack_count,Anzahl angeschlossener Packs(?),uint16,1,-,0,5,5,5,5,5,🔍 Vermutung,"0 bei 4 Packs (FW148), 5 bei 6 Packs (FW149.2) — ändert sich mit Pack-Anzahl. Mapping unklar (5≠6)"
+31004,pack_config_2,Pack-Konfiguration 2,uint16,1,-,0,1543,1543,1543,1543,1543,❓ unknown,"0 bei 4 Packs (FW148), 1543 (0x0607) bei 6 Packs — Pack-abhängig, nicht FW-abhängig. Bedeutung unklar"
+31005,,,,,,0,0,0,0,0,0,❓ unknown,
+31006,,,,,,0,0,0,0,0,0,❓ unknown,
+31007,,,,,,0,0,0,0,0,0,❓ unknown,
+31008,,,,,,0,0,0,0,0,0,❓ unknown,
+31009,,,,,,0,0,0,0,0,0,❓ unknown,
+32105,battery_total_energy,Total stored energy,uint16,0.001,kWh,5120,,,10240,15360,15360,✅ FW-verified,
+32200,ac_voltage,AC voltage,uint16,0.1,V,2398,,,2395,2399,2418,✅ FW-verified,
+32204,ac_frequency,AC frequency,int16,0.1,Hz,499,,,499,499,499,✅ FW-verified,
+32300,ac_offgrid_voltage,AC offgrid voltage,uint16,0.1,V,3,,,5,8,9,✅ FW-verified + Backup-Test,Backup-Test: 2370-2426 (237-243V). Spiegelt 30005 mit ±8 Abweichung
+32301,ac_offgrid_voltage_2,AC offgrid voltage 2 (=32300),uint16,0.1,V,3,,,5,8,9,✅ Backup-Test,FW sagt current(0.01A) aber Backup-Test zeigt: in ALLEN 28 Scans identisch mit 32300. Tatsächlich Spannung nicht Strom!
+32302,ac_offgrid_power,AC offgrid power,uint16,1,W,0,,,0,0,0,✅ FW-verified + Backup-Test,Backup-Test: 0-3233W. Spiegelt 30007 mit leichter Verzögerung. FW sagt int32(+32303) aber Werte passen in uint16
+33000,total_charging_energy,Total charging energy (high),uint32,0.01,kWh,0,0,0,0,0,0,✅ FW-verified,uint32 with 33001
+33001,total_charging_energy_lo,Total charging energy (low),uint32,0.01,kWh,1863,4150,4162,29666,30911,31546,✅ FW-verified,
+33002,total_discharging_energy,Total discharging energy (high),int32,0.01,kWh,0,0,0,0,0,0,✅ FW-verified,uint32 with 33003
+33003,total_discharging_energy_lo,Total discharging energy (low),int32,0.01,kWh,0,1013,1013,24386,25130,25819,✅ FW-verified,
+33004,daily_charging_energy,Daily charging energy (high),uint32,0.01,kWh,0,0,0,0,0,0,✅ FW-verified,uint32 with 33005
+33005,daily_charging_energy_lo,Daily charging energy (low),uint32,0.01,kWh,0,0,12,72,615,158,✅ FW-verified,
+33006,daily_discharging_energy,Daily discharging energy (high),int32,0.01,kWh,0,0,0,0,0,0,✅ FW-verified,uint32 with 33007
+33007,daily_discharging_energy_lo,Daily discharging energy (low),int32,0.01,kWh,0,0,0,410,682,459,✅ FW-verified,
+33008,monthly_charging_energy,Monthly charging energy (high),uint32,0.01,kWh,0,0,0,0,0,0,✅ FW-verified,uint32 with 33009
+33009,monthly_charging_energy_lo,Monthly charging energy (low),uint32,0.01,kWh,79,665,678,1085,2331,158,✅ FW-verified,
+33010,monthly_discharging_energy,Monthly discharging energy (high),int32,0.01,kWh,0,0,0,0,0,0,✅ FW-verified,uint32 with 33011
+33011,monthly_discharging_energy_lo,Monthly discharging energy (low),int32,0.01,kWh,0,0,0,1241,1984,459,✅ FW-verified,
+34000,pack1_bat_volt,Pack 1 Battery voltage,uint16,0.01,V,5114,5322,5322,5291,5424,5280,✅ FW-verified,
+34001,pack1_bat_curr,Pack 1 Battery current,int16,0.1,A,0,0,0,0,377,0,✅ FW-verified,
+34002,pack1_bat_soc,Pack 1 SOC,uint16,0.1,%,146,950,946,501,617,499,✅ FW-verified,"Scale 0.1 confirmed: 950→95.0%, 946→94.6%, 146→14.6%"
+34003,pack1_cycle_count,Pack 1 Cycle count,uint16,1,-,19,6,6,6,0,1,✅ FW-verified,
+34004,pack1_charge_status,Pack 1 Ladestatus (0=idle 3=aktiv),uint16,1,-,3,0,0,0,3,0,🔍 Vermutung,Langzeit: =3 genau wenn Pack aktiv lädt; =0 wenn idle. Nicht Spannungsdelta!
+34005,pack1_cell_v_max,Pack 1 Max cell voltage,uint16,0.001,V,3199,3328,3327,3308,3393,3301,✅ FW-verified,
+34006,pack1_cell_v_min,Pack 1 Min cell voltage,uint16,0.001,V,3195,3326,3325,3306,3388,3299,✅ FW-verified,
+34007,pack1_max_ntc,Pack 1 Max NTC temp,uint16,0.1,°C,0,0,0,0,0,0,✅ FW-verified,
+34008,pack1_protect1,Pack 1 Protection bitmask 1,uint16,bitmask,-,0,0,0,0,0,0,✅ FW-verified,
+34009,pack1_protect2,Pack 1 Protection bitmask 2,uint16,bitmask,-,0,0,0,0,0,0,✅ FW-verified + Entlade-Test,Bit1(0x0002)=Low-SOC/Unterspannung. Tritt bei ~10.7% und nochmal unter 10% auf. Scan225: 0x0C93 bei Komplett-Shutdown
+34010,pack1_bms_version,Pack 1 BMS version,uint16,1,-,116,116,116,116,116,1177,✅ FW-verified,"Update 2026-07-09: 116 -> 1177 (v117.7) nach BMS-FW-Upgrade, s. 30204"
+34011,pack1_cell_ntc_0,Pack 1 Cell NTC 0,uint16,0.1,°C,261,298,301,335,402,324,✅ FW-verified,
+34012,pack1_cell_ntc_1,Pack 1 Cell NTC 1,uint16,0.1,°C,198,234,237,321,397,266,✅ FW-verified,
+34013,pack1_cell_ntc_2,Pack 1 Cell NTC 2,uint16,0.1,°C,193,229,230,276,304,260,✅ FW-verified,
+34014,pack1_cell_ntc_3,Pack 1 Cell NTC 3,uint16,0.1,°C,194,230,231,268,302,263,✅ FW-verified,
+34015,pack1_mos_ntc,Pack 1 MOS NTC,uint16,0.1,°C,192,228,229,270,297,262,✅ FW-verified,
+34016,pack1_env_ntc,Pack 1 Environment NTC,uint16,0.1,°C,191,228,229,267,300,263,✅ FW-verified,
+34017,pack1_avg_ntc,Pack 1 Average NTC,uint16,0.1,°C,0,0,0,0,0,0,✅ FW-verified,
+34018,pack1_cell_1_voltage,Pack 1 Cell 1 voltage,uint16,0.001,V,3197,3326,3326,3307,3388,3300,✅ FW-verified,
+34019,pack1_cell_2_voltage,Pack 1 Cell 2 voltage,uint16,0.001,V,3196,3327,3327,3306,3388,3300,✅ FW-verified,
+34020,pack1_cell_3_voltage,Pack 1 Cell 3 voltage,uint16,0.001,V,3196,3326,3326,3307,3388,3300,✅ FW-verified,
+34021,pack1_cell_4_voltage,Pack 1 Cell 4 voltage,uint16,0.001,V,3197,3326,3326,3308,3390,3300,✅ FW-verified,
+34022,pack1_cell_5_voltage,Pack 1 Cell 5 voltage,uint16,0.001,V,3196,3327,3325,3307,3390,3300,✅ FW-verified,
+34023,pack1_cell_6_voltage,Pack 1 Cell 6 voltage,uint16,0.001,V,3196,3327,3327,3308,3391,3301,✅ FW-verified,
+34024,pack1_cell_7_voltage,Pack 1 Cell 7 voltage,uint16,0.001,V,3196,3326,3326,3307,3389,3300,✅ FW-verified,
+34025,pack1_cell_8_voltage,Pack 1 Cell 8 voltage,uint16,0.001,V,3199,3327,3327,3308,3393,3301,✅ FW-verified,
+34026,pack1_cell_9_voltage,Pack 1 Cell 9 voltage,uint16,0.001,V,3196,3326,3326,3307,3391,3300,✅ FW-verified,
+34027,pack1_cell_10_voltage,Pack 1 Cell 10 voltage,uint16,0.001,V,3198,3328,3327,3308,3391,3301,✅ FW-verified,
+34028,pack1_cell_11_voltage,Pack 1 Cell 11 voltage,uint16,0.001,V,3196,3327,3326,3307,3392,3300,✅ FW-verified,
+34029,pack1_cell_12_voltage,Pack 1 Cell 12 voltage,uint16,0.001,V,3197,3327,3327,3307,3392,3301,✅ FW-verified,
+34030,pack1_cell_13_voltage,Pack 1 Cell 13 voltage,uint16,0.001,V,3195,3327,3327,3307,3391,3299,✅ FW-verified,
+34031,pack1_cell_14_voltage,Pack 1 Cell 14 voltage,uint16,0.001,V,3196,3328,3327,3308,3391,3301,✅ FW-verified,
+34032,pack1_cell_15_voltage,Pack 1 Cell 15 voltage,uint16,0.001,V,3197,3326,3326,3307,3390,3299,✅ FW-verified,
+34033,pack1_cell_16_voltage,Pack 1 Cell 16 voltage,uint16,0.001,V,3196,3326,3325,3306,3390,3299,✅ FW-verified,
+34100,pack2_bat_volt,Pack 2 Battery voltage,uint16,0.01,V,5024,5320,5265,5263,5288,5277,✅ FW-verified,
+34101,pack2_bat_curr,Pack 2 Battery current,int16,0.1,A,0,0,65436,0,0,0,✅ FW-verified,int16; discharge: 65436→-100→-10.0A (Pack2 was active)
+34102,pack2_bat_soc,Pack 2 SOC,uint16,0.1,%,109,950,882,406,600,499,✅ FW-verified,
+34103,pack2_cycle_count,Pack 2 Cycle count,uint16,1,-,17,5,5,6,0,1,✅ FW-verified,
+34104,pack2_charge_status,Pack 2 Ladestatus (0=idle 3=aktiv),uint16,1,-,0,3,3,0,0,0,🔍 Vermutung,Analog zu 34004; =3 bei aktivem Laden/Entladen
+34105,pack2_cell_v_max,Pack 2 Max cell voltage,uint16,0.001,V,3143,3326,3293,3291,3306,3300,✅ FW-verified,
+34106,pack2_cell_v_min,Pack 2 Min cell voltage,uint16,0.001,V,3139,3325,3289,3289,3305,3298,✅ FW-verified,
+34107,pack2_max_ntc,Pack 2 Max NTC temp,uint16,0.1,°C,0,0,0,0,0,0,✅ FW-verified,
+34108,pack2_protect1,Pack 2 Protection bitmask 1,uint16,bitmask,-,0,0,0,0,0,0,✅ FW-verified,
+34109,pack2_protect2,Pack 2 Protection bitmask 2,uint16,bitmask,-,0,0,0,0,0,0,✅ FW-verified + Entlade-Test,Bit1(0x0002)=Low-SOC/Unterspannung bei niedrigem SOC
+34110,pack2_bms_version,Pack 2 BMS version,uint16,1,-,116,116,116,116,116,1177,✅ FW-verified,"Update 2026-07-09: 116 -> 1177 (v117.7) nach BMS-FW-Upgrade, s. 30204"
+34111,pack2_cell_ntc_0,Pack 2 Cell NTC 0,uint16,0.1,°C,249,300,302,309,365,307,✅ FW-verified,
+34112,pack2_cell_ntc_1,Pack 2 Cell NTC 1,uint16,0.1,°C,189,238,252,258,330,252,✅ FW-verified,
+34113,pack2_cell_ntc_2,Pack 2 Cell NTC 2,uint16,0.1,°C,194,222,225,230,278,253,✅ FW-verified,
+34114,pack2_cell_ntc_3,Pack 2 Cell NTC 3,uint16,0.1,°C,199,224,228,232,278,252,✅ FW-verified,
+34115,pack2_mos_ntc,Pack 2 MOS NTC,uint16,0.1,°C,190,221,223,228,279,253,✅ FW-verified,
+34116,pack2_env_ntc,Pack 2 Environment NTC,uint16,0.1,°C,198,224,227,233,281,252,✅ FW-verified,
+34117,pack2_avg_ntc,Pack 2 Average NTC,uint16,0.1,°C,0,0,0,0,0,0,✅ FW-verified,
+34118,pack2_cell_1_voltage,Pack 2 Cell 1 voltage,uint16,0.001,V,3142,3325,3291,3290,3305,3298,✅ FW-verified,
+34119,pack2_cell_2_voltage,Pack 2 Cell 2 voltage,uint16,0.001,V,3141,3326,3291,3290,3305,3299,✅ FW-verified,
+34120,pack2_cell_3_voltage,Pack 2 Cell 3 voltage,uint16,0.001,V,3141,3326,3291,3290,3305,3298,✅ FW-verified,
+34121,pack2_cell_4_voltage,Pack 2 Cell 4 voltage,uint16,0.001,V,3140,3326,3294,3290,3306,3300,✅ FW-verified,
+34122,pack2_cell_5_voltage,Pack 2 Cell 5 voltage,uint16,0.001,V,3142,3325,3291,3290,3305,3298,✅ FW-verified,
+34123,pack2_cell_6_voltage,Pack 2 Cell 6 voltage,uint16,0.001,V,3141,3326,3293,3290,3306,3299,✅ FW-verified,
+34124,pack2_cell_7_voltage,Pack 2 Cell 7 voltage,uint16,0.001,V,3140,3325,3292,3289,3305,3298,✅ FW-verified,
+34125,pack2_cell_8_voltage,Pack 2 Cell 8 voltage,uint16,0.001,V,3139,3326,3292,3291,3306,3299,✅ FW-verified,
+34126,pack2_cell_9_voltage,Pack 2 Cell 9 voltage,uint16,0.001,V,3138,3325,3291,3289,3305,3298,✅ FW-verified,
+34127,pack2_cell_10_voltage,Pack 2 Cell 10 voltage,uint16,0.001,V,3139,3326,3290,3291,3306,3299,✅ FW-verified,
+34128,pack2_cell_11_voltage,Pack 2 Cell 11 voltage,uint16,0.001,V,3138,3324,3290,3290,3305,3298,✅ FW-verified,
+34129,pack2_cell_12_voltage,Pack 2 Cell 12 voltage,uint16,0.001,V,3139,3326,3291,3290,3306,3299,✅ FW-verified,
+34130,pack2_cell_13_voltage,Pack 2 Cell 13 voltage,uint16,0.001,V,3139,3325,3289,3290,3305,3298,✅ FW-verified,
+34131,pack2_cell_14_voltage,Pack 2 Cell 14 voltage,uint16,0.001,V,3142,3327,3291,3291,3305,3300,✅ FW-verified,
+34132,pack2_cell_15_voltage,Pack 2 Cell 15 voltage,uint16,0.001,V,3142,3325,3290,3289,3305,3298,✅ FW-verified,
+34133,pack2_cell_16_voltage,Pack 2 Cell 16 voltage,uint16,0.001,V,3139,3326,3291,3289,3305,3298,✅ FW-verified,
+34200,pack3_bat_volt,Pack 3 Battery voltage,uint16,0.01,V,0,5323,5323,5299,5290,5275,✅ confirmed,
+34201,pack3_bat_curr,Pack 3 Battery current,int16,0.1,A,0,0,0,0,0,0,⬆ pack-pattern,
+34202,pack3_bat_soc,Pack 3 SOC,uint16,0.1,%,0,950,946,401,601,433,✅ confirmed,
+34203,pack3_cycle_count,Pack 3 Cycle count,uint16,1,-,0,48,48,49,7,8,✅ confirmed,
+34204,pack3_charge_status,Pack 3 Ladestatus (0=idle 3=aktiv),uint16,1,-,0,0,0,0,0,0,🔍 Vermutung,Analog zu 34004; =3 bei aktivem Laden/Entladen
+34205,pack3_cell_v_max,Pack 3 Max cell voltage,uint16,0.001,V,0,3329,3328,3313,3308,3298,✅ confirmed,
+34206,pack3_cell_v_min,Pack 3 Min cell voltage,uint16,0.001,V,0,3326,3326,3311,3306,3296,✅ confirmed,
+34207,pack3_max_ntc,Pack 3 Max NTC temp,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34208,pack3_protect1,Pack 3 Protection bitmask 1,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34209,pack3_protect2,Pack 3 Protection bitmask 2,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern + Entlade-Test,Bit1(0x0002)=Low-SOC/Unterspannung bei niedrigem SOC
+34210,pack3_bms_version,Pack 3 BMS version,uint16,1,-,0,116,116,116,116,1177,✅ confirmed,"Update 2026-07-09: 116 -> 1177 (v117.7) nach BMS-FW-Upgrade, s. 30204"
+34211,pack3_cell_ntc_0,Pack 3 Cell NTC 0,uint16,0.1,°C,0,296,296,319,374,307,✅ confirmed,
+34212,pack3_cell_ntc_1,Pack 3 Cell NTC 1,uint16,0.1,°C,0,230,230,315,340,246,✅ confirmed,
+34213,pack3_cell_ntc_2,Pack 3 Cell NTC 2,uint16,0.1,°C,0,219,220,237,329,239,✅ confirmed,
+34214,pack3_cell_ntc_3,Pack 3 Cell NTC 3,uint16,0.1,°C,0,219,220,236,316,239,✅ confirmed,
+34215,pack3_mos_ntc,Pack 3 MOS NTC,uint16,0.1,°C,0,218,218,236,319,238,✅ confirmed,
+34216,pack3_env_ntc,Pack 3 Environment NTC,uint16,0.1,°C,0,217,217,236,316,238,✅ confirmed,
+34217,pack3_avg_ntc,Pack 3 Average NTC,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34218,pack3_cell_1_voltage,Pack 3 Cell 1 voltage,uint16,0.001,V,0,3327,3326,3312,3307,3297,✅ confirmed,
+34219,pack3_cell_2_voltage,Pack 3 Cell 2 voltage,uint16,0.001,V,0,3327,3326,3312,3307,3298,✅ confirmed,
+34220,pack3_cell_3_voltage,Pack 3 Cell 3 voltage,uint16,0.001,V,0,3327,3326,3312,3306,3297,✅ confirmed,
+34221,pack3_cell_4_voltage,Pack 3 Cell 4 voltage,uint16,0.001,V,0,3327,3327,3313,3308,3298,✅ confirmed,
+34222,pack3_cell_5_voltage,Pack 3 Cell 5 voltage,uint16,0.001,V,0,3327,3326,3312,3306,3297,✅ confirmed,
+34223,pack3_cell_6_voltage,Pack 3 Cell 6 voltage,uint16,0.001,V,0,3327,3326,3312,3307,3298,✅ confirmed,
+34224,pack3_cell_7_voltage,Pack 3 Cell 7 voltage,uint16,0.001,V,0,3327,3327,3312,3306,3297,✅ confirmed,
+34225,pack3_cell_8_voltage,Pack 3 Cell 8 voltage,uint16,0.001,V,0,3327,3327,3313,3308,3298,✅ confirmed,
+34226,pack3_cell_9_voltage,Pack 3 Cell 9 voltage,uint16,0.001,V,0,3326,3326,3312,3306,3297,✅ confirmed,
+34227,pack3_cell_10_voltage,Pack 3 Cell 10 voltage,uint16,0.001,V,0,3328,3327,3312,3307,3298,✅ confirmed,
+34228,pack3_cell_11_voltage,Pack 3 Cell 11 voltage,uint16,0.001,V,0,3329,3327,3311,3306,3297,✅ confirmed,
+34229,pack3_cell_12_voltage,Pack 3 Cell 12 voltage,uint16,0.001,V,0,3327,3327,3312,3307,3298,✅ confirmed,
+34230,pack3_cell_13_voltage,Pack 3 Cell 13 voltage,uint16,0.001,V,0,3327,3327,3312,3306,3297,✅ confirmed,
+34231,pack3_cell_14_voltage,Pack 3 Cell 14 voltage,uint16,0.001,V,0,3327,3328,3312,3307,3298,✅ confirmed,
+34232,pack3_cell_15_voltage,Pack 3 Cell 15 voltage,uint16,0.001,V,0,3326,3326,3311,3305,3296,✅ confirmed,
+34233,pack3_cell_16_voltage,Pack 3 Cell 16 voltage,uint16,0.001,V,0,3327,3327,3312,3305,3297,✅ confirmed,
+34300,pack4_bat_volt,Pack 4 Battery voltage,uint16,0.01,V,0,5326,5325,5402,5293,5284,✅ confirmed,
+34301,pack4_bat_curr,Pack 4 Battery current,int16,0.1,A,0,0,0,375,0,0,⬆ pack-pattern,int16 scale 0.1; charge: 375→+37.5A (Pack4 was active charge pack)
+34302,pack4_bat_soc,Pack 4 SOC,uint16,0.1,%,0,950,946,323,601,600,✅ confirmed,
+34303,pack4_cycle_count,Pack 4 Cycle count,uint16,1,-,0,44,44,44,7,7,✅ confirmed,
+34304,pack4_charge_status,Pack 4 Ladestatus (0=idle 3=aktiv),uint16,1,-,0,0,0,3,0,0,🔍 Vermutung,Analog zu 34004; =3 bei aktivem Laden/Entladen
+34305,pack4_cell_v_max,Pack 4 Max cell voltage,uint16,0.001,V,0,3332,3330,3378,3310,3304,✅ confirmed,
+34306,pack4_cell_v_min,Pack 4 Min cell voltage,uint16,0.001,V,0,3328,3328,3374,3308,3302,✅ confirmed,
+34307,pack4_max_ntc,Pack 4 Max NTC temp,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34308,pack4_protect1,Pack 4 Protection bitmask 1,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34309,pack4_protect2,Pack 4 Protection bitmask 2,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern + Entlade-Test,Bit1(0x0002)=Low-SOC/Unterspannung bei niedrigem SOC
+34310,pack4_bms_version,Pack 4 BMS version,uint16,1,-,0,116,116,116,116,1177,✅ confirmed,"Update 2026-07-09: 116 -> 1177 (v117.7) nach BMS-FW-Upgrade, s. 30204"
+34311,pack4_cell_ntc_0,Pack 4 Cell NTC 0,uint16,0.1,°C,0,281,283,287,380,311,✅ confirmed,
+34312,pack4_cell_ntc_1,Pack 4 Cell NTC 1,uint16,0.1,°C,0,220,221,255,354,252,✅ confirmed,
+34313,pack4_cell_ntc_2,Pack 4 Cell NTC 2,uint16,0.1,°C,0,216,216,220,309,245,✅ confirmed,
+34314,pack4_cell_ntc_3,Pack 4 Cell NTC 3,uint16,0.1,°C,0,215,215,221,328,251,✅ confirmed,
+34315,pack4_mos_ntc,Pack 4 MOS NTC,uint16,0.1,°C,0,214,214,218,303,242,✅ confirmed,
+34316,pack4_env_ntc,Pack 4 Environment NTC,uint16,0.1,°C,0,215,216,221,331,251,✅ confirmed,
+34317,pack4_avg_ntc,Pack 4 Average NTC,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34318,pack4_cell_1_voltage,Pack 4 Cell 1 voltage,uint16,0.001,V,0,3328,3328,3376,3309,3302,✅ confirmed,
+34319,pack4_cell_2_voltage,Pack 4 Cell 2 voltage,uint16,0.001,V,0,3330,3329,3377,3309,3304,✅ confirmed,
+34320,pack4_cell_3_voltage,Pack 4 Cell 3 voltage,uint16,0.001,V,0,3328,3327,3377,3308,3303,✅ confirmed,
+34321,pack4_cell_4_voltage,Pack 4 Cell 4 voltage,uint16,0.001,V,0,3329,3329,3377,3309,3304,✅ confirmed,
+34322,pack4_cell_5_voltage,Pack 4 Cell 5 voltage,uint16,0.001,V,0,3327,3327,3377,3309,3303,✅ confirmed,
+34323,pack4_cell_6_voltage,Pack 4 Cell 6 voltage,uint16,0.001,V,0,3328,3329,3376,3309,3304,✅ confirmed,
+34324,pack4_cell_7_voltage,Pack 4 Cell 7 voltage,uint16,0.001,V,0,3328,3328,3376,3308,3302,✅ confirmed,
+34325,pack4_cell_8_voltage,Pack 4 Cell 8 voltage,uint16,0.001,V,0,3329,3328,3377,3309,3304,✅ confirmed,
+34326,pack4_cell_9_voltage,Pack 4 Cell 9 voltage,uint16,0.001,V,0,3328,3328,3377,3309,3302,✅ confirmed,
+34327,pack4_cell_10_voltage,Pack 4 Cell 10 voltage,uint16,0.001,V,0,3329,3329,3377,3309,3304,✅ confirmed,
+34328,pack4_cell_11_voltage,Pack 4 Cell 11 voltage,uint16,0.001,V,0,3328,3328,3376,3308,3302,✅ confirmed,
+34329,pack4_cell_12_voltage,Pack 4 Cell 12 voltage,uint16,0.001,V,0,3330,3329,3377,3309,3304,✅ confirmed,
+34330,pack4_cell_13_voltage,Pack 4 Cell 13 voltage,uint16,0.001,V,0,3329,3329,3375,3308,3302,✅ confirmed,
+34331,pack4_cell_14_voltage,Pack 4 Cell 14 voltage,uint16,0.001,V,0,3329,3329,3378,3310,3304,✅ confirmed,
+34332,pack4_cell_15_voltage,Pack 4 Cell 15 voltage,uint16,0.001,V,0,3327,3327,3376,3308,3302,✅ confirmed,
+34333,pack4_cell_16_voltage,Pack 4 Cell 16 voltage,uint16,0.001,V,0,3331,3330,3375,3308,3303,✅ confirmed,
+34400,pack5_bat_volt,Pack 5 Battery voltage,uint16,0.01,V,0,0,0,0,5295,5306,✅ 6-Pack-Test,"54.03-54.27V bei Ladung, identische Struktur wie Pack 1-4"
+34401,pack5_bat_curr,Pack 5 Battery current,int16,0.1,A,0,0,0,0,0,32,✅ 6-Pack-Test,37.5A Ladestrom bei aktiver Ladung
+34402,pack5_bat_soc,Pack 5 SOC,uint16,0.1,%,0,0,0,0,601,453,✅ 6-Pack-Test,51.3→59.6% während Laden; Scale 0.1 bestätigt
+34403,pack5_cycle_count,Pack 5 Cycle count,uint16,1,-,0,0,0,0,49,50,✅ 6-Pack-Test,49 Zyklen
+34404,pack5_charge_status,Pack 5 Ladestatus,uint16,1,-,0,0,0,0,0,3,✅ 6-Pack-Test,"3=aktiv laden, 0=idle — wie Pack 1-4"
+34405,pack5_cell_v_max,Pack 5 Max cell voltage,uint16,0.001,V,0,0,0,0,3311,3317,⬆ pack-pattern,
+34406,pack5_cell_v_min,Pack 5 Min cell voltage,uint16,0.001,V,0,0,0,0,3309,3315,⬆ pack-pattern,
+34407,pack5_max_ntc,Pack 5 Max NTC temp,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34408,pack5_protect1,Pack 5 Protection bitmask 1,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34409,pack5_protect2,Pack 5 Protection bitmask 2,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34410,pack5_bms_version,Pack 5 BMS version,uint16,1,-,0,0,0,0,116,1177,✅ 6-Pack-Test,"116 -> 1177 (v117.7) nach BMS-FW-Upgrade am 2026-07-09 -- weiterhin identische BMS-Version wie Pack 1-4/6, s. 30204"
+34411,pack5_cell_ntc_0,Pack 5 Cell NTC 0,uint16,0.1,°C,0,0,0,0,373,308,⬆ pack-pattern,
+34412,pack5_cell_ntc_1,Pack 5 Cell NTC 1,uint16,0.1,°C,0,0,0,0,345,245,⬆ pack-pattern,
+34413,pack5_cell_ntc_2,Pack 5 Cell NTC 2,uint16,0.1,°C,0,0,0,0,300,232,⬆ pack-pattern,
+34414,pack5_cell_ntc_3,Pack 5 Cell NTC 3,uint16,0.1,°C,0,0,0,0,299,233,⬆ pack-pattern,
+34415,pack5_mos_ntc,Pack 5 MOS NTC,uint16,0.1,°C,0,0,0,0,301,231,⬆ pack-pattern,
+34416,pack5_env_ntc,Pack 5 Environment NTC,uint16,0.1,°C,0,0,0,0,298,230,⬆ pack-pattern,
+34417,pack5_avg_ntc,Pack 5 Average NTC,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34418,pack5_cell_1_voltage,Pack 5 Cell 1 voltage,uint16,0.001,V,0,0,0,0,3310,3316,⬆ pack-pattern,
+34419,pack5_cell_2_voltage,Pack 5 Cell 2 voltage,uint16,0.001,V,0,0,0,0,3309,3317,⬆ pack-pattern,
+34420,pack5_cell_3_voltage,Pack 5 Cell 3 voltage,uint16,0.001,V,0,0,0,0,3309,3316,⬆ pack-pattern,
+34421,pack5_cell_4_voltage,Pack 5 Cell 4 voltage,uint16,0.001,V,0,0,0,0,3311,3317,⬆ pack-pattern,
+34422,pack5_cell_5_voltage,Pack 5 Cell 5 voltage,uint16,0.001,V,0,0,0,0,3309,3316,⬆ pack-pattern,
+34423,pack5_cell_6_voltage,Pack 5 Cell 6 voltage,uint16,0.001,V,0,0,0,0,3310,3317,⬆ pack-pattern,
+34424,pack5_cell_7_voltage,Pack 5 Cell 7 voltage,uint16,0.001,V,0,0,0,0,3311,3316,⬆ pack-pattern,
+34425,pack5_cell_8_voltage,Pack 5 Cell 8 voltage,uint16,0.001,V,0,0,0,0,3310,3317,⬆ pack-pattern,
+34426,pack5_cell_9_voltage,Pack 5 Cell 9 voltage,uint16,0.001,V,0,0,0,0,3309,3316,⬆ pack-pattern,
+34427,pack5_cell_10_voltage,Pack 5 Cell 10 voltage,uint16,0.001,V,0,0,0,0,3310,3317,⬆ pack-pattern,
+34428,pack5_cell_11_voltage,Pack 5 Cell 11 voltage,uint16,0.001,V,0,0,0,0,3310,3316,⬆ pack-pattern,
+34429,pack5_cell_12_voltage,Pack 5 Cell 12 voltage,uint16,0.001,V,0,0,0,0,3311,3317,⬆ pack-pattern,
+34430,pack5_cell_13_voltage,Pack 5 Cell 13 voltage,uint16,0.001,V,0,0,0,0,3309,3316,⬆ pack-pattern,
+34431,pack5_cell_14_voltage,Pack 5 Cell 14 voltage,uint16,0.001,V,0,0,0,0,3310,3317,⬆ pack-pattern,
+34432,pack5_cell_15_voltage,Pack 5 Cell 15 voltage,uint16,0.001,V,0,0,0,0,3309,3316,⬆ pack-pattern,
+34433,pack5_cell_16_voltage,Pack 5 Cell 16 voltage,uint16,0.001,V,0,0,0,0,3309,3316,⬆ pack-pattern,
+34500,pack6_bat_volt,Pack 6 Battery voltage,uint16,0.01,V,0,0,0,0,5323,5280,⬆ pack-pattern,
+34501,pack6_bat_curr,Pack 6 Battery current,int16,0.1,A,0,0,0,0,0,0,⬆ pack-pattern,
+34502,pack6_bat_soc,Pack 6 SOC,uint16,0.1,%,0,0,0,0,601,499,⬆ pack-pattern,
+34503,pack6_cycle_count,Pack 6 Cycle count,uint16,1,-,0,0,0,0,45,45,⬆ pack-pattern,
+34504,pack6_charge_status,Pack 6 Ladestatus (0=idle 3=aktiv),uint16,1,-,0,0,0,0,0,0,⬆ pack-pattern,"Analog zu 34004/34404 (Pack 1/5); vorher fälschlich als max_cell_voltage_delta geführt, was bei Werten 0-3 keinen Sinn ergibt - korrigiert lt. Vermutungen_Register_Analyse.md"
+34505,pack6_cell_v_max,Pack 6 Max cell voltage,uint16,0.001,V,0,0,0,0,3328,3302,⬆ pack-pattern,
+34506,pack6_cell_v_min,Pack 6 Min cell voltage,uint16,0.001,V,0,0,0,0,3326,3299,⬆ pack-pattern,
+34507,pack6_max_ntc,Pack 6 Max NTC temp,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34508,pack6_protect1,Pack 6 Protection bitmask 1,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34509,pack6_protect2,Pack 6 Protection bitmask 2,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34510,pack6_bms_version,Pack 6 BMS version,uint16,1,-,0,0,0,0,116,1177,⬆ pack-pattern,"Update 2026-07-09: 116 -> 1177 (v117.7) nach BMS-FW-Upgrade, s. 30204"
+34511,pack6_cell_ntc_0,Pack 6 Cell NTC 0,uint16,0.1,°C,0,0,0,0,345,292,⬆ pack-pattern,
+34512,pack6_cell_ntc_1,Pack 6 Cell NTC 1,uint16,0.1,°C,0,0,0,0,347,232,⬆ pack-pattern,
+34513,pack6_cell_ntc_2,Pack 6 Cell NTC 2,uint16,0.1,°C,0,0,0,0,289,231,⬆ pack-pattern,
+34514,pack6_cell_ntc_3,Pack 6 Cell NTC 3,uint16,0.1,°C,0,0,0,0,309,234,⬆ pack-pattern,
+34515,pack6_mos_ntc,Pack 6 MOS NTC,uint16,0.1,°C,0,0,0,0,286,229,⬆ pack-pattern,
+34516,pack6_env_ntc,Pack 6 Environment NTC,uint16,0.1,°C,0,0,0,0,305,234,⬆ pack-pattern,
+34517,pack6_avg_ntc,Pack 6 Average NTC,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34518,pack6_cell_1_voltage,Pack 6 Cell 1 voltage,uint16,0.001,V,0,0,0,0,3328,3300,⬆ pack-pattern,
+34519,pack6_cell_2_voltage,Pack 6 Cell 2 voltage,uint16,0.001,V,0,0,0,0,3327,3300,⬆ pack-pattern,
+34520,pack6_cell_3_voltage,Pack 6 Cell 3 voltage,uint16,0.001,V,0,0,0,0,3326,3300,⬆ pack-pattern,
+34521,pack6_cell_4_voltage,Pack 6 Cell 4 voltage,uint16,0.001,V,0,0,0,0,3328,3300,⬆ pack-pattern,
+34522,pack6_cell_5_voltage,Pack 6 Cell 5 voltage,uint16,0.001,V,0,0,0,0,3326,3300,⬆ pack-pattern,
+34523,pack6_cell_6_voltage,Pack 6 Cell 6 voltage,uint16,0.001,V,0,0,0,0,3326,3300,⬆ pack-pattern,
+34524,pack6_cell_7_voltage,Pack 6 Cell 7 voltage,uint16,0.001,V,0,0,0,0,3327,3300,⬆ pack-pattern,
+34525,pack6_cell_8_voltage,Pack 6 Cell 8 voltage,uint16,0.001,V,0,0,0,0,3327,3300,⬆ pack-pattern,
+34526,pack6_cell_9_voltage,Pack 6 Cell 9 voltage,uint16,0.001,V,0,0,0,0,3327,3300,⬆ pack-pattern,
+34527,pack6_cell_10_voltage,Pack 6 Cell 10 voltage,uint16,0.001,V,0,0,0,0,3326,3301,⬆ pack-pattern,
+34528,pack6_cell_11_voltage,Pack 6 Cell 11 voltage,uint16,0.001,V,0,0,0,0,3327,3300,⬆ pack-pattern,
+34529,pack6_cell_12_voltage,Pack 6 Cell 12 voltage,uint16,0.001,V,0,0,0,0,3327,3301,⬆ pack-pattern,
+34530,pack6_cell_13_voltage,Pack 6 Cell 13 voltage,uint16,0.001,V,0,0,0,0,3327,3300,⬆ pack-pattern,
+34531,pack6_cell_14_voltage,Pack 6 Cell 14 voltage,uint16,0.001,V,0,0,0,0,3328,3301,⬆ pack-pattern,
+34532,pack6_cell_15_voltage,Pack 6 Cell 15 voltage,uint16,0.001,V,0,0,0,0,3327,3299,⬆ pack-pattern,
+34533,pack6_cell_16_voltage,Pack 6 Cell 16 voltage,uint16,0.001,V,0,0,0,0,3328,3299,⬆ pack-pattern,
+34600,pack7_bat_volt,Pack 7 Battery voltage,uint16,0.01,V,0,0,0,0,0,0,⬆ pack-pattern,
+34601,pack7_bat_curr,Pack 7 Battery current,int16,0.1,A,0,0,0,0,0,0,⬆ pack-pattern,
+34602,pack7_bat_soc,Pack 7 SOC,uint16,0.1,%,0,0,0,0,0,0,⬆ pack-pattern,
+34603,pack7_cycle_count,Pack 7 Cycle count,uint16,1,-,0,0,0,0,0,0,⬆ pack-pattern,
+34604,pack7_charge_status,Pack 7 Ladestatus (0=idle 3=aktiv),uint16,1,-,0,0,0,0,0,0,⬆ pack-pattern,"Analog zu 34004/34404 (Pack 1/5); vorher fälschlich als max_cell_voltage_delta geführt, was bei Werten 0-3 keinen Sinn ergibt - korrigiert lt. Vermutungen_Register_Analyse.md"
+34605,pack7_cell_v_max,Pack 7 Max cell voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34606,pack7_cell_v_min,Pack 7 Min cell voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34607,pack7_max_ntc,Pack 7 Max NTC temp,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34608,pack7_protect1,Pack 7 Protection bitmask 1,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34609,pack7_protect2,Pack 7 Protection bitmask 2,uint16,bitmask,-,0,0,0,0,0,0,⬆ pack-pattern,
+34610,pack7_bms_version,Pack 7 BMS version,uint16,1,-,0,0,0,0,0,0,⬆ pack-pattern,
+34611,pack7_cell_ntc_0,Pack 7 Cell NTC 0,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34612,pack7_cell_ntc_1,Pack 7 Cell NTC 1,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34613,pack7_cell_ntc_2,Pack 7 Cell NTC 2,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34614,pack7_cell_ntc_3,Pack 7 Cell NTC 3,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34615,pack7_mos_ntc,Pack 7 MOS NTC,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34616,pack7_env_ntc,Pack 7 Environment NTC,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34617,pack7_avg_ntc,Pack 7 Average NTC,uint16,0.1,°C,0,0,0,0,0,0,⬆ pack-pattern,
+34618,pack7_cell_1_voltage,Pack 7 Cell 1 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34619,pack7_cell_2_voltage,Pack 7 Cell 2 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34620,pack7_cell_3_voltage,Pack 7 Cell 3 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34621,pack7_cell_4_voltage,Pack 7 Cell 4 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34622,pack7_cell_5_voltage,Pack 7 Cell 5 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34623,pack7_cell_6_voltage,Pack 7 Cell 6 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34624,pack7_cell_7_voltage,Pack 7 Cell 7 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34625,pack7_cell_8_voltage,Pack 7 Cell 8 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34626,pack7_cell_9_voltage,Pack 7 Cell 9 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34627,pack7_cell_10_voltage,Pack 7 Cell 10 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34628,pack7_cell_11_voltage,Pack 7 Cell 11 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34629,pack7_cell_12_voltage,Pack 7 Cell 12 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34630,pack7_cell_13_voltage,Pack 7 Cell 13 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34631,pack7_cell_14_voltage,Pack 7 Cell 14 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34632,pack7_cell_15_voltage,Pack 7 Cell 15 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+34633,pack7_cell_16_voltage,Pack 7 Cell 16 voltage,uint16,0.001,V,0,0,0,0,0,0,⬆ pack-pattern,
+35000,internal_temperature,Inverter-Innentemperatur,int16,0.1,°C,179,241,272,326,513,278,✅ FW-verified + 6-Pack-Test,"Inverter-Board Temperatur. Langzeit: 50°C→54°C (steigend bei 2kW), fällt mit Leistung. Spiegel: 30002"
+35001,internal_mos1_temperature,MOS1-Temperatur (Leistungstransistor),int16,0.1,°C,180,243,279,335,542,284,✅ FW-verified + 6-Pack-Test,Peak 54.2°C bei 2kW Dauerlast (~17min). ~2°C über 35000. Identisch mit 35002 in allen Scans. Spiegel: 30003
+35002,internal_mos2_temperature,MOS2-Temperatur (Leistungstransistor),int16,0.1,°C,180,243,279,335,542,284,✅ FW-verified + 6-Pack-Test,Immer identisch mit 35001 — vermutlich gleicher Sensor oder gemittelt. Hauptquelle der fühlbaren Gehäusewärme
+35010,max_cell_temperature,Max cell temperature,int16,0.1,°C,198,229,232,276,331,263,✅ FW-verified,
+35011,pack1_env_ntc_mirror,Pack 1 Umgebungstemperatur (Spiegel 34016),uint16,0.1,°C,190,228,230,266,298,260,🔍 Vermutung,Langzeit: exakt identisch mit 34016 (pack1_env_ntc)
+35100,inverter_state,Inverter state,uint16,1,-,1,1,3,2,2,2,✅ confirmed,"0=Shutdown, 1=Idle/Standby, 2=Charging (auch EMS-Zwangsladung unter DOD), 3=Discharging, 4=Inselbetrieb (Backup aus Batterie ohne Grid), 6=Backup-Passthrough (Grid→Backup, DOD erreicht). Unter DOD: Backup nicht aktivierbar (bleibt 1); bei AC-Reconnect automatische Zwangsladung (→2) durch EMS ohne force_mode"
+35110,max_charge_power,Max Ladeleistung (Referenzwert?),uint16,1,-,576,576,576,576,576,576,🔍 Vermutung,Konstant 576; evtl. max. erlaubte Ladeleistung oder Systemparameter
+35111,power_level,Leistungsstufe (Laden+Entladen),uint16,1,-,500,100,500,500,500,500,🔍 Vermutung,"Nicht nur Laden! Auch beim Entladen aktiv: 500=Vollast, 250=mittel, 100=niedrig. Laden: CC-CV Stufen (SOC 90%/95%/100%). Entladen: wechselt bei Pack-Rotation und Leistungsstufen"
+35112,max_discharge_power,Max Entladeleistung (Referenzwert?),uint16,1,-,500,500,500,500,500,500,🔍 Vermutung,Konstant 500; zusammen mit 35110/35111 evtl. Leistungs-Konfigurationsblock
+36000,alarm_status,Alarm status (high),uint32,-,-,0,0,0,0,0,0,✅ FW-verified,uint32 with 36001
+36001,alarm_status_lo,Alarm status (low),uint32,-,-,0,0,0,0,0,0,✅ FW-verified,
+36100,fault_status,Fault status (high),uint64,bitmask,-,0,0,0,0,0,0,✅ FW-verified,uint64 36100-36103; Bit4(0x0010)=BMS offline/Batterie getrennt (Battery-Disconnect-Test bestätigt)
+36101,fault_status_2,Fault status word 2,uint16,bitmask,-,0,0,0,0,0,0,🔍 Vermutung,Bit7(0x80)=AC/Grid disconnect; taucht exakt bei AC-Trennung auf (Power-Cycle-Test bestätigt)
+36102,,,,,,0,0,0,0,0,0,❓ unknown,
+36103,fault_status_lo,Fault status (low word),uint64,-,-,2403,2385,2405,0,0,0,✅ FW-verified,Changes: 2403/2385/2405; might include counter
+37000,system_online,System online Flag?,uint16,1,-,1,1,1,1,1,1,🔍 Vermutung,Konstant 1; evtl. System-aktiv-Flag
+37001,,,,,,0,0,0,0,0,0,❓ unknown,
+37002,,,,,,0,0,0,0,0,0,❓ unknown,
+37003,,,,,,0,0,0,0,0,0,❓ unknown,
+37004,ac_power_target,AC Netzleistung SOLL/Regelwert (int16),int16,1,W,0,0,500,63364,63364,65329,✅ confirmed,Wie 30006 aber reagiert ~1 Scan schneller bei Setpoint-Wechsel. Vermutlich Soll-/Regelgröße statt Messwert
+37005,system_soc_integer,System SOC (integer),uint16,1,%,14,95,94,50,61,49,✅ confirmed,95/94/14; integer SOC without 0.1 scale
+37006,max_cell_temp_mirror,Max cell temp (mirror of 35010),uint16,0.1,°C,192,230,232,276,304,263,📊 multi-scan,Matches 35010 within 2
+37007,max_cell_voltage,Max cell voltage,uint16,0.001,V,3198,3328,3327,3308,3395,3301,✅ FW-verified,
+37008,min_cell_voltage,Min cell voltage,uint16,0.001,V,3195,3325,3325,3306,3390,3299,✅ FW-verified,
+37009,,,,,,0,0,0,0,0,0,❓ unknown,
+37010,,,,,,0,0,0,0,0,0,❓ unknown,
+37011,,,,,,0,0,0,0,0,0,❓ unknown,
+37012,bms_version_mirror,BMS Version (Spiegel 30204),uint16,1,-,116,116,116,116,116,1177,🔍 Vermutung,Konstant identisch mit bms_version (30204). Update 2026-07-09: 116 -> 1177 (v117.7) nach BMS-FW-Upgrade
+37013,fault_status_mirror,Fault-Status Spiegel (=36100),uint16,bitmask,-,0,0,0,0,0,0,🔍 Vermutung,Battery-Disconnect: =16(0x0010) exakt wie 36100 bei BMS offline. Spiegel im 37xxx-Block
+37014,fault_status_2_mirror,Fault-Status-2 Spiegel (=36101),uint16,bitmask,-,0,0,0,0,0,0,🔍 Vermutung,Power-Cycle-Test: =128(0x80) exakt wie 36101 bei AC-Disconnect. Spiegel im 37xxx-Block
+37015,,,,,,0,0,0,0,0,0,❓ unknown,
+37016,offgrid_ac_voltage,Offgrid AC Spannung?,uint16,0.1,V,2416,2393,2401,0,0,0,🔍 Vermutung,"Werte ≈ ac_voltage bei Standby/Entladung, =0 bei Netzbezug (Laden). Evtl. nur bei Einspeisebetrieb aktiv"
+37017,,,,,,0,0,0,0,0,0,❓ unknown,
+37018,,,,,,0,0,0,0,0,0,❓ unknown,
+37019,,,,,,0,0,0,0,0,0,❓ unknown,
+37020,,,,,,0,0,0,0,0,0,❓ unknown,
+37021,,,,,,0,0,0,0,0,0,❓ unknown,
+37022,offgrid_dc_voltage,Offgrid DC Bus Spannung?,uint16,0.1,V,513,534,527,0,0,0,🔍 Vermutung,"Werte ≈ dc_bus_voltage bei Standby/Entladung, =0 bei Netzbezug (Laden). Analog zu 37016"
+37023,,,,,,0,0,0,0,0,0,❓ unknown,
+37024,,,,,,0,0,0,0,0,0,❓ unknown,Power-Cycle-Test: einmaliger Spike 1345 kurz vor Batterie-Reconnect. Evtl. BMS-Handshake/Init
+41000,reset_device,Reset device command,uint16,-,-,0,0,0,0,0,0,📊 scan,Write to trigger reset
+41100,modbus_address,Modbus slave/unit ID,uint16,-,-,1,1,1,1,1,1,📊 scan,
+41200,backup_function,Backup function control,uint16,-,-,1,1,1,1,1,1,📊 scan,1=enabled
+42000,rs485_control_mode,RS485 control mode,uint16,-,-,21930,21947,21930,21930,21947,21930,✅ confirmed,"0x55AA=active write control, 0x55BB=idle readback after activation"
+42010,force_mode,Force mode,uint16,-,-,0,0,2,1,0,1,📊 scan,"0=None, 1=Charge, 2=Discharge (confirmed with all scans). EMS-Zwangsladung unter DOD setzt force_mode NICHT — bleibt 0; EMS steuert Ladung intern"
+42011,charge_to_soc,Target SOC,uint16,1,%,0,0,0,0,0,0,📊 scan,
+42020,set_charge_power,Force charge power,uint16,-,W,0,0,0,2200,0,210,📊 scan,2200 during 2200W charge test; charge power setpoint
+42021,set_discharge_power,Force discharge power / Inverter-Limit,uint16,1,W,0,0,500,0,0,0,✅ Backup-Test,"500 bei 500W Entladung. Backup-Test: konstant 2200 = maximale Inverter-AC-Ausgangsleistung. Bei EMS-Zwangsladung unter DOD: 0 (nicht gesetzt, EMS steuert intern)"
+43000,user_work_mode,User work mode,uint16,-,-,1,0,1,1,0,1,📊 scan,"0=manual/self-consumption, 1=anti-feedin, 2=trade. Discharge-Steps: wechselt 1→0 wenn Zeitplan aktiv"
+43100,schedule_1_days,Schedule 1 Wochentage (Bitmask),uint16,bitmask,-,0,0,0,0,127,0,✅ Discharge-Steps,127(0x7F)=alle 7 Tage; Bitmask Mo-So
+43101,schedule_1_start,Schedule 1 start (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43102,schedule_1_end,Schedule 1 Endzeit (HHMM),uint16,-,-,0,0,0,0,2359,0,✅ Discharge-Steps,2359=23:59; Format HHMM als Integer
+43103,schedule_1_power,Schedule 1 Entlade-Setpoint,uint16,1,W,0,0,0,0,63336,0,✅ Discharge-Steps,Zielleistung aus App-Zeitplan. Discharge-Steps: 100→150→...→2200W in 50/100W Schritten
+43104,schedule_1_active,Schedule 1 Entladung aktiv,uint16,-,-,0,0,0,0,1,0,✅ Discharge-Steps,"0=inaktiv, 1=Entladung läuft. Wird 1 sobald Zeitplan greift"
+43105,schedule_2_days,Schedule 2 days (bitmask),bit,-,-,0,0,0,0,0,0,📊 scan,
+43106,schedule_2_start,Schedule 2 start (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43107,schedule_2_end,Schedule 2 end (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43108,schedule_2_mode,Schedule 2 mode,int16,-,W,0,0,0,0,0,0,📊 scan,
+43109,schedule_2_enabled,Schedule 2 enabled,uint,-,-,0,0,0,0,0,0,📊 scan,
+43110,schedule_3_days,Schedule 3 days (bitmask),bit,-,-,0,0,0,0,0,0,📊 scan,
+43111,schedule_3_start,Schedule 3 start (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43112,schedule_3_end,Schedule 3 end (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43113,schedule_3_mode,Schedule 3 mode,int16,-,W,0,0,0,0,0,0,📊 scan,
+43114,schedule_3_enabled,Schedule 3 enabled,uint,-,-,0,0,0,0,0,0,📊 scan,
+43115,schedule_4_days,Schedule 4 days (bitmask),bit,-,-,0,0,0,0,0,0,📊 scan,
+43116,schedule_4_start,Schedule 4 start (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43117,schedule_4_end,Schedule 4 end (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43118,schedule_4_mode,Schedule 4 mode,int16,-,W,0,0,0,0,0,0,📊 scan,
+43119,schedule_4_enabled,Schedule 4 enabled,uint,-,-,0,0,0,0,0,0,📊 scan,
+43120,schedule_5_days,Schedule 5 days (bitmask),bit,-,-,0,0,0,0,0,0,📊 scan,
+43121,schedule_5_start,Schedule 5 start (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43122,schedule_5_end,Schedule 5 end (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43123,schedule_5_mode,Schedule 5 mode,int16,-,W,0,0,0,0,0,0,📊 scan,
+43124,schedule_5_enabled,Schedule 5 enabled,uint,-,-,0,0,0,0,0,0,📊 scan,
+43125,schedule_6_days,Schedule 6 days (bitmask),bit,-,-,0,0,0,0,0,0,📊 scan,
+43126,schedule_6_start,Schedule 6 start (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43127,schedule_6_end,Schedule 6 end (HHMM),uint,-,min,0,0,0,0,0,0,📊 scan,
+43128,schedule_6_mode,Schedule 6 mode,int16,-,W,0,0,0,0,0,0,📊 scan,
+43129,schedule_6_enabled,Schedule 6 enabled,uint,-,-,0,0,0,0,0,0,📊 scan,
+44002,max_charge_power,Max charge power,uint16,-,W,0,0,0,0,0,0,📊 scan,Device max 2500W
+44003,max_discharge_power,Max discharge power,uint16,-,W,0,0,0,0,0,0,📊 scan,Device max 2200W

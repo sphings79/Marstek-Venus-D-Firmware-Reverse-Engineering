@@ -1,0 +1,173 @@
+Register;Hex;Name;SRAM_Ziel;Beschreibung;Write_Only;Persistence;Moegliche_Werte;Bemerkung
+40000;0x9C40;rs485_unlock;0x200002B4;RS485-Steuerung aktivieren;Ja;SRAM;0x55AA=enable (flag=1); 0x55A1-0x55A6=Alt-Modi (1-6);Diskrepanz: Doku sagt 42000 sei RS485-Unlock - Code zeigt 40000 als write-only Unlock
+41000;0xA028;command_register;0x20000348;Kommando-Status setzen;Nein;SRAM;0x55AA=Status 1; 0xAA11=Status 2;Lesen liefert aktuellen Status-Byte zurueck
+41100;0xA08C;modbus_slave_address;0x20000133;Modbus Slave-Adresse aendern;Nein;SRAM;1-127 (beliebiger Wert wird via FUN_08006ebc angewendet);Wirkt sofort auf Modbus-Stack
+41200;0xA0F0;backup_ups_enable;0x20014CFC;Backup/UPS-Funktion ein/aus;Nein;EEPROM 0x300;0=deaktivieren (schreibt 0x01 intern); 1=aktivieren (schreibt 0x00 intern);Lesen: invertiert (intern 0x01 → gibt 0 zurueck)
+41500;0xA21C;schedule_time_00;0x20014DC2;Zeitplan-Zeiteinstellung Index 0;Nein;SRAM;u16 Wert;Array von 16 Zeiteinstellungs-Registern (41500-41515)
+41501;0xA21D;schedule_time_01;0x20014DC4;Zeitplan-Zeiteinstellung Index 1;Nein;SRAM;u16 Wert;
+41502;0xA21E;schedule_time_02;0x20014DC6;Zeitplan-Zeiteinstellung Index 2;Nein;SRAM;u16 Wert;
+41503;0xA21F;schedule_time_03;0x20014DC8;Zeitplan-Zeiteinstellung Index 3;Nein;SRAM;u16 Wert;
+41504;0xA220;schedule_time_04;0x20014DCA;Zeitplan-Zeiteinstellung Index 4;Nein;SRAM;u16 Wert;Unrecovered Jump-Table im Decompiler
+41505;0xA221;schedule_time_05;0x20014DCC;Zeitplan-Zeiteinstellung Index 5;Nein;SRAM;u16 Wert;Unrecovered Jump-Table im Decompiler
+41506;0xA222;schedule_time_06;0x20014DCE;Zeitplan-Zeiteinstellung Index 6;Nein;SRAM;u16 Wert;Unrecovered Jump-Table im Decompiler
+41507;0xA223;schedule_time_07;0x20014DD0;Zeitplan-Zeiteinstellung Index 7;Nein;SRAM;u16 Wert;Unrecovered Jump-Table im Decompiler
+41508;0xA224;schedule_time_08;0x20014DD2;Zeitplan-Zeiteinstellung Index 8;Nein;SRAM;u16 Wert;
+41509;0xA225;schedule_time_09;0x20014DD4;Zeitplan-Zeiteinstellung Index 9;Nein;SRAM;u16 Wert;
+41510;0xA226;schedule_time_10;0x20014DD6;Zeitplan-Zeiteinstellung Index 10;Nein;SRAM;u16 Wert;
+41511;0xA227;schedule_time_11;0x20014DD8;Zeitplan-Zeiteinstellung Index 11;Nein;SRAM;u16 Wert;
+41512;0xA228;schedule_time_12;0x20014DDA;Zeitplan-Zeiteinstellung Index 12;Nein;SRAM;u16 Wert;
+41513;0xA229;schedule_time_13;0x20014DDC;Zeitplan-Zeiteinstellung Index 13;Nein;SRAM;u16 Wert;
+41514;0xA22A;schedule_time_14;0x20014DDE;Zeitplan-Zeiteinstellung Index 14;Nein;SRAM;u16 Wert;
+41515;0xA22B;schedule_time_15;0x20014DE0;Zeitplan-Zeiteinstellung Index 15;Nein;SRAM;u16 Wert;
+41600;0xA280;schedule_power_00;0x20014DE2;Zeitplan-Leistung Index 0;Nein;SRAM;u16 Wert;Array von 32 Leistungs-Registern (41600-41631). Low-Byte=0 oder Reg 41631 triggert Schedule-Neuberechnung
+41601;0xA281;schedule_power_01;0x20014DE4;Zeitplan-Leistung Index 1;Nein;SRAM;u16 Wert;
+41602;0xA282;schedule_power_02;0x20014DE6;Zeitplan-Leistung Index 2;Nein;SRAM;u16 Wert;
+41603;0xA283;schedule_power_03;0x20014DE8;Zeitplan-Leistung Index 3;Nein;SRAM;u16 Wert;
+41604;0xA284;schedule_power_04;0x20014DEA;Zeitplan-Leistung Index 4;Nein;SRAM;u16 Wert;
+41605;0xA285;schedule_power_05;0x20014DEC;Zeitplan-Leistung Index 5;Nein;SRAM;u16 Wert;
+41606;0xA286;schedule_power_06;0x20014DEE;Zeitplan-Leistung Index 6;Nein;SRAM;u16 Wert;
+41607;0xA287;schedule_power_07;0x20014DF0;Zeitplan-Leistung Index 7;Nein;SRAM;u16 Wert;
+41608;0xA288;schedule_power_08;0x20014DF2;Zeitplan-Leistung Index 8;Nein;SRAM;u16 Wert;
+41609;0xA289;schedule_power_09;0x20014DF4;Zeitplan-Leistung Index 9;Nein;SRAM;u16 Wert;
+41610;0xA28A;schedule_power_10;0x20014DF6;Zeitplan-Leistung Index 10;Nein;SRAM;u16 Wert;
+41611;0xA28B;schedule_power_11;0x20014DF8;Zeitplan-Leistung Index 11;Nein;SRAM;u16 Wert;
+41612;0xA28C;schedule_power_12;0x20014DFA;Zeitplan-Leistung Index 12;Nein;SRAM;u16 Wert;
+41613;0xA28D;schedule_power_13;0x20014DFC;Zeitplan-Leistung Index 13;Nein;SRAM;u16 Wert;
+41614;0xA28E;schedule_power_14;0x20014DFE;Zeitplan-Leistung Index 14;Nein;SRAM;u16 Wert;
+41615;0xA28F;schedule_power_15;0x20014E00;Zeitplan-Leistung Index 15;Nein;SRAM;u16 Wert;
+41616;0xA290;schedule_power_16;0x20014E02;Zeitplan-Leistung Index 16;Nein;SRAM;u16 Wert;
+41617;0xA291;schedule_power_17;0x20014E04;Zeitplan-Leistung Index 17;Nein;SRAM;u16 Wert;
+41618;0xA292;schedule_power_18;0x20014E06;Zeitplan-Leistung Index 18;Nein;SRAM;u16 Wert;
+41619;0xA293;schedule_power_19;0x20014E08;Zeitplan-Leistung Index 19;Nein;SRAM;u16 Wert;
+41620;0xA294;schedule_power_20;0x20014E0A;Zeitplan-Leistung Index 20;Nein;SRAM;u16 Wert;
+41621;0xA295;schedule_power_21;0x20014E0C;Zeitplan-Leistung Index 21;Nein;SRAM;u16 Wert;
+41622;0xA296;schedule_power_22;0x20014E0E;Zeitplan-Leistung Index 22;Nein;SRAM;u16 Wert;
+41623;0xA297;schedule_power_23;0x20014E10;Zeitplan-Leistung Index 23;Nein;SRAM;u16 Wert;
+41624;0xA298;schedule_power_24;0x20014E12;Zeitplan-Leistung Index 24;Nein;SRAM;u16 Wert;
+41625;0xA299;schedule_power_25;0x20014E14;Zeitplan-Leistung Index 25;Nein;SRAM;u16 Wert;
+41626;0xA29A;schedule_power_26;0x20014E16;Zeitplan-Leistung Index 26;Nein;SRAM;u16 Wert;
+41627;0xA29B;schedule_power_27;0x20014E18;Zeitplan-Leistung Index 27;Nein;SRAM;u16 Wert;
+41628;0xA29C;schedule_power_28;0x20014E1A;Zeitplan-Leistung Index 28;Nein;SRAM;u16 Wert;
+41629;0xA29D;schedule_power_29;0x20014E1C;Zeitplan-Leistung Index 29;Nein;SRAM;u16 Wert;
+41630;0xA29E;schedule_power_30;0x20014E1E;Zeitplan-Leistung Index 30;Nein;SRAM;u16 Wert;
+41631;0xA29F;schedule_power_31;0x20014E20;Zeitplan-Leistung Index 31 (letzter);Nein;SRAM;u16 Wert;Schreiben triggert immer Schedule-Neuberechnung
+42000;0xA410;update_mode_status;0x20014CFD;Update/Modus-Status (lesen und schreiben);Nein;EEPROM 0x301 (bei 0x55BB);0x55AA=Modus auf 0x0A setzen; 0x55BB=Modus aus EEPROM 0x301 wiederherstellen;Lesen: 0x55AA wenn mode=0x0A / 0x55FF wenn mode=0x04 / 0x55BB sonst. ACHTUNG: teilt SRAM-Byte mit Reg 43000!
+42010;0xA41A;force_mode;0x20000349;Lade-/Entlade-Zwangsmodus;Nein;SRAM;0=keine Vorgabe; 1=Laden erzwingen; 2=Entladen erzwingen;RS485-Steuerungsregister
+42011;0xA41B;charge_target_soc;0x2000034A;Lade-Ziel-SOC in Prozent;Nein;SRAM;13-100 (%);Werte <13 oder >100 werden abgelehnt (Error 3)
+42020;0xA424;discharge_power_limit;0x2000034C;Entlade-Leistungsvorgabe;Nein;SRAM;0-2500 (W);Werte >2500 werden abgelehnt (Error 3)
+42021;0xA425;charge_power_limit;0x2000034E;Lade-Leistungsvorgabe;Nein;SRAM;0-2500 (W);Werte >2500 werden abgelehnt (Error 3)
+43000;0xA7F8;work_mode;0x20014CFD;Betriebsmodus / Inverter-Modus;Nein;EEPROM 0x301;0=Eigenverbrauch (intern 0x01); 1=Anti-Einspeisung (intern 0x00); 2=Handel (intern 0x05);ACHTUNG: teilt SRAM-Byte 0x20014CFD mit Reg 42000! Werte >2 werden abgelehnt
+43100;0xA85C;slot1_days;0x20014CFE;Zeitplan Slot 1 — Tage/Typ;Nein;EEPROM (via Schedule-Persist);Byte-Wert (Wochentag-Bitmask o.ae.);Schedule-Struct Slot 0 Offset +0
+43101;0xA85D;slot1_start_time;0x20014D02;Zeitplan Slot 1 — Startzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format: z.B. 0800=08:00 (HH<24 und MM<60);Schedule-Struct Slot 0 Offset +4. Setzt Enable-Flag auf 0
+43102;0xA85E;slot1_end_time;0x20014D04;Zeitplan Slot 1 — Endzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format: z.B. 2300=23:00 (HH<24 und MM<60);Schedule-Struct Slot 0 Offset +6. Setzt Enable-Flag auf 0
+43103;0xA85F;slot1_power;0x20014D00;Zeitplan Slot 1 — Leistung;Nein;EEPROM (via Schedule-Persist);-2500 bis +2500 (W, negativ=Laden);Schedule-Struct Slot 0 Offset +2. i16 signed
+43104;0xA860;slot1_enable;0x20014CFF;Zeitplan Slot 1 — Aktivierung;Nein;EEPROM (via Schedule-Persist);0=deaktiviert; 1=aktiviert;Schedule-Struct Slot 0 Offset +1
+43105;0xA861;slot2_days;0x20014D08;Zeitplan Slot 2 — Tage/Typ;Nein;EEPROM (via Schedule-Persist);Byte-Wert;Schedule-Struct Slot 1 Offset +0
+43106;0xA862;slot2_start_time;0x20014D0C;Zeitplan Slot 2 — Startzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 1 Offset +4
+43107;0xA863;slot2_end_time;0x20014D0E;Zeitplan Slot 2 — Endzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 1 Offset +6
+43108;0xA864;slot2_power;0x20014D0A;Zeitplan Slot 2 — Leistung;Nein;EEPROM (via Schedule-Persist);-2500 bis +2500 W;Schedule-Struct Slot 1 Offset +2
+43109;0xA865;slot2_enable;0x20014D09;Zeitplan Slot 2 — Aktivierung;Nein;EEPROM (via Schedule-Persist);0=deaktiviert; 1=aktiviert;Schedule-Struct Slot 1 Offset +1
+43110;0xA866;slot3_days;0x20014D12;Zeitplan Slot 3 — Tage/Typ;Nein;EEPROM (via Schedule-Persist);Byte-Wert;Schedule-Struct Slot 2 Offset +0
+43111;0xA867;slot3_start_time;0x20014D16;Zeitplan Slot 3 — Startzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 2 Offset +4
+43112;0xA868;slot3_end_time;0x20014D18;Zeitplan Slot 3 — Endzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 2 Offset +6
+43113;0xA869;slot3_power;0x20014D14;Zeitplan Slot 3 — Leistung;Nein;EEPROM (via Schedule-Persist);-2500 bis +2500 W;Schedule-Struct Slot 2 Offset +2
+43114;0xA86A;slot3_enable;0x20014D13;Zeitplan Slot 3 — Aktivierung;Nein;EEPROM (via Schedule-Persist);0=deaktiviert; 1=aktiviert;Schedule-Struct Slot 2 Offset +1
+43115;0xA86B;slot4_days;0x20014D1C;Zeitplan Slot 4 — Tage/Typ;Nein;EEPROM (via Schedule-Persist);Byte-Wert;Schedule-Struct Slot 3 Offset +0
+43116;0xA86C;slot4_start_time;0x20014D20;Zeitplan Slot 4 — Startzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 3 Offset +4
+43117;0xA86D;slot4_end_time;0x20014D22;Zeitplan Slot 4 — Endzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 3 Offset +6
+43118;0xA86E;slot4_power;0x20014D1E;Zeitplan Slot 4 — Leistung;Nein;EEPROM (via Schedule-Persist);-2500 bis +2500 W;Schedule-Struct Slot 3 Offset +2
+43119;0xA86F;slot4_enable;0x20014D1D;Zeitplan Slot 4 — Aktivierung;Nein;EEPROM (via Schedule-Persist);0=deaktiviert; 1=aktiviert;Schedule-Struct Slot 3 Offset +1
+43120;0xA870;slot5_days;0x20014D26;Zeitplan Slot 5 — Tage/Typ;Nein;EEPROM (via Schedule-Persist);Byte-Wert;Schedule-Struct Slot 4 Offset +0
+43121;0xA871;slot5_start_time;0x20014D2A;Zeitplan Slot 5 — Startzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 4 Offset +4
+43122;0xA872;slot5_end_time;0x20014D2C;Zeitplan Slot 5 — Endzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 4 Offset +6
+43123;0xA873;slot5_power;0x20014D28;Zeitplan Slot 5 — Leistung;Nein;EEPROM (via Schedule-Persist);-2500 bis +2500 W;Schedule-Struct Slot 4 Offset +2
+43124;0xA874;slot5_enable;0x20014D27;Zeitplan Slot 5 — Aktivierung;Nein;EEPROM (via Schedule-Persist);0=deaktiviert; 1=aktiviert;Schedule-Struct Slot 4 Offset +1
+43125;0xA875;slot6_days;0x20014D30;Zeitplan Slot 6 — Tage/Typ;Nein;EEPROM (via Schedule-Persist);Byte-Wert;Schedule-Struct Slot 5 Offset +0
+43126;0xA876;slot6_start_time;0x20014D34;Zeitplan Slot 6 — Startzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 5 Offset +4
+43127;0xA877;slot6_end_time;0x20014D36;Zeitplan Slot 6 — Endzeit;Nein;EEPROM (via Schedule-Persist);HHMM-Format;Schedule-Struct Slot 5 Offset +6
+43128;0xA878;slot6_power;0x20014D32;Zeitplan Slot 6 — Leistung;Nein;EEPROM (via Schedule-Persist);-2500 bis +2500 W;Schedule-Struct Slot 5 Offset +2
+43129;0xA879;slot6_enable;0x20014D31;Zeitplan Slot 6 — Aktivierung;Nein;EEPROM (via Schedule-Persist);0=deaktiviert; 1=aktiviert;Schedule-Struct Slot 5 Offset +1
+44002;0xABE2;max_discharge_power;0x20000156;Maximale Entladeleistung;Nein;SRAM;0-2500 (W);Ruft FUN_080060d6 und FUN_08006c9c auf
+44003;0xABE3;max_charge_power;0x20000158;Maximale Ladeleistung;Nein;SRAM;0-2500 (W);Ruft FUN_08006114 und FUN_08006d68 auf
+45000;0xAFC8;cmd_system_control;0x200002B4;System-Steuerkommando;Ja;SRAM;0x55EE=Modus A (FUN_08005f94(0)); 0x55BB=Modus B (FUN_08005f94(1));Setzt zusaetzlich *0x200002B4=2 und ruft FUN_08005ccc(1/0) auf
+45001;0xAFC9;cmd_reset_init;—;System-Reset/Init ausfuehren;Ja;—;beliebiger Wert (Kommando wird sofort ausgefuehrt);Ruft FUN_08005f50() + FUN_0802bf70()
+45002;0xAFCA;cmd_function_1;—;Steuerfunktion 1;Ja;—;beliebiger Wert;Ruft FUN_08006488(1)
+45003;0xAFCB;cmd_function_2;—;Steuerfunktion 2;Ja;—;beliebiger Wert;Ruft FUN_08005e8a()
+45004;0xAFCC;cmd_mode_select;—;Modus-Auswahl (3 Modi);Ja;—;1=Modus 1; 2=Modus 2; 3=Modus 3;Ruft FUN_08005eac(1/2/3). Anderer Wert → Error 3
+45005;0xAFCD;cmd_function_3;—;Steuerfunktion 3;Ja;—;beliebiger Wert;Ruft FUN_08005f0a()
+45006;0xAFCE;cmd_function_4;—;Steuerfunktion 4;Ja;—;beliebiger Wert;Ruft FUN_08027e44()
+45007;0xAFCF;cmd_function_5;—;Steuerfunktion 5;Ja;—;beliebiger Wert;Ruft FUN_08005f2c(1)
+45008;0xAFD0;cmd_set_power_a;—;Leistung setzen (Variante A);Ja;—;1-2500 (W positiv); >32767 (negativ: Wert-65535);Ruft FUN_08005ece(power). Werte 0 und 2501-32767 werden ignoriert
+45009;0xAFD1;cmd_enable_disable_a;—;Ein-/Ausschalten (Variante A);Ja;—;0=deaktivieren; 1=aktivieren;Ruft FUN_08005e68(0/1)
+45010;0xAFD2;cmd_set_power_b;—;Leistung setzen (Variante B);Ja;—;1-2500 (W positiv); >32767 (negativ: Wert-65535);Ruft FUN_08005e2c(power). Werte 0 und 2501-32767 werden ignoriert
+45011;0xAFD3;cmd_mode_select_ext;—;Erweiterte Modus-Auswahl (5 Modi);Ja;—;1→intern 1; 2→intern 2; 3→intern 4; 4→intern 0; 5→intern 5;Ruft FUN_0802bec8(mapped_value). 0-9 gueltig / >9 → Error 3
+45012;0xAFD4;cmd_set_power_default;—;Leistung mit Default-Fallback;Ja;—;1-29999 (W); anderer Wert → Default 2000W;Ruft FUN_08005a90(0 / power)
+45013;0xAFD5;reserved_13;—;Reserviert — nicht funktional;—;—;—;Gibt Error 2 zurueck (illegal data address)
+45014;0xAFD6;reserved_14;—;Reserviert — nicht funktional;—;—;—;Gibt Error 2 zurueck
+45015;0xAFD7;reserved_15;—;Reserviert — nicht funktional;—;—;—;Gibt Error 2 zurueck
+45016;0xAFD8;reserved_16;—;Reserviert — nicht funktional;—;—;—;Gibt Error 2 zurueck
+45017;0xAFD9;reserved_17;—;Reserviert — nicht funktional;—;—;—;Gibt Error 2 zurueck
+45018;0xAFDA;reserved_18;—;Reserviert — nicht funktional;—;—;—;Gibt Error 2 zurueck
+45019;0xAFDB;reserved_19;—;Reserviert — nicht funktional;—;—;—;Gibt Error 2 zurueck
+45020;0xAFDC;cmd_smr_relay_adc;—;SMR-Relay mit ADC-Messung;Ja;—;1-3999 (loest komplexe Relay+ADC-Operation aus);GEFAEHRLICH: Schaltet Relay und misst ADC. Nur mit Hardware-Verstaendnis nutzen!
+45021;0xAFDD;cmd_smr_enable;—;SMR Ein-/Ausschalten;Ja;—;1=einschalten (FUN_08005ccc(1)); 0=ausschalten (FUN_08005ccc(1/0));
+45022;0xAFDE;cmd_function_6;—;Steuerfunktion 6;Ja;—;beliebiger Wert;Ruft FUN_08005ca8(1)
+45023;0xAFDF;cmd_gpio_debug_1;—;GPIO Debug-Kommando 1;Ja;—;beliebiger Wert;Ruft FUN_08005bc4(1). HW-Debug — Vorsicht!
+45024;0xAFE0;cmd_gpio_debug_2;—;GPIO Debug-Kommando 2;Ja;—;beliebiger Wert;Ruft FUN_08005ba0(1). HW-Debug — Vorsicht!
+45025;0xAFE1;cmd_gpio_pin_0x400;—;GPIO Pin 0x400 setzen/loeschen;Ja;—;1=Pin setzen (FUN_08012d8c); 0=Pin loeschen (FUN_08012d90);HW-Debug — Pin-Funktion unbekannt
+45026;0xAFE2;cmd_gpio_pin_0x8000;—;GPIO Pin 0x8000 setzen/loeschen;Ja;—;1=Pin loeschen (invertiert!); 0=Pin setzen (invertiert!);HW-Debug — invertierte Logik gegenueber 45025
+45027;0xAFE3;cmd_wifi_reset;—;WiFi-Modul Reset;Ja;—;beliebiger Wert;Ruft FUN_0802cf68(1). Setzt WiFi/FC41D-Modul zurueck
+45028;0xAFE4;cmd_relay_contactor;—;Relay/Contactor schalten;Ja;—;beliebiger Wert;Ruft FUN_0802bef4(2)
+45029;0xAFE5;cmd_debug_flag;0x20014FA3;Debug-Flag setzen/loeschen;Ja;SRAM;1=Flag setzen; 0=Flag loeschen;Schreibt an DAT_08051fe8+0x21 = 0x20014FA3
+45030;0xAFE6;cmd_ble_enable;—;BLE ein-/ausschalten;Ja;—;1=einschalten (FUN_0802bef4(0xB)); 0=ausschalten (FUN_0802bef4(0xC));
+45031;0xAFE7;cmd_smr_relay_retry;—;SMR-Relay mit Retry-Logik;Ja;—;1 (einziger gueltiger Wert);Prueft SMR-Status (0xAA) / retried bis 50x mit 100ms Delay. Error 3 bei Timeout
+45603;0xB223;adc_version_bcd_ch1;—;BCD-Versionsnummer via ADC Kanal 1;Nein (nur lesen);SRAM;—;Lesen: triggert ADC-Messung und gibt BCD-codierten Wert zurueck. Schreiben: Error 1
+45604;0xB224;adc_version_bcd_ch2;—;BCD-Versionsnummer via ADC Kanal 2;Nein (nur lesen);SRAM;—;Lesen: triggert ADC-Messung und gibt BCD-codierten Wert zurueck. Schreiben: Error 1
+45605;0xB225;status_query;—;Status-Abfrage (read-only);Nein (nur lesen);SRAM;—;Lesen: ruft FUN_08002e10() auf und gibt Ergebnis zurueck. Schreiben: Error 1
+46000;0xB3B0;ota_command;0x20000132 / 0x20000270;OTA-Steuerkommando;Ja;EEPROM 0x900 (bei 0x5100);0x5100=EEPROM-Flag setzen (Addr 0x900); 0x4D2(1234)=Mode 1; 0x929(2345)=Mode 4; 0xD80(3456)=Mode 3; 0x11D7(4567)=Mode 2;GEFAEHRLICH: Kann OTA/Update-Prozess ausloesen! Nicht ohne Verstaendnis nutzen!
+46500;0xB5A4;eeprom_struct_00_reg0;0x20014EC8;EEPROM-Struct Entry 0 — u16 Wert;Nein;EEPROM 0x36BF;u16 Wert;15 Entries a 8 Bytes. 3 Register pro Entry. EEPROM-persistent ab 0x36BF
+46501;0xB5A5;eeprom_struct_00_reg1;0x20014ECC;EEPROM-Struct Entry 0 — u32 obere 16 Bit;Nein;EEPROM 0x36BF;u16 (obere 16 Bit eines u32);
+46502;0xB5A6;eeprom_struct_00_reg2;0x20014ECC;EEPROM-Struct Entry 0 — u32 untere 16 Bit;Nein;EEPROM 0x36BF;u16 (untere 16 Bit eines u32);Schreibt in selbe u32-Adresse wie Reg 46501
+46503;0xB5A7;eeprom_struct_01_reg0;0x20014ED0;EEPROM-Struct Entry 1 — u16 Wert;Nein;EEPROM 0x36C7;u16 Wert;
+46504;0xB5A8;eeprom_struct_01_reg1;0x20014ED4;EEPROM-Struct Entry 1 — u32 obere 16 Bit;Nein;EEPROM 0x36C7;u16;
+46505;0xB5A9;eeprom_struct_01_reg2;0x20014ED4;EEPROM-Struct Entry 1 — u32 untere 16 Bit;Nein;EEPROM 0x36C7;u16;
+46506;0xB5AA;eeprom_struct_02_reg0;0x20014ED8;EEPROM-Struct Entry 2 — u16 Wert;Nein;EEPROM 0x36CF;u16 Wert;
+46507;0xB5AB;eeprom_struct_02_reg1;0x20014EDC;EEPROM-Struct Entry 2 — u32 obere 16 Bit;Nein;EEPROM 0x36CF;u16;
+46508;0xB5AC;eeprom_struct_02_reg2;0x20014EDC;EEPROM-Struct Entry 2 — u32 untere 16 Bit;Nein;EEPROM 0x36CF;u16;
+46509;0xB5AD;eeprom_struct_03_reg0;0x20014EE0;EEPROM-Struct Entry 3 — u16 Wert;Nein;EEPROM 0x36D7;u16 Wert;
+46510;0xB5AE;eeprom_struct_03_reg1;0x20014EE4;EEPROM-Struct Entry 3 — u32 obere 16 Bit;Nein;EEPROM 0x36D7;u16;
+46511;0xB5AF;eeprom_struct_03_reg2;0x20014EE4;EEPROM-Struct Entry 3 — u32 untere 16 Bit;Nein;EEPROM 0x36D7;u16;
+46512;0xB5B0;eeprom_struct_04_reg0;0x20014EE8;EEPROM-Struct Entry 4 — u16 Wert;Nein;EEPROM 0x36DF;u16 Wert;
+46513;0xB5B1;eeprom_struct_04_reg1;0x20014EEC;EEPROM-Struct Entry 4 — u32 obere 16 Bit;Nein;EEPROM 0x36DF;u16;
+46514;0xB5B2;eeprom_struct_04_reg2;0x20014EEC;EEPROM-Struct Entry 4 — u32 untere 16 Bit;Nein;EEPROM 0x36DF;u16;
+46515;0xB5B3;eeprom_struct_05_reg0;0x20014EF0;EEPROM-Struct Entry 5 — u16 Wert;Nein;EEPROM 0x36E7;u16 Wert;
+46516;0xB5B4;eeprom_struct_05_reg1;0x20014EF4;EEPROM-Struct Entry 5 — u32 obere 16 Bit;Nein;EEPROM 0x36E7;u16;
+46517;0xB5B5;eeprom_struct_05_reg2;0x20014EF4;EEPROM-Struct Entry 5 — u32 untere 16 Bit;Nein;EEPROM 0x36E7;u16;
+46518;0xB5B6;eeprom_struct_06_reg0;0x20014EF8;EEPROM-Struct Entry 6 — u16 Wert;Nein;EEPROM 0x36EF;u16 Wert;
+46519;0xB5B7;eeprom_struct_06_reg1;0x20014EFC;EEPROM-Struct Entry 6 — u32 obere 16 Bit;Nein;EEPROM 0x36EF;u16;
+46520;0xB5B8;eeprom_struct_06_reg2;0x20014EFC;EEPROM-Struct Entry 6 — u32 untere 16 Bit;Nein;EEPROM 0x36EF;u16;
+46521;0xB5B9;eeprom_struct_07_reg0;0x20014F00;EEPROM-Struct Entry 7 — u16 Wert;Nein;EEPROM 0x36F7;u16 Wert;
+46522;0xB5BA;eeprom_struct_07_reg1;0x20014F04;EEPROM-Struct Entry 7 — u32 obere 16 Bit;Nein;EEPROM 0x36F7;u16;
+46523;0xB5BB;eeprom_struct_07_reg2;0x20014F04;EEPROM-Struct Entry 7 — u32 untere 16 Bit;Nein;EEPROM 0x36F7;u16;
+46524;0xB5BC;eeprom_struct_08_reg0;0x20014F08;EEPROM-Struct Entry 8 — u16 Wert;Nein;EEPROM 0x36FF;u16 Wert;
+46525;0xB5BD;eeprom_struct_08_reg1;0x20014F0C;EEPROM-Struct Entry 8 — u32 obere 16 Bit;Nein;EEPROM 0x36FF;u16;
+46526;0xB5BE;eeprom_struct_08_reg2;0x20014F0C;EEPROM-Struct Entry 8 — u32 untere 16 Bit;Nein;EEPROM 0x36FF;u16;
+46527;0xB5BF;eeprom_struct_09_reg0;0x20014F10;EEPROM-Struct Entry 9 — u16 Wert;Nein;EEPROM 0x3707;u16 Wert;
+46528;0xB5C0;eeprom_struct_09_reg1;0x20014F14;EEPROM-Struct Entry 9 — u32 obere 16 Bit;Nein;EEPROM 0x3707;u16;
+46529;0xB5C1;eeprom_struct_09_reg2;0x20014F14;EEPROM-Struct Entry 9 — u32 untere 16 Bit;Nein;EEPROM 0x3707;u16;
+46530;0xB5C2;eeprom_struct_10_reg0;0x20014F18;EEPROM-Struct Entry 10 — u16 Wert;Nein;EEPROM 0x370F;u16 Wert;
+46531;0xB5C3;eeprom_struct_10_reg1;0x20014F1C;EEPROM-Struct Entry 10 — u32 obere 16 Bit;Nein;EEPROM 0x370F;u16;
+46532;0xB5C4;eeprom_struct_10_reg2;0x20014F1C;EEPROM-Struct Entry 10 — u32 untere 16 Bit;Nein;EEPROM 0x370F;u16;
+46533;0xB5C5;eeprom_struct_11_reg0;0x20014F20;EEPROM-Struct Entry 11 — u16 Wert;Nein;EEPROM 0x3717;u16 Wert;
+46534;0xB5C6;eeprom_struct_11_reg1;0x20014F24;EEPROM-Struct Entry 11 — u32 obere 16 Bit;Nein;EEPROM 0x3717;u16;
+46535;0xB5C7;eeprom_struct_11_reg2;0x20014F24;EEPROM-Struct Entry 11 — u32 untere 16 Bit;Nein;EEPROM 0x3717;u16;
+46536;0xB5C8;eeprom_struct_12_reg0;0x20014F28;EEPROM-Struct Entry 12 — u16 Wert;Nein;EEPROM 0x371F;u16 Wert;
+46537;0xB5C9;eeprom_struct_12_reg1;0x20014F2C;EEPROM-Struct Entry 12 — u32 obere 16 Bit;Nein;EEPROM 0x371F;u16;
+46538;0xB5CA;eeprom_struct_12_reg2;0x20014F2C;EEPROM-Struct Entry 12 — u32 untere 16 Bit;Nein;EEPROM 0x371F;u16;
+46539;0xB5CB;eeprom_struct_13_reg0;0x20014F30;EEPROM-Struct Entry 13 — u16 Wert;Nein;EEPROM 0x3727;u16 Wert;
+46540;0xB5CC;eeprom_struct_13_reg1;0x20014F34;EEPROM-Struct Entry 13 — u32 obere 16 Bit;Nein;EEPROM 0x3727;u16;
+46541;0xB5CD;eeprom_struct_13_reg2;0x20014F34;EEPROM-Struct Entry 13 — u32 untere 16 Bit;Nein;EEPROM 0x3727;u16;
+46542;0xB5CE;eeprom_struct_14_reg0;0x20014F38;EEPROM-Struct Entry 14 — u16 Wert;Nein;EEPROM 0x372F;u16 Wert;
+46543;0xB5CF;eeprom_struct_14_reg1;0x20014F3C;EEPROM-Struct Entry 14 — u32 obere 16 Bit;Nein;EEPROM 0x372F;u16;
+46544;0xB5D0;eeprom_struct_14_reg2;0x20014F3C;EEPROM-Struct Entry 14 — u32 untere 16 Bit;Nein;EEPROM 0x372F;u16;
+47400;0xB928;debug_register;—;Debug-Register (lesen/schreiben);Nein;SRAM;Lesen: gibt immer 0xAABB zurueck; Schreiben: beliebiger Wert → debug_printf (FUN_08030368);Harmlos — kann zum Testen der Verbindung genutzt werden
