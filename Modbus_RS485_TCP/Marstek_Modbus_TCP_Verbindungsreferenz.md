@@ -151,6 +151,63 @@ eine Exception. Lösung: Bei Exception auf Einzel-Reads fallback.
 37000-37025:  teilweise belegt
 ```
 
+### 3.7 BMS-Pack-Layout (34000 + pack×100 + offset)
+
+Jeder Batterie-Pack belegt einen 100er-Block (Pack 1 = 34000, Pack 2 = 34100, …,
+Pack 7 = 34600). Innerhalb des Blocks:
+
+| Offset | Register (Pack N) | Feld | Scale |
+|---|---|---|---|
+| +0 | 34N00 | bat_volt | ×0.01 V |
+| +1 | 34N01 | bat_curr (signed) | ×0.1 A |
+| +2 | 34N02 | bat_soc | **×0.1 %** |
+| +3 | 34N03 | cycle_count | ×1 |
+| +4 | 34N04 | **charge_status** (0=idle, 3=aktiv laden) | ×1 |
+| +5 | 34N05 | **max_cell_v** | ×0.001 V |
+| +6 | 34N06 | min_cell_v | ×0.001 V |
+| +7 | 34N07 | max_ntc | ×0.1 °C |
+| +8/+9 | 34N08/34N09 | protect1 / protect2 (bitmask) | hex |
+| +10 | 34N10 | bms_version | ×1 |
+| +11…+14 | 34N11–34N14 | ntc0–ntc3 | ×0.1 °C |
+| +15/+16/+17 | 34N15–34N17 | mos_ntc / env_ntc / avg_ntc | ×0.1 °C |
+| +18…+33 | 34N18–34N33 | cell1–cell16 | ×0.001 V |
+
+> **Korrektur (2026-08-14):** `max_cell_v` liegt auf **Offset +5** (z.B. 34005),
+> nicht +4. Offset +4 ist der **charge_status** (Werte 0/3). Ältere Scanner-Stände
+> haben `max_cell_v` fälschlich auf +4 gelegt und +5 als „unbekannt" geführt — im
+> Live-Scan (`control_150_vns_116.csv`) steht der echte Max-Zellwert eindeutig auf
+> +5 (34005=3332 ≈ 3,33 V), während +4 = 0 bzw. 3 ist. Betrifft alle Packs 1–7.
+> **Packs 5 und 6 sind seit dem v150/VNS116-Vollscan vollständig bestätigt.**
+
+### 3.8 ASCII-/String-Register (Geräte-Identität)
+
+Die Firmware stellt über den Read-Handler genau **drei** ASCII-Blöcke bereit
+(je 2 Zeichen pro Register, big-endian / High-Byte zuerst). Quelle: Ghidra-Analyse
+des Read-Handlers (`Scan_Logs/Read_Handler_Register_Map.csv`).
+
+| Register | Feld | Länge | Beispiel-Dekodierung |
+|---|---|---|---|
+| 30304–30309 | **MAC-Adresse** | 6 Reg | `AABBCCDDEEFF` → `AA:BB:CC:DD:EE:FF` |
+| 30350–30355 | **Kommunikationsmodul-FW-Version** | 6 Reg | `202409090159` (Build 2024-09-09 / 0159) ✅ voll gelesen |
+| 31000–31009 | **Gerätename** | 10 Reg | `VNSD-0` + Null-Padding |
+
+Dekodierung in Python: `chr((raw>>8)&0xFF) + chr(raw&0xFF)` je Register, in
+Registerreihenfolge aneinandergehängt.
+
+> **Bestätigt (2026-08-14):** Der 30350er-Block wurde per gezieltem Read komplett
+> gelesen (`Scan_Logs/regs_30350-30355.csv`) und ergibt lückenlos
+> `20`+`24`+`09`+`09`+`01`+`59` = **`202409090159`**. Im v150-Vollscan war die
+> isolierte 30352-Erfassung um ein Register verschoben (zeigte „24" statt „09") —
+> der gezielte Read ist maßgeblich. Merke: bei Einzeltreffern in einem sonst
+> lückenhaften Batch-Bereich lieber den ganzen Block gezielt nachlesen
+> (`scan_registers.py --regs 30300-30355`).
+
+> **NICHT über Modbus lesbar:** Die 24-stellige **Device-ID** (z. B.
+> `<DEVICE_ID>`, Cloud-/App-Feld `di=`) ist **kein** Modbus-Register.
+> Der Read-Handler bietet als geräteindividuelle Kennungen nur MAC und Gerätename an;
+> die lange Device-ID wird ausschließlich in der Cloud-/MQTT-Telemetrie
+> (`di=%s&sn=%s&…`) übertragen und ist nur über App/BLE bzw. den Cloud-Pfad erreichbar.
+
 ### 3.5 Reconnect-Timing
 
 | Situation | Wartezeit | Retry |
@@ -195,6 +252,9 @@ Register 42000 = 0x55EE  → RS485 Steuerung DEAKTIV
 | Register | Rohwert-Beispiel | Scale | Ergebnis | Quelle |
 |---|---|---|---|---|
 | 34002 (SOC) | 146 | **×0.1** | 14.6% | BMS show_soc, FW-verifiziert |
+| 34005 (max_cell_v) | 3332 | ×0.001 | 3.332V | BMS, Offset +5 (NICHT +4!) |
+| 34006 (min_cell_v) | 3330 | ×0.001 | 3.330V | BMS, Offset +6 |
+| 30205 (mppt_version) | 104 | ×1 | v104 | Micro/MPPT-FW, v150-Scan bestätigt |
 | 30100 (bat_volt) | 5114 | ×0.01 | 51.14V | BMS struct 0x4A |
 | 30101 (bat_curr) | -11 (signed!) | ×0.1 | -1.1A | BMS struct 0x4C |
 | 32200 (ac_volt) | 2398 | ×0.1 | 239.8V | Telemetrie grid_volt |
@@ -220,7 +280,7 @@ können negative Werte haben. Rohwert > 32767 → `value = raw - 65536`.
 
 | Script | Zweck | Dependency |
 |---|---|---|
-| `scan_registers.py` | Einzelne/flexible Register (auch Vollscan via `--regs 0-65535`), Watch-Modus, CSV-Export | Keine (Raw-Socket) |
+| `scan_registers.py` | Einzelne/flexible Register (auch Vollscan via `--regs 0-65535`), Watch-Modus, CSV-Export, **Live-Ausgabe + Fortschritt** | Keine (Raw-Socket) |
 | `scan_known_registers.py` | Scannt nur Register aus der bekannten Register-Map-CSV (`--regmap`) | Keine (Raw-Socket) |
 | `scan_continuous.py` | Dauerschleife über bekannte Register (`--interval`, default 10s) | Keine (Raw-Socket) |
 | `scan_powercycle.py` | Scan über Power-Cycle-Events hinweg | Keine (Raw-Socket) |
@@ -229,6 +289,68 @@ können negative Werte haben. Rohwert > 32767 → `value = raw - 65536`.
 existieren nicht (mehr) im Projektordner — vermutlich frühe Prototyp-Namen, die durch obige Scripts
 ersetzt wurden. Das Batch-Size-Limit (32 Register, s. 3.1) ist bereits als Fakt dokumentiert und
 braucht kein dediziertes Testscript mehr.
+
+### 7.1 `scan_registers.py` — Verhalten der Ausgabe (Stand 2026-08-14)
+
+- **Live-Ausgabe:** Jeder gefundene Wert wird **sofort beim Lesen** auf `stdout`
+  gedruckt (vorher erst nach dem kompletten Scan — bei großen Bereichen minutenlang
+  gar keine Ausgabe). Zusätzlich läuft eine einzeilige Fortschrittsanzeige auf
+  `stderr` (`Batch x/y @ von-bis  gefunden=n`), die auch während Timeout-Lücken
+  weiterläuft. Abschaltbar mit `--no-progress`.
+- **Zeitstempel:** Die `timestamp`-Spalte in der CSV enthält jetzt den Zeitpunkt,
+  zu dem das jeweilige Register **tatsächlich abgefragt** wurde (pro Batch erfasst) —
+  nicht mehr einen einzigen Zeitstempel vom Ende bzw. Abbruch des Laufs. Bei langen
+  Scans steigt die Uhrzeit also über die Zeilen an.
+- **Umleiten:** Für ein sauberes Live-Log ohne den `stderr`-Fortschritt:
+  `python3 scan_registers.py … 2>/dev/null` oder mit `--no-progress`. Für ein
+  vollständiges Protokoll: `python3 scan_registers.py … | tee scan.log`.
+
+### 7.2 `scan_registers.py` — Namen, Tiers & Voll-Dekodierung (Stand 2026-08-14b)
+
+- **Vollständige Namen aus der Register-Map:** Das Script lädt beim Start
+  automatisch `Marstek_Venus_D_Register_Map_Final_all_register.csv` (Suche im
+  Script-Ordner, `../Modbus_RS485_TCP/` und CWD; override mit `--regmap PATH`) und
+  labelt damit **alle** dokumentierten Register — nicht mehr nur den fest
+  verdrahteten Fallback-Satz. Ohne Map läuft es weiter, benennt dann aber nur die
+  eingebauten KNOWN-Register.
+- **Konfidenz-Tiers im Output:** bekannte/verifizierte Register erscheinen mit
+  klarem Namen, **vermutete mit Präfix `Verm:`**, **unbekannte mit `Unb:`**
+  (abgeleitet aus der Confidence-Spalte der Map: ✅/pack-pattern → bekannt,
+  🔍/📊/scan → Verm, ❓/🆕/`unknown_*` → Unb). Der Kopf zeigt die Tier-Zählung des
+  Bereichs. `--unknown-only` zeigt nur noch Verm + Unb.
+- **Host/Port/Slave konfigurierbar:** `--port` (Default 502), `--host`, `--slave`.
+  Alle drei haben zusätzlich einen Env-Default, damit man sie nicht bei jedem Aufruf
+  tippen muss: `MARSTEK_HOST`, `MARSTEK_PORT`, `MARSTEK_SLAVE`. Ein CLI-Flag
+  überschreibt die Env-Variable. Beispiel: `export MARSTEK_HOST=192.168.1.100`
+  dann genügt `python3 scan_registers.py --tiers verm,unb --out unklar.csv`.
+- **Gezielt nach Tier scannen (`--tiers`):** wählt die Register direkt aus der Map,
+  ohne Registerbereich anzugeben. `--tiers unb` = nur die unbekannten, `--tiers
+  verm,unb` = alle nicht-final-bestätigten (aktuell ~130), `--tiers verm` = nur die
+  vermuteten. Kombinierbar mit `--regs`/`--file` (Vereinigung). Ideal, um genau die
+  offenen Register zu beobachten — am besten mit `--watch` unter wechselnder Last.
+- **Voll-Dekodierung zum Erahnen (alle FW-Typen):** Für jeden Wert werden alle
+  Typen berechnet, die auch der FW-`Read_Serializer` kennt —
+  `u8(hi/lo) · i8(hi/lo) · u16 · i16 · hex · bin · ASCII(BE/LE) · BCD · ÷10 ÷100 ÷1000`
+  sowie **mit dem Folgeregister** die 32-Bit-Kombis `u32 · i32 · float32` in beiden
+  Wortreihenfolgen (`*_next_be` = dieses Register als High-Word, `*_next_le` =
+  Folgeregister als High-Word). Die `f32`-Spalten filtern unplausible Bitmuster
+  (NaN/inf/absurde Größenordnung) auf `-` heraus, sodass ein echtes Float-Paar
+  sofort mit einem sinnvollen Wert auffällt. Im Terminal erscheint die Dekodier-Zeile
+  standardmäßig bei `Verm:`/`Unb:`-Registern (`--decode-all` für alle, `--no-decode`
+  aus); in der **CSV sind alle Dekodier-Spalten immer enthalten**. So erkennt man bei
+  unbekannten Registern das Muster direkt: `u32_next_le` bei 33000/33001 = kWh-Zähler,
+  `f32_next_le` bei einem Register-Paar = ein IEEE754-Messwert, `ascii_be` = ein String.
+
+> **Hinweis zur Firmware (2026-08-14):** Der Modbus-FC03-Read wird über eine zur
+> Laufzeit aufgebaute Descriptor-Tabelle (SRAM 0x20000354) und `Read_Serializer`
+> bedient; jedes Register hat dort einen Typ (u8/u16/u32/i8/i16/i32/float/ASCII) +
+> Skala + Quellzeiger, und der Serializer **kopiert nur die Registerbreite** — breite/
+> float-Quellen werden also auf 16 Bit abgeschnitten (erklärt z. B. den Entladewert
+> von 32101). Die Tabelle wird beim Boot aus einer kodierten Flash-Init-Struktur
+> (~0x0805dcb0) entpackt; die exakte Register→Typ-Zuordnung ist statisch nicht
+> trivial extrahierbar (sie stünde fertig nur in der Live-SRAM-Tabelle). Deshalb die
+> Voll-Dekodierung im Scanner: sie ersetzt die fehlende Typ-Info durch „alle Varianten
+> anzeigen".
 
 ## 8. Quick-Start für neuen Scan
 
@@ -247,8 +369,49 @@ python3 scan_registers.py --host 192.168.1.100 --regs 34002,30001,32200 --watch 
 
 # 5. Neuen Registerbereich (z.B. 32000er) gezielt scannen
 python3 scan_registers.py --host 192.168.1.100 --regs 32000-32999 --out scan_32k.csv
+
+# 6. NUR die unbekannten + vermuteten Register (aus der Map gewählt) — mit Voll-Dekodierung
+python3 scan_registers.py --host 192.168.1.100 --tiers verm,unb --out unklar.csv
+
+# 7. Nur die komplett unbekannten, live unter Last beobachten (welche Werte sich ändern = interpretierbar)
+python3 scan_registers.py --host 192.168.1.100 --tiers unb --watch 10 --out unklar_watch.csv
 ```
 
 ---
 
-*Stand: Juli 2026 | Firmware v149.2 | Gerät: Marstek Venus D (VNSD-0)*
+*Stand: 2026-08-14 | Firmware Control v150 / VNS v116 / BMS v118 | Gerät: Marstek Venus D (VNSD-0)*
+
+*Änderungen 2026-08-14: BMS-Pack-Layout korrigiert (max_cell_v auf Offset +5, charge_status auf +4),
+Packs 5+6 bestätigt, 30205 = mppt_version bestätigt, `scan_registers.py` mit Live-Ausgabe + echten
+Abfrage-Zeitstempeln.*
+
+---
+
+## Maximale FC03-Blockgröße (gemessen 2026-08-22)
+
+Die Scan-Skripte benutzen `BATCH_SIZE = 32`, die Home-Assistant-Integration
+gruppiert bis 125. Getestet war der Bereich dazwischen nie. Messung an
+Control v150 über `Scripts/test_block_size.py`, Bereich ab Register 46501,
+je drei Durchgänge mit Liveness-Probe auf 37012 nach jedem Versuch:
+
+| Register im Block | Ergebnis | Schnitt |
+|---|---|---|
+| 8 | 3× ok | 15 ms |
+| 16 | 3× ok | 6 ms |
+| 24 | 3× ok | 26 ms |
+| 30 | 3× ok | 6 ms |
+| 32 | 3× ok | 8 ms |
+| 36 | 3× ok | 5 ms |
+| 40 | 3× ok | 26 ms |
+| 44 | 3× ok | 7 ms |
+
+**Kein Fehler, kein Verbindungsabbruch bis 44 Register.**
+
+Bemerkenswert: Die Antwortzeit wächst **nicht** mit der Blockgröße — 44 Register
+brauchen 7 ms, 8 Register 15 ms. Die Ausreißer bei 24 und 40 (je 26 ms) sind
+Netzwerk-Jitter, kein Größeneffekt. Der begrenzende Faktor ist die
+Round-Trip-Zeit, nicht die Nutzlast.
+
+`BATCH_SIZE = 32` in den Scan-Skripten ist damit eine Vorsichtsmaßnahme, keine
+Gerätegrenze. Für die Integration bleibt die Gruppierung bei 125 unbedenklich;
+grössere Bloecke als 44 sind allerdings weiterhin ungeprüft.

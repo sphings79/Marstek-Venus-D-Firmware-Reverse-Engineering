@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img" aria-label="Marstek Venus D system architecture: Control/EMS, Micro-Inverter and BMS linked by internal CAN and RS485, exposed externally over Modbus TCP, Modbus RTU and BLE">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d131f"/>
+      <stop offset="1" stop-color="#0a0e17"/>
+    </linearGradient>
+    <style>
+      .t{fill:#c9d4e3}.m{fill:#7d8ba0}.mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace}
+      .mcu{fill:#111a28;stroke:#26374d}
+      .accent{fill:#35d0ba}.amber{fill:#f2b134}.violet{fill:#a78bfa}
+    </style>
+  </defs>
+  <rect width="1000" height="520" rx="16" fill="url(#bg)"/>
+  <text x="40" y="52" class="t" font-size="26" font-weight="700">Marstek Venus D — System architecture</text>
+  <text x="40" y="78" class="m" font-size="15">Three STM32 Cortex-M MCUs · FreeRTOS · internal CAN + RS485 · external Modbus &amp; BLE</text>
+
+  <!-- external world -->
+  <g class="mono" font-size="13">
+    <rect x="40" y="120" width="150" height="54" rx="10" fill="#0f1826" stroke="#26374d"/>
+    <text x="115" y="146" text-anchor="middle" class="t" font-size="14">Home Assistant</text>
+    <text x="115" y="164" text-anchor="middle" class="m">Modbus TCP client</text>
+
+    <rect x="40" y="196" width="150" height="54" rx="10" fill="#0f1826" stroke="#26374d"/>
+    <text x="115" y="222" text-anchor="middle" class="t" font-size="14">RS485 master</text>
+    <text x="115" y="240" text-anchor="middle" class="m">47400 baud RTU</text>
+
+    <rect x="40" y="272" width="150" height="54" rx="10" fill="#0f1826" stroke="#26374d"/>
+    <text x="115" y="298" text-anchor="middle" class="t" font-size="14">App / phone</text>
+    <text x="115" y="316" text-anchor="middle" class="m">BLE</text>
+  </g>
+
+  <!-- links to control -->
+  <g stroke-width="2" fill="none">
+    <path d="M190 147 H300" stroke="#35d0ba"/>
+    <path d="M190 223 H300" stroke="#f2b134"/>
+    <path d="M190 299 H260 V360 H300" stroke="#a78bfa"/>
+  </g>
+  <text x="205" y="139" class="accent mono" font-size="11">TCP :502</text>
+  <text x="205" y="215" class="amber mono" font-size="11">FC03/06/10</text>
+  <text x="205" y="345" class="violet mono" font-size="11">GATT</text>
+
+  <!-- Control / EMS -->
+  <g>
+    <rect x="300" y="150" width="230" height="230" rx="14" class="mcu"/>
+    <text x="415" y="182" text-anchor="middle" class="t" font-size="18" font-weight="700">Control / EMS</text>
+    <text x="415" y="204" text-anchor="middle" class="m" font-size="13">STM32 · v149.2 / v150</text>
+    <text x="415" y="224" text-anchor="middle" class="m mono" font-size="12">GCC · mbedTLS 2.28</text>
+    <line x1="320" y1="238" x2="510" y2="238" stroke="#26374d"/>
+    <text x="320" y="262" class="m mono" font-size="12">• WiFi + Ethernet (CH395)</text>
+    <text x="320" y="284" class="m mono" font-size="12">• Modbus TCP + RTU server</text>
+    <text x="320" y="306" class="m mono" font-size="12">• BLE runtime-info builder</text>
+    <text x="320" y="328" class="m mono" font-size="12">• Cloud telemetry + OTA</text>
+    <text x="320" y="350" class="m mono" font-size="12">• CAN + RS485 orchestration</text>
+  </g>
+
+  <!-- internal buses -->
+  <g stroke-width="2.5" fill="none">
+    <path d="M530 250 H660" stroke="#35d0ba"/>
+    <path d="M530 320 H660" stroke="#f2b134"/>
+  </g>
+  <rect x="560" y="228" width="70" height="20" rx="6" fill="#0c1520" stroke="#26374d"/>
+  <text x="595" y="242" text-anchor="middle" class="accent mono" font-size="11">CAN</text>
+  <rect x="558" y="298" width="74" height="20" rx="6" fill="#0c1520" stroke="#26374d"/>
+  <text x="595" y="312" text-anchor="middle" class="amber mono" font-size="11">RS485</text>
+
+  <!-- Micro inverter -->
+  <g>
+    <rect x="660" y="150" width="300" height="105" rx="14" class="mcu"/>
+    <text x="810" y="182" text-anchor="middle" class="t" font-size="17" font-weight="700">Micro-Inverter / VNS</text>
+    <text x="810" y="204" text-anchor="middle" class="m" font-size="13">STM32 · v116 · Keil/RVDS</text>
+    <text x="810" y="228" text-anchor="middle" class="m mono" font-size="12">power set-points · grid modes · MPPT</text>
+  </g>
+
+  <!-- BMS -->
+  <g>
+    <rect x="660" y="275" width="300" height="105" rx="14" class="mcu"/>
+    <text x="810" y="307" text-anchor="middle" class="t" font-size="17" font-weight="700">BMS</text>
+    <text x="810" y="329" text-anchor="middle" class="m" font-size="13">STM32 · v118 · KA495XX BMIC</text>
+    <text x="810" y="353" text-anchor="middle" class="m mono" font-size="12">cells · SoC/SoH · master↔slave packs</text>
+  </g>
+
+  <!-- footer -->
+  <text x="40" y="470" class="m mono" font-size="12">Static reverse engineering with Ghidra — no SWD/JTAG. Identifiers in all docs are anonymized.</text>
+  <rect x="40" y="486" width="920" height="1" fill="#1b2636"/>
+  <text x="40" y="510" class="accent mono" font-size="12">github.com/sphings79/Marstek-Venus-D-Firmware-Reverse-Engineering</text>
+</svg>

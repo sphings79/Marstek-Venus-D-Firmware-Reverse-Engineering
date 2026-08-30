@@ -240,3 +240,93 @@ Die obige Analyse war bis 2026-07-15 nur dokumentiert, aber nie als Ghidra-Symbo
 | `0x08003334` | `CAN_Periodic_Alarm_Broadcast` | tickgetriebene periodische CAN-Alarmmeldung |
 
 Verifiziert: 550/550 Funktionen eindeutig benannt, keine Namensdubletten (Ghidra-Skript-Check nach Anwendung).
+
+---
+
+## 10. CAN-Sendepfad zum Control — Ableitung der Modbus-Pack-Register (2026-08-14)
+
+Im Zuge der Auflösung der offenen Modbus-Descriptor-Register (Control v150) wurde die
+**Senderseite** in dieser BMS-FW ausgewertet. Sie ist die Quelle der Modbus-Register 34xxx und
+32xxx und belegt deren Bedeutung unabhängig vom Control-Image.
+
+### 10.1 Aggregat-Telemetrie: PF1–PF4 = PGN 1801–1804
+
+Vier Sendefunktionen bilden exakt die vier PGNs ab, die der Control in seiner
+Aggregat-Struct (`0x20014F8E`) ablegt und per Modbus ausliefert:
+
+| BMS-Funktion | Adresse | PGN | Control-Modbus-Register |
+|---|---|---|---|
+| `CAN_TX_PF1_PackMeasurements` | `0x080053D0` | 1801 | 32100 bat_volt (10 mV), 32101 bat_curr (100 mA), 32108 bat_temp, 32104 soc |
+| `CAN_TX_PF2_Capacity` | `0x0800543C` | 1802 | 32105 bat_energy, 32109 pack_count, 32110 online_mask, 32111 work_bat_idx |
+| `CAN_TX_PF3_ChargeDischargeLimits` | `0x080054D8` | 1803 | 35110 chrg_volt, 32106 chrg_curr, 32107 dischrg_curr |
+| `CAN_TX_PF4_ProtectWarnings` | `0x08005638` | 1804 | Fehler-/Warnbits, 32113 factory_test, 32112 lock_flag |
+
+Gegenprobe: Die Control-FW gibt dieselben Felder mit den Debug-Strings
+`pgn_1801_info.bat_volt(10mv)`, `pgn_1802_info.bat_total_nb`, `pgn_1803_info.chrg_volt(0.1V)`,
+`pgn_1804_info.bat_err1` aus. Damit sind alle 14 Register des Aggregat-Structs **beidseitig**
+belegt.
+
+**Einheiten-Korrektur:** `bat_volt` wird in **10 mV** gesendet (nicht 0,1 V) und `bat_curr` in
+**100 mA**. Live-Gegenprobe: Register 32100 = 5372 → 53,72 V.
+
+### 10.2 Per-Pack-Telemetrie: `CAN_TX_PerPack_10Msgs`
+
+`CAN_TX_PerPack_10Msgs` (`0x08005B58`, 1868 Byte) sendet **10 Frames je Pack**, aufgerufen aus
+`CAN_TX_Orchestrator` in einer Schleife über alle aktiven Packs (max. 9).
+
+- CAN-ID-Schema: `0x18[Grp]AA[PackID]`
+- Quelle: BMS-internes Pack-Array ab ca. `0x200041C4`, **Stride 0x60**
+- Der Control legt die Daten in seiner eigenen Pack-Struct ab `0x20014FB4` ab —
+  **ebenfalls Stride 0x60**
+
+| CAN-Gruppe | Inhalt | Control-Pack-Offset | Modbus-Register |
+|---|---|---|---|
+| 0x20–0x23 | Übersicht (volt, curr, soc, cycle, limits, protect, version) | +0x00 … +0x1E | 34x00–34x10 |
+| 0x30–0x33 | **16 Zellspannungen** (4 Frames × 4) | **+0x20 … +0x3F** | 34x18–34x33 ✓ |
+| 0x40 | **4 NTC-Temperaturen** | **+0x40 … +0x47** | 34x13–34x16 ✓ |
+| 0x41 | **Ave / MOS / ENV NTC** | **+0x4A, +0x4C, +0x4E** | 34x11, 34x12, 34x17 |
+
+Die beiden mit ✓ markierten Zeilen decken sich **byte-genau** mit der Descriptor-Tabelle des
+Control (dort 16 bzw. 4 Elemente an exakt diesen Offsets). Daraus folgt gesichert, dass
+**34x11 / 34x12 / 34x17 Temperaturwerte** sind — was auch `Methodik_und_Meta/BLE_Modbus_CrossReference.md`
+stützt (dort als `temperature1-4` / `mosfetTemperature` geführt).
+
+### 10.3 Feldnamen aus den Debug-Strings
+
+Die BMS-FW enthält bei `0x0800739F`–`0x080074AC` einen Klartext-Block der Pack-Übersicht
+(im Release-Build nicht mehr referenziert, aber im Image vorhanden):
+
+```
+Addr / Online / Version / Bat Volt / Bat Curr / Bat Soc / Cyc Cnt
+Chg Mos + Dsg Mos / Max NTC + Min NTC + Ave NTC / MOS NTC + ENV NTC
+Max Cell + Min Cell / Protect1 + Protect2
+```
+
+Daraus folgt für die im Control offenen Pack-Register:
+
+| Register | Pack-Offset | Ableitung | Konfidenz |
+|---|---|---|---|
+| 34x03 | +0x06 | `Cyc Cnt` (Zyklenzahl) | **mittel** — unabhängig bestätigt durch BLE-Offset 0x18 → 34003 |
+| 34x04 | +0x0E | `Chg Mos` / `Dsg Mos` (MOSFET-Status) | Hypothese |
+| 34x07 | +0x18 | `Max NTC` | Hypothese |
+| 34x08 | +0x1A | `Min NTC` | Hypothese |
+| 34x09 | +0x1C | `Protect1` (Schutz-Bitmaske) | Hypothese |
+
+Die vier Hypothesen sind aus der Feldreihenfolge abgeleitet, aber **nicht byte-genau
+verifiziert** — die Frame-Belegung der Gruppen 0x20–0x23 wurde nicht Byte für Byte
+zurückverfolgt.
+
+### 10.4 Schutzcodes ohne Klartext
+
+`Protect1` / `Protect2` werden von der BMS nur numerisch ausgegeben
+(`Protect1:%d  Protect2:%d`). Eine Volltextsuche über das Image nach Schutzbegriffen
+(`ovp|uvp|ocp|otp|scp|over|under|fault|protect`) findet **keine Bit-zu-Text-Tabelle** — nur
+`error lock on/set/reset`. Für Klartext müssten die Setzstellen der einzelnen Bits über ihre
+Auslösebedingungen erschlossen werden (eigenes Arbeitspaket, vgl.
+`Modbus_RS485_TCP/Descriptor_Offene_Register_Ghidra_Befund.md` Abschnitt 9).
+
+### 10.5 Randnotiz zur Control-FW
+
+Die Control-FW hatte `0x08032F20` als `Register_PackDescriptor` benannt. Die Funktion
+registriert nichts, sondern baut die 29-Bit-CAN-Arbitration-ID — das direkte Gegenstück zu
+`CAN_Build_Arbitration_ID` (`0x08000D70`) in dieser BMS-FW. Sie wurde entsprechend umbenannt.

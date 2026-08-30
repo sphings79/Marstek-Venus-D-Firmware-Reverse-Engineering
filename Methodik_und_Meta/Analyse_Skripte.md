@@ -16,7 +16,7 @@ mehr existieren). Abschnitte 1 und 5 listen die **tatsächlich vorhandenen** Skr
 | Skript | Beschreibung | Verwendung |
 |---|---|---|
 | `scan_registers.py` | Flexibler Register-Scanner (Raw-Socket, kein pymodbus) — einzelne/Bereichs-Register, Watch-Modus, `--unknown-only`-Filter | `python3 scan_registers.py --host IP --regs 30000-30040,32200,34000-34033` |
-| `scan_known_registers.py` | Gezielter Scan **nur** der in der Register-Map (CSV) bereits bekannten Register — ~30 statt ~440 Batches, ca. 30× schneller als Vollscan | `python3 scan_known_registers.py --host IP --out scan.csv --regmap Marstek_Venus_D_Register_Map_Final_claude_generated.csv` |
+| `scan_known_registers.py` | Gezielter Scan **nur** der in der Register-Map (CSV) bereits bekannten Register — ~30 statt ~440 Batches, ca. 30× schneller als Vollscan | `python3 scan_known_registers.py --host IP --out scan.csv` |
 | `scan_continuous.py` | Dauerscan bekannter Register in festem Intervall, CSV mit einer neuen Spalte pro Durchlauf (Ctrl+C speichert & beendet) | `python3 scan_continuous.py --host IP --interval 10 --out monitor.csv` |
 | `scan_powercycle.py` | Event-Scanner für Zustandswechsel (Power-Cycle, Batterie-DC-Trennung, Offgrid/Notstrom, Force-Mode-Wechsel) — fokussiert auf unbekannte/bisher-immer-0-Register | `python3 scan_powercycle.py --host IP --interval 2 --out event_scan.csv` |
 
@@ -83,3 +83,41 @@ Prüfung im `security/`-Ordner gefunden, gehören aber thematisch nicht zu diese
 Modbus/Firmware-Scan-Skript-Übersicht. Da es sich um ein Querschnittsthema handelt (Security-Tooling
 vs. Register-Scanning-Tooling), wurden sie hier nur informativ gelistet statt in Abschnitt 1
 eingemischt — ob dafür eine eigene Kurz-Doku sinnvoll ist, sollte der Nutzer entscheiden.
+
+---
+
+## Warnung: fehlende Transaction-ID-Prüfung in älteren Scannern (2026-08-22)
+
+`scan_continuous.py` und `scan_known_registers.py` setzen im MBAP-Header zwar
+eine Modbus-Transaction-ID, **prüfen sie beim Empfang aber nicht**. `parse()`
+validiert nur den Funktionscode. Trifft eine verspätete Antwort auf Anfrage N
+ein, während Anfrage N+1 offen ist, wird sie als Antwort auf N+1 gelesen — die
+Werte landen im falschen Register.
+
+Nur `scan_registers.py` validiert (`recv_response(..., expect_tid=...)`).
+
+### Nachgewiesener Fall
+
+Register `38003` zeigte in drei Logs den Wert `118`, was zur Vermutung führte,
+der CAN-Frame-Puffer werde gelegentlich befüllt. Tatsächlich stammt die 118 aus
+Register `37012` (`bms_version`):
+
+| Log | `37012` | `38003` |
+|---|---|---|
+| `entladen_lang.csv` | 118 in 65/66 Batches, **0 in genau einem** | 0 in 65/66, **118 in genau demselben** |
+| `entladen_dc.csv` | 118 in 3/4, 0 in einem | 0 in 3/4, 118 in demselben |
+| `unklar_watch discharge ...csv` | 118 in 7/8, 0 in einem | 0 in 7/8, 118 in demselben |
+
+Die Komplementarität ist exakt: Wo der eine Wert verschwindet, taucht er im
+anderen Register auf, im selben Batch.
+
+### Konsequenz für die Auswertung
+
+- **Einzelne** abweichende Werte in Logs dieser beiden Skripte sind
+  grundsätzlich verdächtig. Vor jeder Schlussfolgerung prüfen, ob im selben
+  Batch ein anderes Register seinen üblichen Wert verloren hat.
+- Werte, die über viele Batches **stabil** sind, sind davon nicht betroffen.
+- Für neue Messungen `scan_registers.py` oder
+  `watch_can_frames_38000.py` verwenden — beide validieren die TID.
+
+Der Fehler ist in den beiden Skripten noch **nicht** behoben.
