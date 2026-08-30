@@ -138,6 +138,12 @@ vermeidet die 30-Minuten-Netz-Resets der Firmware — siehe die verwandten Proje
 | [marstek-firmware-analyzer](https://github.com/sphings79/marstek-firmware-analyzer) | Browser-basierter Analyzer für Marstek-Firmware-Images — extrahiert eingebettete Zertifikate, Keys und AWS-IoT-Endpunkte, vollständig clientseitig. |
 | [venuscontrol](https://github.com/sphings79/venuscontrol) | Cloudfreies Web-Control-Panel für Venus A/D über Web Bluetooth — OTA-Updates, Peak Shaving, lokales Modbus TCP / Shelly Pro 3EM. |
 
+## Unterstützung
+
+Wenn dir das hier Zeit gespart hat, würde ich mich riesig über einen ⭐ **Stern** für das Repository
+freuen — das hilft auch anderen, es zu finden. Und wer die nächste Analyse befeuern möchte, kann mir
+einen Kaffee ausgeben: **[buymeacoffee.com/sphings](https://buymeacoffee.com/sphings)**. Danke!
+
 ## Haftungsausschluss
 
 Unabhängige Forschung zu Interoperabilität und Sicherheit. Nicht mit Marstek verbunden oder von Marstek

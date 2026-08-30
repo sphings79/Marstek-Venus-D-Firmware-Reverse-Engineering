@@ -133,6 +133,12 @@ cloud-free avoids the firmware’s 30-minute network resets — see the related 
 | [marstek-firmware-analyzer](https://github.com/sphings79/marstek-firmware-analyzer) | Browser-based analyzer for Marstek firmware images — extracts embedded certificates, keys and AWS IoT endpoints, fully client-side. |
 | [venuscontrol](https://github.com/sphings79/venuscontrol) | Cloud-free web control panel for Venus A/D over Web Bluetooth — OTA updates, peak shaving, local Modbus TCP / Shelly Pro 3EM setup. |
 
+## Support
+
+If this work saved you time, a ⭐ **star** on the repository would make my day — it also helps others
+find it. And if you'd like to fuel the next analysis, you can buy me a coffee:
+**[buymeacoffee.com/sphings](https://buymeacoffee.com/sphings)**. Thank you!
+
 ## Disclaimer
 
 Independent research for interoperability and security. Not affiliated with or endorsed by Marstek.
