@@ -117,6 +117,16 @@ Versionierungsschema: Suffix-basiert (z.B. 149=Release, 1492=Beta von 149)
 - **Alternative:** Könnten Versionen weiterer FW-Module sein (Bootloader etc.) — in der Ghidra-Analyse gab es Flash-Bereiche ohne Zuordnung. Das Kommunikationsmodul (WiFi) ist es aber vermutlich NICHT: dessen Version ist ein Datums-Timestamp (z.B. "202409090159" = 2024-09-09 01:59), der nicht in ein uint16 passt und wahrscheinlich direkt vom WiFi-Chip abgefragt wird, nicht über Modbus.
 - **Sicherheit:** Niedrig — Zusammenhang mit Versionierung plausibel, genaues Format unklar.
 
+> **Update 2026-08-14 — Build-Theorie widerlegt:** 30201 (=18) und 30203 (=106) blieben über
+> **alle** Scans konstant, obwohl sich die zugehörigen Versionsregister änderten (30200 ems:
+> 147→1492→150; 30202 vns: 115→116). Ein Build-/Beta-Suffix der Haupt-FW würde sich mit jedem
+> Update ändern — tut es nicht. Damit sind 30201/30203 **keine Build-Nummern**; sie sind in der
+> Register-Map jetzt als `unknown_30201/_30203` (konstant, Bedeutung offen) geführt.
+> Ebenfalls korrigiert: „1492" ist **nicht** „Beta von 149 mit Suffix 2", sondern die ×10-Kodierung
+> einer Dezimalversion (1492 = v149.2, analog 1177 = BMS v117.7); Ganzzahlversionen stehen roh drin
+> (116, 118, 150). Und der Datums-Build des Kommunikationsmoduls (202409090159) IST doch über Modbus
+> lesbar — als ASCII über 6 Register in **30350–30355** (nicht in 30201/30203).
+
 ### 30210 — `active_pack_charge_status` (Spiegel des aktiven Packs)
 
 - **Werte:** 0 oder 3
@@ -125,9 +135,10 @@ Versionierungsschema: Suffix-basiert (z.B. 149=Release, 1492=Beta von 149)
 
 ### 34x04 — `packX_charge_status` (Pack-Ladestatus)
 
-- **Register:** 34004, 34104, 34204, 34304
+- **Register:** 34004, 34104, 34204, 34304, **34404, 34504** (Packs 1–6; Pack 5/6 seit v150-Scan bestätigt)
 - **Werte:** 0=idle, 3=aktiv (laden oder entladen)
 - **Begründung:** Im Langzeit-Scan: 34x04 =3 genau dann, wenn der jeweilige Pack Strom zieht/liefert (34x01 ≠ 0). =0 wenn der Pack idle ist. Vorher als "max_cell_voltage_delta" gelabelt, was bei Werten 0-3 keinen Sinn ergibt.
+- **Wichtig (Offset):** charge_status liegt auf Pack-Offset **+4** (34x04); der **max_cell_v** sitzt auf **+5** (34x05), min_cell_v auf +6 — nicht verwechseln (s. korrigiertes Pack-Layout in der Verbindungsreferenz §3.7).
 - **Offene Frage:** Ob es weitere Werte gibt (1, 2?) — bisher nur 0 und 3 beobachtet. Evtl. 1=Standby, 2=Balancing?
 - **Sicherheit:** Hoch — dass es ein Status ist, ist klar. Genaue Bedeutung der Zustände noch offen.
 
@@ -764,13 +775,21 @@ Pack 5 (34400-34433) und Pack 6 (34500-34533) zeigen jetzt volle Daten — ident
 
 Korrektur zur früheren Analyse: Diese Register hängen von der angeschlossenen Pack-Anzahl ab, nicht von der FW-Version.
 
-| Register | 4 Packs (FW148) | 6 Packs (FW149.2) |
-|----------|-----------------|-------------------|
-| 30212    | 2               | 5                 |
-| 31003    | 0               | 5                 |
-| 31004    | 0               | 1543 (0x0607)     |
+| Register | 4 Packs (FW148) | 6 Packs (FW149.2) | 6 Packs (FW150) |
+|----------|-----------------|-------------------|-----------------|
+| 30212    | 2               | 5                 | 5               |
+| 31003    | 0               | 5                 | **0**           |
+| 31004    | 0               | 1543 (0x0607)     | **0**           |
 
 Die genaue Bedeutung ist noch unklar — 30212=5 und 31003=5 bei 6 Packs ist kein direktes Mapping auf die Pack-Anzahl.
+
+**Update 2026-08-14 (v150-Scan, `control_150_vns_116.csv`, 6 Packs):** 30212 blieb 5, aber
+**31003 und 31004 sind unter FW150 wieder 0** — obwohl weiterhin 6 Packs angeschlossen sind.
+Damit sind sie *nicht* rein von der Pack-Anzahl abhängig, sondern zustands-/versionsabhängig
+(evtl. unter v150 nicht mehr belegt). Wichtig: 31003/31004 tragen in den 149.2-Scans reale Werte
+(5 bzw. 1543) und sind daher **kein device_name-Padding**, auch wenn der FW-Read-Handler den Block
+31000–31009 nominell als `device_name` führt. In der Register-Map sind sie deshalb als
+`pack_dependent_31003/_31004` (Vermutung) geführt, 31005–31009 (in allen Scans 0) als unbekannt.
 
 ### EMS-Ladestrategie bei SOC-Unterschied
 

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 460" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" role="img" aria-label="Ghidra-style disassembly listing and decompiled C for the Modbus read handler of the Marstek Venus D control firmware">
+  <defs>
+    <linearGradient id="gbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c1016"/>
+      <stop offset="1" stop-color="#0a0d13"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="460" rx="14" fill="url(#gbg)"/>
+  <!-- window chrome -->
+  <rect x="0" y="0" width="1000" height="40" rx="14" fill="#141b25"/>
+  <rect x="0" y="26" width="1000" height="14" fill="#141b25"/>
+  <circle cx="26" cy="20" r="6" fill="#ff5f56"/><circle cx="48" cy="20" r="6" fill="#ffbd2e"/><circle cx="70" cy="20" r="6" fill="#27c93f"/>
+  <text x="500" y="25" text-anchor="middle" fill="#7d8ba0" font-size="13">Ghidra — Listing &amp; Decompiler · Control_149.2_VNSD-0</text>
+
+  <!-- split divider -->
+  <line x1="500" y1="40" x2="500" y2="460" stroke="#1b2430"/>
+
+  <!-- LEFT: disassembly -->
+  <text x="24" y="70" fill="#5f6b7d" font-size="12">// Thumb-2 disassembly</text>
+  <g font-size="13">
+    <text x="24" y="98"><tspan fill="#5f6b7d">08052270</tspan> <tspan fill="#7aa2f7">push</tspan> <tspan fill="#c9d4e3">{r4,r5,r6,lr}</tspan></text>
+    <text x="24" y="120"><tspan fill="#5f6b7d">08052274</tspan> <tspan fill="#7aa2f7">ldr</tspan>  <tspan fill="#c9d4e3">r4,[r0,#0x8]</tspan></text>
+    <text x="24" y="142"><tspan fill="#5f6b7d">08052278</tspan> <tspan fill="#7aa2f7">movw</tspan> <tspan fill="#c9d4e3">r5,#0x7530</tspan>   <tspan fill="#5f6b7d">; 30000</tspan></text>
+    <text x="24" y="164"><tspan fill="#5f6b7d">0805227c</tspan> <tspan fill="#7aa2f7">cmp</tspan>  <tspan fill="#c9d4e3">r4,r5</tspan></text>
+    <text x="24" y="186"><tspan fill="#5f6b7d">0805227e</tspan> <tspan fill="#7aa2f7">blo</tspan>  <tspan fill="#f2b134">LAB_080522b2</tspan></text>
+    <text x="24" y="208"><tspan fill="#5f6b7d">08052282</tspan> <tspan fill="#7aa2f7">bl</tspan>   <tspan fill="#35d0ba">Modbus_Read_Serializer</tspan></text>
+    <text x="24" y="230"><tspan fill="#5f6b7d">08052286</tspan> <tspan fill="#7aa2f7">ldrh</tspan> <tspan fill="#c9d4e3">r6,[r4,#0x0]</tspan></text>
+    <text x="24" y="252"><tspan fill="#5f6b7d">0805228a</tspan> <tspan fill="#7aa2f7">strh</tspan> <tspan fill="#c9d4e3">r6,[r1,#0x0]</tspan></text>
+    <text x="24" y="274"><tspan fill="#f2b134">LAB_080522b2</tspan><tspan fill="#c9d4e3">:</tspan></text>
+    <text x="24" y="296"><tspan fill="#5f6b7d">080522b2</tspan> <tspan fill="#7aa2f7">pop</tspan>  <tspan fill="#c9d4e3">{r4,r5,r6,pc}</tspan></text>
+  </g>
+
+  <!-- RIGHT: decompiled C -->
+  <text x="524" y="70" fill="#5f6b7d" font-size="12">// Decompiler output (renamed)</text>
+  <g font-size="13">
+    <text x="524" y="98"><tspan fill="#7aa2f7">int</tspan> <tspan fill="#35d0ba">Modbus_Read_Serializer</tspan><tspan fill="#c9d4e3">(</tspan></text>
+    <text x="524" y="120"><tspan fill="#c9d4e3">    </tspan><tspan fill="#7aa2f7">Ctx</tspan> <tspan fill="#c9d4e3">*ctx,uint16_t reg,int16_t *out)</tspan></text>
+    <text x="524" y="142" fill="#c9d4e3">{</text>
+    <text x="524" y="164"><tspan fill="#c9d4e3">  </tspan><tspan fill="#7aa2f7">if</tspan> <tspan fill="#c9d4e3">(reg &lt; 30000) </tspan><tspan fill="#7aa2f7">return</tspan> <tspan fill="#f2b134">MB_ILLEGAL_ADDR</tspan><tspan fill="#c9d4e3">;</tspan></text>
+    <text x="524" y="186"><tspan fill="#c9d4e3">  desc = </tspan><tspan fill="#35d0ba">descriptor_lookup</tspan><tspan fill="#c9d4e3">(reg);</tspan></text>
+    <text x="524" y="208"><tspan fill="#c9d4e3">  raw  = </tspan><tspan fill="#35d0ba">sram_read_u16</tspan><tspan fill="#c9d4e3">(desc-&gt;src_ptr);</tspan></text>
+    <text x="524" y="230"><tspan fill="#5f6b7d">  /* BUG: signed scale applied to</tspan></text>
+    <text x="524" y="248"><tspan fill="#5f6b7d">     unsigned field — see FW_Bug doc */</tspan></text>
+    <text x="524" y="272"><tspan fill="#c9d4e3">  *out = </tspan><tspan fill="#35d0ba">apply_scale</tspan><tspan fill="#c9d4e3">(raw, desc-&gt;scale);</tspan></text>
+    <text x="524" y="294"><tspan fill="#c9d4e3">  </tspan><tspan fill="#7aa2f7">return</tspan> <tspan fill="#f2b134">MB_OK</tspan><tspan fill="#c9d4e3">;</tspan></text>
+    <text x="524" y="316" fill="#c9d4e3">}</text>
+  </g>
+
+  <!-- stat strip -->
+  <rect x="0" y="392" width="1000" height="68" fill="#0e141d"/>
+  <line x1="0" y1="392" x2="1000" y2="392" stroke="#1b2430"/>
+  <g>
+    <text x="60" y="424" text-anchor="middle" fill="#35d0ba" font-size="22" font-weight="700">1618</text>
+    <text x="60" y="444" text-anchor="middle" fill="#7d8ba0" font-size="11">functions named</text>
+    <text x="230" y="424" text-anchor="middle" fill="#35d0ba" font-size="22" font-weight="700">1743</text>
+    <text x="230" y="444" text-anchor="middle" fill="#7d8ba0" font-size="11">strings</text>
+    <text x="400" y="424" text-anchor="middle" fill="#f2b134" font-size="22" font-weight="700">6</text>
+    <text x="400" y="444" text-anchor="middle" fill="#7d8ba0" font-size="11">firmware images</text>
+    <text x="600" y="424" text-anchor="middle" fill="#a78bfa" font-size="22" font-weight="700">Cortex-M4F</text>
+    <text x="600" y="444" text-anchor="middle" fill="#7d8ba0" font-size="11">Thumb-2 · little-endian</text>
+    <text x="850" y="424" text-anchor="middle" fill="#c9d4e3" font-size="22" font-weight="700">FreeRTOS</text>
+    <text x="850" y="444" text-anchor="middle" fill="#7d8ba0" font-size="11">heap_4 · ARM_CM4F</text>
+  </g>
+</svg>

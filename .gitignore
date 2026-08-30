@@ -1,0 +1,41 @@
+# --- Security: extracted credentials (private key, certificates), raw firmware
+# hex dumps and the confidential responsible-disclosure report. Do NOT upload
+# until the vendor has fixed the finding.
+security/
+VNSD Certs/
+
+# --- Full local backup of the entire project (incl. security/ and binaries).
+\!Backup/
+
+# --- Decompilation snapshot: 3000+ derived .c files, kept local only.
+# Reproducible from Ghidra, see Methodik_und_Meta/Dekompilat_Export.md
+Dekompilate/
+
+# --- Vendor binaries (copyright) and large captures — never publish.
+*.apk
+*.rbl
+*.log
+*.pcap
+*.pcapng
+HM_HIE_FC41D/fc41d_archive/
+
+# --- Oversized scan logs.
+Modbus_RS485_TCP/Scan_Logs/watch_update.csv
+Modbus_RS485_TCP/Scan_Logs/watch_update.log
+Modbus_RS485_TCP/Scan_Logs/_backup_vor_tid_bereinigung_*/
+
+# --- Internal working artifacts.
+PR*_BODY.md
+*.patch
+probe_read_*.csv
+Scripts/scan_aggregat.json
+Scripts/*.regs
+
+# --- Backups / caches / build junk.
+*.bak_*
+__pycache__/
+*.pyc
+
+# --- macOS
+.DS_Store
+**/.DS_Store

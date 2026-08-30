@@ -176,7 +176,19 @@ def build_req(tid, slave, reg, count):
     return mbap + pdu
 
 
-def recv_response(sock, timeout=2.0):
+def recv_response(sock, timeout=2.0, expect_tid=None):
+    """Liest eine MBAP-Antwort vom Socket.
+
+    Mit expect_tid werden Frames mit fremder Transaction-ID verworfen und es
+    wird weitergelesen. Ohne diese Pruefung landet eine verspaetete Antwort
+    (nach einem Timeout, oder von einem anderen Client am selben Proxy) beim
+    naechsten Request -- dann stehen Werte auf dem falschen Register.
+
+    Belegter Fall 2026-08-22: Register 38003 zeigte dreimal den Wert 118.
+    Das war die BMS-Version aus Register 37012, die durch genau diese
+    Verschiebung im falschen Slot landete. Siehe
+    Methodik_und_Meta/Analyse_Skripte.md.
+    """
     resp = b""
     deadline = time.time() + timeout
     while True:
@@ -192,11 +204,14 @@ def recv_response(sock, timeout=2.0):
         if not chunk:
             return None
         resp += chunk
-        if len(resp) >= 6:
-            length_field = struct.unpack(">H", resp[4:6])[0]
-            total_expected = 6 + length_field
-            if len(resp) >= total_expected:
-                return resp[:total_expected]
+        while len(resp) >= 6:
+            total_expected = 6 + struct.unpack(">H", resp[4:6])[0]
+            if len(resp) < total_expected:
+                break
+            frame, resp = resp[:total_expected], resp[total_expected:]
+            if expect_tid is None or struct.unpack(">H", frame[0:2])[0] == expect_tid:
+                return frame
+            # fremde/veraltete Antwort -> verwerfen, weiterlesen
 
 
 def parse(data):
@@ -255,7 +270,7 @@ def do_one_scan(sock, host, port, slave, known_regs, batches):
 
             try:
                 sock.sendall(build_req(tid, slave, reg, count))
-                resp = recv_response(sock, timeout=2.0)
+                resp = recv_response(sock, timeout=2.0, expect_tid=tid)
             except Exception:
                 resp = None
                 try: sock.close()
@@ -280,7 +295,7 @@ def do_one_scan(sock, host, port, slave, known_regs, batches):
                             break
                     try:
                         sock.sendall(build_req(tid, slave, r, 1))
-                        resp2 = recv_response(sock, timeout=1.0)
+                        resp2 = recv_response(sock, timeout=1.0, expect_tid=tid)
                     except Exception:
                         resp2 = None
                         try: sock.close()

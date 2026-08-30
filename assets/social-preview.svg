@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img" aria-label="Marstek Venus D Firmware Reverse Engineering">
+  <defs>
+    <linearGradient id="sbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e1522"/>
+      <stop offset="0.55" stop-color="#0a0e17"/>
+      <stop offset="1" stop-color="#0b1512"/>
+    </linearGradient>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#35d0ba"/>
+      <stop offset="1" stop-color="#59e0a8"/>
+    </linearGradient>
+    <style>.mono{font-family:'SFMono-Regular',Consolas,Menlo,monospace}</style>
+  </defs>
+  <rect width="1280" height="640" fill="url(#sbg)"/>
+  <g stroke="#16324a" stroke-width="1" opacity="0.5">
+    <path d="M0 160 H1280"/><path d="M0 320 H1280"/><path d="M0 480 H1280"/>
+    <path d="M320 0 V640"/><path d="M640 0 V640"/><path d="M960 0 V640"/>
+  </g>
+
+  <rect x="80" y="150" width="6" height="330" rx="3" fill="url(#acc)"/>
+
+  <text x="110" y="140" class="mono" fill="#35d0ba" font-size="22" letter-spacing="4">STATIC · GHIDRA · STM32</text>
+  <text x="108" y="224" fill="#eef4fb" font-size="70" font-weight="800">Marstek Venus D</text>
+  <text x="110" y="292" fill="#c9d4e3" font-size="46" font-weight="700">Firmware Reverse Engineering</text>
+
+  <text x="110" y="356" fill="#9fb0c6" font-size="25">Control / EMS · Micro-Inverter / VNS · BMS</text>
+  <text x="110" y="392" fill="#9fb0c6" font-size="25">Full Modbus TCP + RS485 register map · cloud-free</text>
+
+  <g class="mono" font-size="21">
+    <rect x="110" y="430" width="180" height="44" rx="22" fill="#10202c" stroke="#2b6f7a"/>
+    <text x="200" y="459" text-anchor="middle" fill="#7fe3d3">Cortex-M4F</text>
+    <rect x="306" y="430" width="142" height="44" rx="22" fill="#10202c" stroke="#2b6f7a"/>
+    <text x="377" y="459" text-anchor="middle" fill="#7fe3d3">FreeRTOS</text>
+    <rect x="464" y="430" width="176" height="44" rx="22" fill="#221b12" stroke="#7a5f2b"/>
+    <text x="552" y="459" text-anchor="middle" fill="#f2b134">Modbus TCP</text>
+    <rect x="656" y="430" width="212" height="44" rx="22" fill="#1c1626" stroke="#5b3f7a"/>
+    <text x="762" y="459" text-anchor="middle" fill="#b79bfa">Home Assistant</text>
+  </g>
+
+  <text x="110" y="540" class="mono" fill="#5f6b7d" font-size="19">github.com/sphings79/Marstek-Venus-D-Firmware-Reverse-Engineering</text>
+
+  <g class="mono" font-size="18" opacity="0.9">
+    <text x="1200" y="150" text-anchor="end" fill="#5f6b7d">08052270  push {r4,r5,r6,lr}</text>
+    <text x="1200" y="178" text-anchor="end"><tspan fill="#7aa2f7">bl</tspan> <tspan fill="#35d0ba">Modbus_Read_Serializer</tspan></text>
+    <text x="1200" y="206" text-anchor="end" fill="#5f6b7d">movw r5,#0x7530  ; 30000</text>
+    <text x="1200" y="234" text-anchor="end" fill="#c9d4e3">*out = apply_scale(raw,scale);</text>
+  </g>
+</svg>

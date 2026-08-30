@@ -2682,6 +2682,8 @@ struct ModbusRegDescriptor {    // 12 Bytes, bei SRAM 0x200004C0 + n*12
 | 5 | Negation | 100 → -100 |
 
 > **Hinweis:** Die Descriptor-Tabelle wird von Code im **externen Flash (0x10000000+)** aufgebaut, der nicht im analysierten Binary enthalten ist. Die konkreten Telemetrie-Register-Adressen sind daher aus dieser Analyse nicht extrahierbar.
+> 
+> **KORREKTUR 2026-08-16:** Zu absolut. Das **Eintragsformat** ist vollständig aus `modbus_read_register_block` (@0x080118e8) rekonstruiert: 12 Byte je Eintrag — Reg@+0, Quellzeiger(SRAM)@+4, Typ@+8, elem_size@+9, Scale-Code@+0xa, count@+0xb (Scale 0x01=×10 … 0x04=×0.01), max 70 Einträge. Der *Builder* liegt bestätigt im separaten 0x10000000-Bereich (nicht im .bin; FileBytes=Mapped). Die Register-**Inhalte** sind aber — wie beim Control — per Live-Scan + Debug-Print-Feldnamen rekonstruierbar. Siehe `Methodik_und_Meta/Doku_Audit_Offene_Punkte_2026-08-16.md`.
 
 ### 16.3 Steuerregister (≥ 40000) — Vollständige Map
 

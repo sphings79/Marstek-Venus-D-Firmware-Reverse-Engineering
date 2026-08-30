@@ -1,0 +1,247 @@
+register,name,unit,type,type_code,scale,scale_str,elem_size,count,source_ptr_v150,source_ptr_v1492,confidence,notes
+30000,bat_sample_volt,V,u16,0x02,0,x1,2,1,0x20014EBA,0x20014EAE,hoch,Struct +0x1e 'bat_sample_volt(0.1V)'
+30001,bat_sample_power,W,i16,0x12,0,x1,2,1,0x20014EB8,0x20014EAC,hoch,"Struct +0x1c 'bat_sample_power(1W)', i16, negativ = Entladung. Alias 32102"
+30002,env_temp,degC,i16,0x12,0,x1,2,1,0x20014EBC,0x20014EB0,hoch,Struct +0x20 'env_temp(0.1C)'. Alias 35000
+30003,radiator_temp,degC,i16,0x12,0,x1,2,1,0x20014EBE,0x20014EB2,hoch,Struct +0x22 'radiator_temp(0.1C)'. Alias 35001/35002
+30004,grid_volt,V,u16,0x02,0,x1,2,1,0x20014EAC,0x20014EA0,hoch,Struct +0x10 'grid_volt(0.1V)'. Alias 32200/32201
+30005,off_grid_volt,V,u16,0x02,0,x1,2,1,0x20014EB0,0x20014EA4,hoch,Struct +0x14 'off_grid_volt(0.1V)'. Alias 32300/32301
+30006,grid_sample_power,W,i16,0x12,0,x1,2,1,0x20014EB4,0x20014EA8,hoch,Struct +0x18 'grid_sample_power(1W)'. Alias 32202/37004
+30007,off_grid_power,W,i16,0x12,0,x1,2,1,0x20014EB6,0x20014EAA,hoch,Struct +0x1a 'off_grid_power(1W)'. Alias 32302
+30010,work_mode,,u8,0x01,0,x1,2,1,0x20000144,0x20000144,hoch,"0x20000144 'work_mode'; +1 sleep_flag, +2 bat_mode (beide nicht serviert)"
+30020,mppt1_voltage,V,u16,0x02,0,x1,2,1,0x20014F54,0x20014F48,hoch,"MPPT-Struct Stride 6, Feld +0"
+30021,mppt2_voltage,V,u16,0x02,0,x1,2,1,0x20014F5A,0x20014F4E,hoch,"MPPT-Struct Stride 6, Feld +0"
+30022,mppt3_voltage,V,u16,0x02,0,x1,2,1,0x20014F60,0x20014F54,hoch,"MPPT-Struct Stride 6, Feld +0"
+30023,mppt4_voltage,V,u16,0x02,0,x1,2,1,0x20014F66,0x20014F5A,hoch,"MPPT-Struct Stride 6, Feld +0"
+30024,mppt1_current,A,u16,0x02,0,x1,2,1,0x20014F56,0x20014F4A,hoch,MPPT-Struct Feld +2 (aus Pointer-Stride abgeleitet)
+30025,mppt2_current,A,u16,0x02,0,x1,2,1,0x20014F5C,0x20014F50,hoch,MPPT-Struct Feld +2
+30026,mppt3_current,A,u16,0x02,0,x1,2,1,0x20014F62,0x20014F56,hoch,MPPT-Struct Feld +2
+30027,mppt4_current,A,u16,0x02,0,x1,2,1,0x20014F68,0x20014F5C,hoch,MPPT-Struct Feld +2
+30028,inv_bat_voltage,V,u16,0x02,0,x1,2,1,0x20014F7C,0x20014F70,hoch,Inverter-Struct 0x20014F4C+0x30 'bat_vol_0.1V'. Live 533=53.3V
+30029,inv_bat_current,A,i16,0x12,0,x1,2,1,0x20014F7E,0x20014F72,hoch,Inverter-Struct +0x32 'bat_cur_0.1A'. Live -1 (Idle)
+30030,config_word_2000018A,,u16,0x02,0,x1,2,1,0x2000018A,0x2000018A,niedrig,Kern-Global 0x2000018A. Writer Modbus_StoreValue16 (CAN fc 0xfe) -> per CAN/Modbus gesetzter Konfigurationswert
+30031,inv_slot8_38,,u16,0x02,0,x1,2,1,0x20014F84,0x20014F78,niedrig,"Inverter-Struct 0x20014F4C+0x38, befuellt via Modbus_StoreRegisterSlot (CAN fc 0x03, Slot 8). Von MPPT_Debug_Print nicht ausgegeben -> kein Klartextname im Image"
+30032,inv_slot8_3a,,u16,0x02,0,x1,2,1,0x20014F86,0x20014F7A,niedrig,"Inverter-Struct 0x20014F4C+0x3a, befuellt via Modbus_StoreRegisterSlot (CAN fc 0x03, Slot 8). Von MPPT_Debug_Print nicht ausgegeben -> kein Klartextname im Image"
+30033,inv_slot8_3c,,u16,0x02,0,x1,2,1,0x20014F88,0x20014F7C,niedrig,"Inverter-Struct 0x20014F4C+0x3c, befuellt via Modbus_StoreRegisterSlot (CAN fc 0x03, Slot 8). Von MPPT_Debug_Print nicht ausgegeben -> kein Klartextname im Image"
+30034,inv_slot8_3e,,u16,0x02,0,x1,2,1,0x20014F8A,0x20014F7E,niedrig,"Inverter-Struct 0x20014F4C+0x3e, befuellt via Modbus_StoreRegisterSlot (CAN fc 0x03, Slot 8). Von MPPT_Debug_Print nicht ausgegeben -> kein Klartextname im Image"
+30035,inv_boundary_20014F8C,,i16,0x12,0,x1,2,1,0x20014F8C,0x20014F80,niedrig,"0x20014F8C, Grenze Inverter-Struct/BMS-Aggregat. Befuellt via Modbus_StorePairSlot (CAN fc 0xff, Slot 2)"
+30036,inv_base_voltage,V,u16,0x02,0,x1,2,1,0x20014F80,0x20014F74,mittel,Inverter-Struct +0x34 'base_vol_0.01V' (interne/PE-Referenz). Live 219=2.19V
+30037,mppt1_power,W,u16,0x02,0,x1,2,1,0x20014F58,0x20014F4C,hoch,MPPT-Struct Feld +4; Alias 37017
+30038,mppt2_power,W,u16,0x02,0,x1,2,1,0x20014F5E,0x20014F52,hoch,MPPT-Struct Feld +4; Alias 37018
+30039,mppt3_power,W,u16,0x02,0,x1,2,1,0x20014F64,0x20014F58,hoch,MPPT-Struct Feld +4; Alias 37019
+30040,mppt4_power,W,u16,0x02,0,x1,2,1,0x20014F6A,0x20014F5E,hoch,MPPT-Struct Feld +4; Alias 37020
+30100,pack1_bat_volt_mirror,,u16,0x02,0,x1,2,1,0x20014FB4,0x20014FA8,mittel,identische Quelle wie 34000 (Pack0-Struct +0x00)
+30101,pack1_bat_curr_mirror,,i16,0x12,0,x1,2,1,0x20014FB6,0x20014FAA,mittel,identische Quelle wie 34001 (Pack0-Struct +0x02)
+30102,pack1_max_cell_voltage_mirror,,u16,0x02,0,x1,2,1,0x20014FC4,0x20014FB8,mittel,"identische Quelle wie 34005/37007 (Pack0-Struct +0x10), Rohwert mV"
+30103,pack1_min_cell_voltage_mirror,,u16,0x02,0,x1,2,1,0x20014FC6,0x20014FBA,mittel,"identische Quelle wie 34006/37008 (Pack0-Struct +0x12), Rohwert mV"
+30104,pack1_max_cell_temp,degC,i16,0x12,1,x10,2,1,0x20014FC8,0x20014FBC,mittel,"Pack1-Struct +0x14 (direkt nach min_cell_voltage). FW multipliziert x10 -> Anzeige 0.01 degC. Uebereinstimmend: alte Live-Map 'max_cell_temp_hp', Read-Handler-Map, BLE-DevelopMode. Alias 37006"
+30105,pack1_min_cell_temp,degC,i16,0x12,1,x10,2,1,0x20014FCA,0x20014FBE,mittel,"Pack1-Struct +0x16. FW multipliziert x10 -> Anzeige 0.01 degC. Uebereinstimmend: alte Live-Map 'cell_temp_hp_2', Read-Handler-Map '35011=min_cell_temperature'. Alias 35011"
+30106,pack1_temp_3_mirror,degC,u16,0x02,0,x1,2,1,0x20015002,0x20014FF6,niedrig,"Alias 34017 (Pack1-Struct +0x4e), Live meist 0"
+30107,pack1_temp_1_mirror,degC,i16,0x12,0,x1,2,1,0x20014FFE,0x20014FF2,hoch,"Alias 34011 (Pack1-Struct +0x4a), Live bestaetigt"
+30108,pack1_temp_2_mirror,degC,i16,0x12,0,x1,2,1,0x20015000,0x20014FF4,hoch,"Alias 34012 (Pack1-Struct +0x4c), Live bestaetigt"
+30109,bms_factory_test,,u8,0x01,0,x1,2,1,0x20014FAC,0x20014FA0,mittel,Alias 32113 (CAN factory_test)
+30110,config_setpoint_mirror,,u8,0x01,0,x1,2,1,0x20014FAF,0x20014FA3,niedrig,"Alias 32114 (0x20014FAF): vom Write-Handler beschriebener Config-Setpoint, kein Sensor"
+30200,ems_ver,,u16,0x02,0,x1,2,1,0x08010000,0x08010000,hoch,Control-App-Version. Versions-Debug-Print (0x08036F40) gibt Konstante 0x96=150 aus; Register liest FLASH 0x08010000 (App-Header)
+30201,ems_boot_ver,,u8,0x01,0,x1,2,1,0x20000038,0x20000038,hoch,"KORREKTUR: 0x20000038 ist 'boot_ver' des EMS/Control (Bootloader), NICHT ems_sub_version. Beleg: Versions-Debug-Print 0x08036F52"
+30202,vns_ver,,u16,0x02,0,x1,2,1,0x2000015E,0x2000015E,hoch,"VNS (Micro-Inverter) Softwareversion. Belege: Versions-Debug-Print 'vns_ver' (0x08036F90) + Inverter_Telemetry_Debug_Print 'soft_ver'. Writer Telemetry_Store_RegCB (CAN 0xCB), Block 0x2000015C"
+30203,vns_boot_ver,,u16,0x02,0,x1,2,1,0x20000160,0x20000160,hoch,"VNS (Micro-Inverter) Bootloader-Version. Block 0x2000015C+4, Writer Telemetry_Store_RegCB (CAN 0xCB). Inverter_Telemetry_Debug_Print 'boot_ver'"
+30204,bms_ver,,u16,0x02,0,x1,2,1,0x20014FD2,0x20014FC6,hoch,BMS-Version. Versions-Debug-Print 'bms_ver' liest 0x20014FB0+0x22 = 0x20014FD2 = Pack0-Struct +0x1e. Alias 34010/37012
+30205,mppt_ver,,u16,0x02,0,x1,2,1,0x20000188,0x20000188,hoch,"KORREKTUR: 0x20000188 ist die MPPT-Firmware-Version, NICHT bms_sub_version. Versions-Debug-Print 0x08036F6A liest 0x20000188|0x20000189<<8 als 'mppt_ver(new)' (u16); 'mppt_ver(old)' = nur 0x20000188 (u8)"
+30210,pack1_mos_status_mirror,,u8,0x01,0,x1,2,1,0x20014FC2,0x20014FB6,mittel,"Alias 34004, Live 0..3 = 2 MOSFET-Flags"
+30211,config_byte_can54,,u8,0x01,0,x1,2,1,0x20000165,0x20000165,niedrig,0x20000165. Writer: Config_PostWriteCommit + Telemetry_Store_Reg54 (CAN-ID 0x54) -> per CAN setzbarer Konfigurationswert
+30212,pack_config,,u8,0x01,0,x1,2,1,0x20000138,0x20000138,niedrig,Kern-Global 0x20000138. Name aus alter Live-Map ('pack_config'); keine aufgeloesten Writer/Reader in v150
+30213,config_byte_canc1,,u8,0x01,0,x1,2,1,0x20000164,0x20000164,niedrig,0x20000164. Writer: Config_Counters_Reset + Telemetry_Store_RegC1 (CAN-ID 0xC1) -> per CAN setzbarer Konfigurationswert
+30214,bms_self_check,,u8,0x01,0,x1,2,1,0x20014FAE,0x20014FA2,mittel,CAN Status-Byte pgn_1007 'self_check' (+0x20)
+30300,wifi_status,,u8,0x01,0,x1,2,1,0x20001F4C,0x20001F4C,mittel,
+30301,bluetooth_status,,u8,0x01,0,x1,2,1,0x20018B5C,0x20018B4C,mittel,
+30302,cloud_status,,u8,0x01,0,x1,2,1,0x2001916D,0x2001915D,mittel,
+30303,wifi_signal_strength,dBm,u8,0x01,0,x1,2,1,0x20001F4D,0x20001F4D,mittel,Wert positiv; Vorzeichen NICHT von FW gesetzt (scale=0)
+30304,mac_address,,ascii,0x31,0,x1,1,12,0x2001894E,0x2001893E,hoch,ASCII 12 Byte -> Register 30304-30309
+30350,comm_module_firmware,,u8,0x01,0,x1,1,12,0x200180F0,0x200180E4,hoch,12 Byte -> Register 30350-30355
+30400,ip_addresses,,u8,0x01,0,x1,1,8,0x2001ADC5,0x2001ADB5,hoch,8 Byte -> Register 30400-30403
+31000,device_name,,u8,0x01,0,x1,1,20,0x20014CE0,0x20014CDC,hoch,20 Byte -> Register 31000-31009
+32100,bms_battery_voltage,V,u16,0x02,0,x1,2,1,0x20014F8E,0x20014F82,hoch,CAN-Aggregat-Struct 0x20014F8E+0x00 pgn_1801 'bat_volt(10mV)'. EINHEIT 10mV (nicht 0.1V). Live 5372=53.72V
+32101,bms_battery_current,A,i16,0x12,3,/10,2,1,0x20014F90,0x20014F84,hoch,"CAN +0x02 pgn_1801 'bat_curr(100mA)'. Loest dc_current-Raetsel: BMS-Packstrom 100mA, FW /10; 0x9965 = Entladung"
+32102,bat_sample_power,W,float32,0x24,0,x1,4,1,0x20014EB8,0x20014EAC,hoch,KONFLIKT GELOEST: Quelle 0x20014EB8 ist i16 'bat_sample_power(1W)' (Debug-String). Die float32-Typangabe des Descriptors ist die falsche Seite; identisch mit 30001
+32104,bms_soc,%,u16,0x02,3,/10,2,1,0x20014F94,0x20014F88,hoch,CAN +0x06 'bat_soc(0.1)'. FW teilt /10 (=soc_global)
+32105,bms_remaining_energy,Wh,u16,0x02,0,x1,2,1,0x20014F96,0x20014F8A,hoch,CAN +0x08 pgn_1802 'bat_energy_Wh'
+32106,bms_charge_current_limit,A,u16,0x02,0,x1,2,1,0x20014FA0,0x20014F94,hoch,CAN +0x12 pgn_1803 'chrg_curr(100mA)'. Alias 35111
+32107,bms_discharge_current_limit,A,u16,0x02,0,x1,2,1,0x20014FA2,0x20014F96,hoch,CAN +0x14 pgn_1803 'dischrg_curr(100mA)'. Alias 35112
+32108,bms_battery_temp,degC,i16,0x12,0,x1,2,1,0x20014F92,0x20014F86,hoch,CAN +0x04 pgn_1801 'bat_temp(0.1C)'. Alias 35010
+32109,bms_pack_count,,u8,0x01,0,x1,2,1,0x20014F98,0x20014F8C,hoch,CAN +0x0a 'bat_total_nb' (Anzahl vorhandener Packs)
+32110,bms_online_mask,,u16,0x02,0,x1,2,1,0x20014F99,0x20014F8D,hoch,CAN +0x0b 'bat_online_mask' (u16 Bitmaske: welche Packs online)
+32111,bms_work_pack_idx,,u8,0x01,0,x1,2,1,0x20014F9B,0x20014F8F,hoch,CAN +0x0d 'work_bat_idx' (aktiver Pack-Index)
+32112,bms_lock_flag,,u8,0x01,0,x1,2,1,0x20014FAD,0x20014FA1,mittel,CAN Status-Byte pgn_1804 'lock_flag' (+0x1f)
+32113,bms_factory_test,,u8,0x01,0,x1,2,1,0x20014FAC,0x20014FA0,mittel,CAN Status-Byte pgn_1804 'factory_test' (+0x1e). Alias 30109
+32114,config_setpoint_20014FAF,,u8,0x01,0,x1,2,1,0x20014FAF,0x20014FA3,niedrig,"0x20014FAF wird vom Modbus-Write-Handler (0x08052BB0/0x08052BBC) BESCHRIEBEN -> Config-Setpoint, kein Sensor. Alias 30110"
+32200,grid_volt,V,u16,0x02,0,x1,2,1,0x20014EAC,0x20014EA0,hoch,Struct +0x10 'grid_volt(0.1V)'. Alias 30004
+32201,grid_volt_dup,V,u16,0x02,0,x1,2,1,0x20014EAC,0x20014EA0,hoch,identische Quelle wie 32200 -- kein eigener Messwert
+32202,grid_sample_power,W,i16,0x12,0,x1,4,1,0x20014EB4,0x20014EA8,hoch,Alias 30006 (Struct +0x18); elem_size 4 bei i16 bleibt Descriptor-Inkonsistenz
+32204,grid_pf,Hz,u16,0x02,0,x1,2,1,0x20014EAE,0x20014EA2,hoch,Struct +0x12 'grid_pf(0.1Hz)' = Netzfrequenz. Typ u16
+32300,off_grid_volt,V,u16,0x02,0,x1,2,1,0x20014EB0,0x20014EA4,hoch,Struct +0x14 'off_grid_volt(0.1V)'. Alias 30005
+32301,ac_offgrid_voltage_dup,V,u16,0x02,0,x1,2,1,0x20014EB0,0x20014EA4,hoch,KORREKTUR: identische Quelle wie 32300 -- NICHT ac_offgrid_current
+32302,off_grid_power,W,i16,0x12,0,x1,2,1,0x20014EB6,0x20014EAA,hoch,Struct +0x1a 'off_grid_power(1W)'. Alias 30007
+33000,total_charging_energy,kWh,u32,0x04,3,/10,4,1,0x20014D9C,0x20014D92,hoch,u32 = 2 Register; FW teilt durch 10 -> Ergebnis in 0.01 kWh
+33002,total_discharging_energy,kWh,u32,0x04,3,/10,4,1,0x20014DA0,0x20014D96,hoch,u32 = 2 Register; FW teilt durch 10
+33004,daily_charging_energy,kWh,u32,0x04,3,/10,4,1,0x20014DAC,0x20014DA2,hoch,u32 = 2 Register; FW teilt durch 10
+33006,daily_discharging_energy,kWh,u32,0x04,3,/10,4,1,0x20014DB0,0x20014DA6,hoch,u32 = 2 Register; FW teilt durch 10
+33008,monthly_charging_energy,kWh,u32,0x04,3,/10,4,1,0x20014DA4,0x20014D9A,hoch,u32 = 2 Register; FW teilt durch 10
+33010,monthly_discharging_energy,kWh,u32,0x04,3,/10,4,1,0x20014DA8,0x20014D9E,hoch,u32 = 2 Register; FW teilt durch 10
+34000,pack1_bat_volt,,u16,0x02,0,x1,2,1,0x20014FB4,0x20014FA8,mittel,Pack-Struct Stride 0x60; Alias 30100
+34001,pack1_bat_curr,,i16,0x12,0,x1,2,1,0x20014FB6,0x20014FAA,mittel,Pack-Struct Stride 0x60; Alias 30101
+34002,pack1_soc,%,u16,0x02,0,x1,2,1,0x20014FB8,0x20014FAC,hoch,Rohwert in 0.1% -- FW skaliert NICHT. Alias 37005 liefert denselben Wert bereits /10
+34003,pack1_cycle_count,,i16,0x12,0,x1,2,1,0x20014FBA,0x20014FAE,hoch,Pack1-Struct +0x06. BMS-FW 'Cyc Cnt'; BESTAETIGT durch Live-Scans (kleine monotone Werte 0/1/6/7/10/12) und BLE-Offset 0x18
+34004,pack1_mos_status,,u8,0x01,0,x1,2,1,0x20014FC2,0x20014FB6,mittel,Pack1-Struct +0x0e (u8). BMS-FW 'Chg Mos/Dsg Mos'; BESTAETIGT durch Live-Scans (Wertebereich 0..3 = genau 2 Flags)
+34005,pack1_max_cell_voltage,,u16,0x02,0,x1,2,1,0x20014FC4,0x20014FB8,mittel,Rohwert in mV; Alias 30102/37007
+34006,pack1_min_cell_voltage,,u16,0x02,0,x1,2,1,0x20014FC6,0x20014FBA,mittel,Rohwert in mV; Alias 30103/37008
+34007,pack1_status_flags,,i16,0x12,0,x1,2,1,0x20014FCC,0x20014FC0,hypothese,"Pack1-Struct +0x18. KORREKTUR: Live-Scans zeigen 0..7 (meist 0) -> Status-/Flagfeld, KEINE Temperatur. Meine BMS-Frame-Ableitung 'Max NTC' ist durch die Daten widerlegt"
+34008,pack1_protect1,,u16,0x02,0,x1,2,1,0x20014FCE,0x20014FC2,mittel,Pack1-Struct +0x1a. Live-Scans: durchgaengig 0 (Normalbetrieb) -> Schutz-Bitmaske. Deckt sich mit der aelteren Live-Analyse (Final_claude_generated)
+34009,pack1_protect2,,u16,0x02,0,x1,2,1,0x20014FD0,0x20014FC4,mittel,Pack1-Struct +0x1c. Live-Scans: fast durchgaengig 0 -> zweite Schutz-Bitmaske. BMS-FW kennt 'Protect1/Protect2'
+34010,pack1_bms_version,,u16,0x02,0,x1,2,1,0x20014FD2,0x20014FC6,hoch,Pack1-Struct +0x1e. BESTAETIGT durch Live-Scans (Werte 116/118/1177 = BMS-FW-Versionen)
+34011,pack1_temp_1,degC,u16,0x02,0,x1,2,1,0x20014FFE,0x20014FF2,hoch,Pack1-Struct +0x4a. BESTAETIGT durch Live-Scans (23.5-45.2 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34012,pack1_temp_2,degC,u16,0x02,0,x1,2,1,0x20015000,0x20014FF4,hoch,Pack1-Struct +0x4c. BESTAETIGT durch Live-Scans (21.4-56.9 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34013,pack1_ntc_block,degC,u16,0x02,0,x1,2,4,0x20014FF4,0x20014FE8,hoch,"Pack1-Struct +0x40, 4 Elemente -> 34013-34016. BESTAETIGT: BMS CAN-Gruppe 0x40 = 4 NTC; Live 11.6-36.1 degC"
+34017,pack1_temp_3,degC,u16,0x02,0,x1,2,1,0x20015002,0x20014FF6,niedrig,"Pack1-Struct +0x4e. Live-Scans meist 0, gelegentlich temperaturartig (max 327) -> vermutlich ENV-NTC, im Normalbetrieb nicht befuellt"
+34018,pack1_cell_voltage_1_16,V,u16,0x02,0,x1,2,16,0x20014FD4,0x20014FC8,hoch,"Pack1-Struct +0x20, 16 Elemente -> 34018-34033. BESTAETIGT: BMS CAN-Gruppen 0x30-0x33; Live 3177-3441 mV"
+34100,pack2_bat_volt,,u16,0x02,0,x1,2,1,0x20015014,0x20015008,mittel,Pack-Struct Stride 0x60
+34101,pack2_bat_curr,,u16,0x02,0,x1,2,1,0x20015016,0x2001500A,mittel,Pack-Struct Stride 0x60
+34102,pack2_soc,,u16,0x02,0,x1,2,1,0x20015018,0x2001500C,mittel,Rohwert in 0.1%
+34103,pack2_cycle_count,,i16,0x12,0,x1,2,1,0x2001501A,0x2001500E,hoch,Pack2-Struct +0x06. BMS-FW 'Cyc Cnt'; BESTAETIGT durch Live-Scans (kleine monotone Werte 0/1/6/7/10/12) und BLE-Offset 0x18
+34104,pack2_mos_status,,u8,0x01,0,x1,2,1,0x20015022,0x20015016,mittel,Pack2-Struct +0x0e (u8). BMS-FW 'Chg Mos/Dsg Mos'; BESTAETIGT durch Live-Scans (Wertebereich 0..3 = genau 2 Flags)
+34105,pack2_max_cell_voltage,,u16,0x02,0,x1,2,1,0x20015024,0x20015018,mittel,Rohwert in mV
+34106,pack2_min_cell_voltage,,u16,0x02,0,x1,2,1,0x20015026,0x2001501A,mittel,Rohwert in mV
+34107,pack2_status_flags,,i16,0x12,0,x1,2,1,0x2001502C,0x20015020,hypothese,"Pack2-Struct +0x18. KORREKTUR: Live-Scans zeigen 0..7 (meist 0) -> Status-/Flagfeld, KEINE Temperatur. Meine BMS-Frame-Ableitung 'Max NTC' ist durch die Daten widerlegt"
+34108,pack2_protect1,,u16,0x02,0,x1,2,1,0x2001502E,0x20015022,mittel,Pack2-Struct +0x1a. Live-Scans: durchgaengig 0 (Normalbetrieb) -> Schutz-Bitmaske. Deckt sich mit der aelteren Live-Analyse (Final_claude_generated)
+34109,pack2_protect2,,u16,0x02,0,x1,2,1,0x20015030,0x20015024,mittel,Pack2-Struct +0x1c. Live-Scans: fast durchgaengig 0 -> zweite Schutz-Bitmaske. BMS-FW kennt 'Protect1/Protect2'
+34110,pack2_bms_version,,u16,0x02,0,x1,2,1,0x20015032,0x20015026,hoch,Pack2-Struct +0x1e. BESTAETIGT durch Live-Scans (Werte 116/118/1177 = BMS-FW-Versionen)
+34111,pack2_temp_1,degC,u16,0x02,0,x1,2,1,0x2001505E,0x20015052,hoch,Pack2-Struct +0x4a. BESTAETIGT durch Live-Scans (23.5-45.2 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34112,pack2_temp_2,degC,u16,0x02,0,x1,2,1,0x20015060,0x20015054,hoch,Pack2-Struct +0x4c. BESTAETIGT durch Live-Scans (21.4-56.9 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34113,pack2_ntc_block,degC,u16,0x02,0,x1,2,4,0x20015054,0x20015048,hoch,"Pack2-Struct +0x40, 4 Elemente -> 34113-34116. BESTAETIGT: BMS CAN-Gruppe 0x40 = 4 NTC; Live 11.6-36.1 degC"
+34117,pack2_temp_3,degC,u16,0x02,0,x1,2,1,0x20015062,0x20015056,niedrig,"Pack2-Struct +0x4e. Live-Scans meist 0, gelegentlich temperaturartig (max 327) -> vermutlich ENV-NTC, im Normalbetrieb nicht befuellt"
+34118,pack2_cell_voltage_1_16,V,u16,0x02,0,x1,2,16,0x20015034,0x20015028,hoch,"Pack2-Struct +0x20, 16 Elemente -> 34118-34133. BESTAETIGT: BMS CAN-Gruppen 0x30-0x33; Live 3177-3441 mV"
+34200,pack3_bat_volt,,u16,0x02,0,x1,2,1,0x20015074,0x20015068,mittel,Pack-Struct Stride 0x60
+34201,pack3_bat_curr,,u16,0x02,0,x1,2,1,0x20015076,0x2001506A,mittel,Pack-Struct Stride 0x60
+34202,pack3_soc,,u16,0x02,0,x1,2,1,0x20015078,0x2001506C,mittel,Rohwert in 0.1%
+34203,pack3_cycle_count,,i16,0x12,0,x1,2,1,0x2001507A,0x2001506E,hoch,Pack3-Struct +0x06. BMS-FW 'Cyc Cnt'; BESTAETIGT durch Live-Scans (kleine monotone Werte 0/1/6/7/10/12) und BLE-Offset 0x18
+34204,pack3_mos_status,,u8,0x01,0,x1,2,1,0x20015082,0x20015076,mittel,Pack3-Struct +0x0e (u8). BMS-FW 'Chg Mos/Dsg Mos'; BESTAETIGT durch Live-Scans (Wertebereich 0..3 = genau 2 Flags)
+34205,pack3_max_cell_voltage,,u16,0x02,0,x1,2,1,0x20015084,0x20015078,mittel,Rohwert in mV
+34206,pack3_min_cell_voltage,,u16,0x02,0,x1,2,1,0x20015086,0x2001507A,mittel,Rohwert in mV
+34207,pack3_status_flags,,i16,0x12,0,x1,2,1,0x2001508C,0x20015080,hypothese,"Pack3-Struct +0x18. KORREKTUR: Live-Scans zeigen 0..7 (meist 0) -> Status-/Flagfeld, KEINE Temperatur. Meine BMS-Frame-Ableitung 'Max NTC' ist durch die Daten widerlegt"
+34208,pack3_protect1,,u16,0x02,0,x1,2,1,0x2001508E,0x20015082,mittel,Pack3-Struct +0x1a. Live-Scans: durchgaengig 0 (Normalbetrieb) -> Schutz-Bitmaske. Deckt sich mit der aelteren Live-Analyse (Final_claude_generated)
+34209,pack3_protect2,,u16,0x02,0,x1,2,1,0x20015090,0x20015084,mittel,Pack3-Struct +0x1c. Live-Scans: fast durchgaengig 0 -> zweite Schutz-Bitmaske. BMS-FW kennt 'Protect1/Protect2'
+34210,pack3_bms_version,,u16,0x02,0,x1,2,1,0x20015092,0x20015086,hoch,Pack3-Struct +0x1e. BESTAETIGT durch Live-Scans (Werte 116/118/1177 = BMS-FW-Versionen)
+34211,pack3_temp_1,degC,u16,0x02,0,x1,2,1,0x200150BE,0x200150B2,hoch,Pack3-Struct +0x4a. BESTAETIGT durch Live-Scans (23.5-45.2 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34212,pack3_temp_2,degC,u16,0x02,0,x1,2,1,0x200150C0,0x200150B4,hoch,Pack3-Struct +0x4c. BESTAETIGT durch Live-Scans (21.4-56.9 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34213,pack3_ntc_block,degC,u16,0x02,0,x1,2,4,0x200150B4,0x200150A8,hoch,"Pack3-Struct +0x40, 4 Elemente -> 34213-34216. BESTAETIGT: BMS CAN-Gruppe 0x40 = 4 NTC; Live 11.6-36.1 degC"
+34217,pack3_temp_3,degC,u16,0x02,0,x1,2,1,0x200150C2,0x200150B6,niedrig,"Pack3-Struct +0x4e. Live-Scans meist 0, gelegentlich temperaturartig (max 327) -> vermutlich ENV-NTC, im Normalbetrieb nicht befuellt"
+34218,pack3_cell_voltage_1_16,V,u16,0x02,0,x1,2,16,0x20015094,0x20015088,hoch,"Pack3-Struct +0x20, 16 Elemente -> 34218-34233. BESTAETIGT: BMS CAN-Gruppen 0x30-0x33; Live 3177-3441 mV"
+34300,pack4_bat_volt,,u16,0x02,0,x1,2,1,0x200150D4,0x200150C8,mittel,Pack-Struct Stride 0x60
+34301,pack4_bat_curr,,u16,0x02,0,x1,2,1,0x200150D6,0x200150CA,mittel,Pack-Struct Stride 0x60
+34302,pack4_soc,,u16,0x02,0,x1,2,1,0x200150D8,0x200150CC,mittel,Rohwert in 0.1%
+34303,pack4_cycle_count,,i16,0x12,0,x1,2,1,0x200150DA,0x200150CE,hoch,Pack4-Struct +0x06. BMS-FW 'Cyc Cnt'; BESTAETIGT durch Live-Scans (kleine monotone Werte 0/1/6/7/10/12) und BLE-Offset 0x18
+34304,pack4_mos_status,,u8,0x01,0,x1,2,1,0x200150E2,0x200150D6,mittel,Pack4-Struct +0x0e (u8). BMS-FW 'Chg Mos/Dsg Mos'; BESTAETIGT durch Live-Scans (Wertebereich 0..3 = genau 2 Flags)
+34305,pack4_max_cell_voltage,,u16,0x02,0,x1,2,1,0x200150E4,0x200150D8,mittel,Rohwert in mV
+34306,pack4_min_cell_voltage,,u16,0x02,0,x1,2,1,0x200150E6,0x200150DA,mittel,Rohwert in mV
+34307,pack4_status_flags,,i16,0x12,0,x1,2,1,0x200150EC,0x200150E0,hypothese,"Pack4-Struct +0x18. KORREKTUR: Live-Scans zeigen 0..7 (meist 0) -> Status-/Flagfeld, KEINE Temperatur. Meine BMS-Frame-Ableitung 'Max NTC' ist durch die Daten widerlegt"
+34308,pack4_protect1,,u16,0x02,0,x1,2,1,0x200150EE,0x200150E2,mittel,Pack4-Struct +0x1a. Live-Scans: durchgaengig 0 (Normalbetrieb) -> Schutz-Bitmaske. Deckt sich mit der aelteren Live-Analyse (Final_claude_generated)
+34309,pack4_protect2,,u16,0x02,0,x1,2,1,0x200150F0,0x200150E4,mittel,Pack4-Struct +0x1c. Live-Scans: fast durchgaengig 0 -> zweite Schutz-Bitmaske. BMS-FW kennt 'Protect1/Protect2'
+34310,pack4_bms_version,,u16,0x02,0,x1,2,1,0x200150F2,0x200150E6,hoch,Pack4-Struct +0x1e. BESTAETIGT durch Live-Scans (Werte 116/118/1177 = BMS-FW-Versionen)
+34311,pack4_temp_1,degC,u16,0x02,0,x1,2,1,0x2001511E,0x20015112,hoch,Pack4-Struct +0x4a. BESTAETIGT durch Live-Scans (23.5-45.2 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34312,pack4_temp_2,degC,u16,0x02,0,x1,2,1,0x20015120,0x20015114,hoch,Pack4-Struct +0x4c. BESTAETIGT durch Live-Scans (21.4-56.9 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34313,pack4_ntc_block,degC,u16,0x02,0,x1,2,4,0x20015114,0x20015108,hoch,"Pack4-Struct +0x40, 4 Elemente -> 34313-34316. BESTAETIGT: BMS CAN-Gruppe 0x40 = 4 NTC; Live 11.6-36.1 degC"
+34317,pack4_temp_3,degC,u16,0x02,0,x1,2,1,0x20015122,0x20015116,niedrig,"Pack4-Struct +0x4e. Live-Scans meist 0, gelegentlich temperaturartig (max 327) -> vermutlich ENV-NTC, im Normalbetrieb nicht befuellt"
+34318,pack4_cell_voltage_1_16,V,u16,0x02,0,x1,2,16,0x200150F4,0x200150E8,hoch,"Pack4-Struct +0x20, 16 Elemente -> 34318-34333. BESTAETIGT: BMS CAN-Gruppen 0x30-0x33; Live 3177-3441 mV"
+34400,pack5_bat_volt,,u16,0x02,0,x1,2,1,0x20015134,0x20015128,mittel,Pack-Struct Stride 0x60
+34401,pack5_bat_curr,,u16,0x02,0,x1,2,1,0x20015136,0x2001512A,mittel,Pack-Struct Stride 0x60
+34402,pack5_soc,,u16,0x02,0,x1,2,1,0x20015138,0x2001512C,mittel,Rohwert in 0.1%
+34403,pack5_cycle_count,,i16,0x12,0,x1,2,1,0x2001513A,0x2001512E,hoch,Pack5-Struct +0x06. BMS-FW 'Cyc Cnt'; BESTAETIGT durch Live-Scans (kleine monotone Werte 0/1/6/7/10/12) und BLE-Offset 0x18
+34404,pack5_mos_status,,u8,0x01,0,x1,2,1,0x20015142,0x20015136,mittel,Pack5-Struct +0x0e (u8). BMS-FW 'Chg Mos/Dsg Mos'; BESTAETIGT durch Live-Scans (Wertebereich 0..3 = genau 2 Flags)
+34405,pack5_max_cell_voltage,,u16,0x02,0,x1,2,1,0x20015144,0x20015138,mittel,Rohwert in mV
+34406,pack5_min_cell_voltage,,u16,0x02,0,x1,2,1,0x20015146,0x2001513A,mittel,Rohwert in mV
+34407,pack5_status_flags,,i16,0x12,0,x1,2,1,0x2001514C,0x20015140,hypothese,"Pack5-Struct +0x18. KORREKTUR: Live-Scans zeigen 0..7 (meist 0) -> Status-/Flagfeld, KEINE Temperatur. Meine BMS-Frame-Ableitung 'Max NTC' ist durch die Daten widerlegt"
+34408,pack5_protect1,,u16,0x02,0,x1,2,1,0x2001514E,0x20015142,mittel,Pack5-Struct +0x1a. Live-Scans: durchgaengig 0 (Normalbetrieb) -> Schutz-Bitmaske. Deckt sich mit der aelteren Live-Analyse (Final_claude_generated)
+34409,pack5_protect2,,u16,0x02,0,x1,2,1,0x20015150,0x20015144,mittel,Pack5-Struct +0x1c. Live-Scans: fast durchgaengig 0 -> zweite Schutz-Bitmaske. BMS-FW kennt 'Protect1/Protect2'
+34410,pack5_bms_version,,u16,0x02,0,x1,2,1,0x20015152,0x20015146,hoch,Pack5-Struct +0x1e. BESTAETIGT durch Live-Scans (Werte 116/118/1177 = BMS-FW-Versionen)
+34411,pack5_temp_1,degC,u16,0x02,0,x1,2,1,0x2001517E,0x20015172,hoch,Pack5-Struct +0x4a. BESTAETIGT durch Live-Scans (23.5-45.2 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34412,pack5_temp_2,degC,u16,0x02,0,x1,2,1,0x20015180,0x20015174,hoch,Pack5-Struct +0x4c. BESTAETIGT durch Live-Scans (21.4-56.9 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34413,pack5_ntc_block,degC,u16,0x02,0,x1,2,4,0x20015174,0x20015168,hoch,"Pack5-Struct +0x40, 4 Elemente -> 34413-34416. BESTAETIGT: BMS CAN-Gruppe 0x40 = 4 NTC; Live 11.6-36.1 degC"
+34417,pack5_temp_3,degC,u16,0x02,0,x1,2,1,0x20015182,0x20015176,niedrig,"Pack5-Struct +0x4e. Live-Scans meist 0, gelegentlich temperaturartig (max 327) -> vermutlich ENV-NTC, im Normalbetrieb nicht befuellt"
+34418,pack5_cell_voltage_1_16,V,u16,0x02,0,x1,2,16,0x20015154,0x20015148,hoch,"Pack5-Struct +0x20, 16 Elemente -> 34418-34433. BESTAETIGT: BMS CAN-Gruppen 0x30-0x33; Live 3177-3441 mV"
+34500,pack6_bat_volt,,u16,0x02,0,x1,2,1,0x20015194,0x20015188,mittel,Pack-Struct Stride 0x60
+34501,pack6_bat_curr,,u16,0x02,0,x1,2,1,0x20015196,0x2001518A,mittel,Pack-Struct Stride 0x60
+34502,pack6_soc,,u16,0x02,0,x1,2,1,0x20015198,0x2001518C,mittel,Rohwert in 0.1%
+34503,pack6_cycle_count,,i16,0x12,0,x1,2,1,0x2001519A,0x2001518E,hoch,Pack6-Struct +0x06. BMS-FW 'Cyc Cnt'; BESTAETIGT durch Live-Scans (kleine monotone Werte 0/1/6/7/10/12) und BLE-Offset 0x18
+34504,pack6_mos_status,,u8,0x01,0,x1,2,1,0x200151A2,0x20015196,mittel,Pack6-Struct +0x0e (u8). BMS-FW 'Chg Mos/Dsg Mos'; BESTAETIGT durch Live-Scans (Wertebereich 0..3 = genau 2 Flags)
+34505,pack6_max_cell_voltage,,u16,0x02,0,x1,2,1,0x200151A4,0x20015198,mittel,Rohwert in mV
+34506,pack6_min_cell_voltage,,u16,0x02,0,x1,2,1,0x200151A6,0x2001519A,mittel,Rohwert in mV
+34507,pack6_status_flags,,i16,0x12,0,x1,2,1,0x200151AC,0x200151A0,hypothese,"Pack6-Struct +0x18. KORREKTUR: Live-Scans zeigen 0..7 (meist 0) -> Status-/Flagfeld, KEINE Temperatur. Meine BMS-Frame-Ableitung 'Max NTC' ist durch die Daten widerlegt"
+34508,pack6_protect1,,u16,0x02,0,x1,2,1,0x200151AE,0x200151A2,mittel,Pack6-Struct +0x1a. Live-Scans: durchgaengig 0 (Normalbetrieb) -> Schutz-Bitmaske. Deckt sich mit der aelteren Live-Analyse (Final_claude_generated)
+34509,pack6_protect2,,u16,0x02,0,x1,2,1,0x200151B0,0x200151A4,mittel,Pack6-Struct +0x1c. Live-Scans: fast durchgaengig 0 -> zweite Schutz-Bitmaske. BMS-FW kennt 'Protect1/Protect2'
+34510,pack6_bms_version,,u16,0x02,0,x1,2,1,0x200151B2,0x200151A6,hoch,Pack6-Struct +0x1e. BESTAETIGT durch Live-Scans (Werte 116/118/1177 = BMS-FW-Versionen)
+34511,pack6_temp_1,degC,u16,0x02,0,x1,2,1,0x200151DE,0x200151D2,hoch,Pack6-Struct +0x4a. BESTAETIGT durch Live-Scans (23.5-45.2 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34512,pack6_temp_2,degC,u16,0x02,0,x1,2,1,0x200151E0,0x200151D4,hoch,Pack6-Struct +0x4c. BESTAETIGT durch Live-Scans (21.4-56.9 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34513,pack6_ntc_block,degC,u16,0x02,0,x1,2,4,0x200151D4,0x200151C8,hoch,"Pack6-Struct +0x40, 4 Elemente -> 34513-34516. BESTAETIGT: BMS CAN-Gruppe 0x40 = 4 NTC; Live 11.6-36.1 degC"
+34517,pack6_temp_3,degC,u16,0x02,0,x1,2,1,0x200151E2,0x200151D6,niedrig,"Pack6-Struct +0x4e. Live-Scans meist 0, gelegentlich temperaturartig (max 327) -> vermutlich ENV-NTC, im Normalbetrieb nicht befuellt"
+34518,pack6_cell_voltage_1_16,V,u16,0x02,0,x1,2,16,0x200151B4,0x200151A8,hoch,"Pack6-Struct +0x20, 16 Elemente -> 34518-34533. BESTAETIGT: BMS CAN-Gruppen 0x30-0x33; Live 3177-3441 mV"
+34600,pack7_bat_volt,,u16,0x02,0,x1,2,1,0x200151F4,0x200151E8,mittel,Pack-Struct Stride 0x60
+34601,pack7_bat_curr,,u16,0x02,0,x1,2,1,0x200151F6,0x200151EA,mittel,Pack-Struct Stride 0x60
+34602,pack7_soc,,u16,0x02,0,x1,2,1,0x200151F8,0x200151EC,mittel,Rohwert in 0.1%
+34603,pack7_cycle_count,,i16,0x12,0,x1,2,1,0x200151FA,0x200151EE,hoch,Pack7-Struct +0x06. BMS-FW 'Cyc Cnt'; BESTAETIGT durch Live-Scans (kleine monotone Werte 0/1/6/7/10/12) und BLE-Offset 0x18
+34604,pack7_mos_status,,u8,0x01,0,x1,2,1,0x20015202,0x200151F6,mittel,Pack7-Struct +0x0e (u8). BMS-FW 'Chg Mos/Dsg Mos'; BESTAETIGT durch Live-Scans (Wertebereich 0..3 = genau 2 Flags)
+34605,pack7_max_cell_voltage,,u16,0x02,0,x1,2,1,0x20015204,0x200151F8,mittel,Rohwert in mV
+34606,pack7_min_cell_voltage,,u16,0x02,0,x1,2,1,0x20015206,0x200151FA,mittel,Rohwert in mV
+34607,pack7_status_flags,,i16,0x12,0,x1,2,1,0x2001520C,0x20015200,hypothese,"Pack7-Struct +0x18. KORREKTUR: Live-Scans zeigen 0..7 (meist 0) -> Status-/Flagfeld, KEINE Temperatur. Meine BMS-Frame-Ableitung 'Max NTC' ist durch die Daten widerlegt"
+34608,pack7_protect1,,u16,0x02,0,x1,2,1,0x2001520E,0x20015202,mittel,Pack7-Struct +0x1a. Live-Scans: durchgaengig 0 (Normalbetrieb) -> Schutz-Bitmaske. Deckt sich mit der aelteren Live-Analyse (Final_claude_generated)
+34609,pack7_protect2,,u16,0x02,0,x1,2,1,0x20015210,0x20015204,mittel,Pack7-Struct +0x1c. Live-Scans: fast durchgaengig 0 -> zweite Schutz-Bitmaske. BMS-FW kennt 'Protect1/Protect2'
+34610,pack7_bms_version,,u16,0x02,0,x1,2,1,0x20015212,0x20015206,hoch,Pack7-Struct +0x1e. BESTAETIGT durch Live-Scans (Werte 116/118/1177 = BMS-FW-Versionen)
+34611,pack7_temp_1,degC,u16,0x02,0,x1,2,1,0x2001523E,0x20015232,hoch,Pack7-Struct +0x4a. BESTAETIGT durch Live-Scans (23.5-45.2 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34612,pack7_temp_2,degC,u16,0x02,0,x1,2,1,0x20015240,0x20015234,hoch,Pack7-Struct +0x4c. BESTAETIGT durch Live-Scans (21.4-56.9 degC bei Faktor 0.1). CAN-Gruppe 0x41
+34613,pack7_ntc_block,degC,u16,0x02,0,x1,2,4,0x20015234,0x20015228,hoch,"Pack7-Struct +0x40, 4 Elemente -> 34613-34616. BESTAETIGT: BMS CAN-Gruppe 0x40 = 4 NTC; Live 11.6-36.1 degC"
+34617,pack7_temp_3,degC,u16,0x02,0,x1,2,1,0x20015242,0x20015236,niedrig,"Pack7-Struct +0x4e. Live-Scans meist 0, gelegentlich temperaturartig (max 327) -> vermutlich ENV-NTC, im Normalbetrieb nicht befuellt"
+34618,pack7_cell_voltage_1_16,V,u16,0x02,0,x1,2,16,0x20015214,0x20015208,hoch,"Pack7-Struct +0x20, 16 Elemente -> 34618-34633. BESTAETIGT: BMS CAN-Gruppen 0x30-0x33; Live 3177-3441 mV"
+35000,env_temp,degC,i16,0x12,0,x1,2,1,0x20014EBC,0x20014EB0,hoch,Alias 30002 (Struct +0x20)
+35001,radiator_temp,degC,i16,0x12,0,x1,2,1,0x20014EBE,0x20014EB2,hoch,Alias 30003 (Struct +0x22)
+35002,radiator_temp_dup,degC,i16,0x12,0,x1,2,1,0x20014EBE,0x20014EB2,hoch,identische Quelle wie 35001 -- kein eigener Sensor
+35010,bms_battery_temp,degC,i16,0x12,0,x1,2,1,0x20014F92,0x20014F86,hoch,Alias 32108 (CAN bat_temp 0.1C)
+35011,pack1_min_cell_temp_mirror,degC,i16,0x12,0,x1,2,1,0x20014FCA,0x20014FBE,mittel,"Alias 30105 (Pack1-Struct +0x16), hier ohne FW-x10. Read-Handler-Map: 'min_cell_temperature'"
+35100,inv_state,,u8,0x01,0,x1,2,1,0x20014E9C,0x20014E90,hoch,Telemetrie-Struct 0x20014E9C+0x00 'inv_state' (Wechselrichter-Zustand). Struct-Basis v149.2 0x20014E90 +12 Drift
+35110,bms_charge_voltage_limit,V,u16,0x02,0,x1,2,1,0x20014F9E,0x20014F92,hoch,CAN +0x10 pgn_1803 'chrg_volt(0.1V)'. Live 576=57.6V
+35111,bms_charge_current_limit,A,u16,0x02,0,x1,2,1,0x20014FA0,0x20014F94,hoch,Alias 32106
+35112,bms_discharge_current_limit,A,u16,0x02,0,x1,2,1,0x20014FA2,0x20014F96,hoch,Alias 32107
+36000,warn_code,,u32,0x04,0,x1,4,1,0x20014EA0,0x20014E94,hoch,"Struct 0x20014E9C+0x04 'warn_code' (u32 = 36000-36001). Erzeuger: Micro-FW 'war1' @0x200019FC -> build_telemetry_block -> Control. Bitmaske, keine Klartexttabelle in der FW"
+36100,error_code1,,u32,0x04,0,x1,4,1,0x20014EA4,0x20014E98,hoch,Struct +0x08 'error_code1' (u32 = 36100-36101). Erzeuger: Micro-FW 'err1' @0x200019F4. Bitmaske. Alias 37013
+36102,error_code2,,u32,0x04,0,x1,4,1,0x20014EA8,0x20014E9C,hoch,Struct +0x0c 'error_code2' (u32 = 36102-36103). Erzeuger: Micro-FW 'err2' @0x200019F8. Bitmaske. Alias 37015
+37000,modbus_slave_address,,u8,0x01,0,x1,2,1,0x20000133,0x20000133,hoch,
+37001,status_block_offset8,,u16,0x02,0,x1,2,1,0x2000014C,0x2000014C,niedrig,"Status-Block 0x20000144 +8. Writer Protocol_AA_SetDeviceParams (0x0802FC48), Leser Grid_Export_Power_Limiter -> Export-/Leistungs-Config"
+37002,max_charge_power,W,u16,0x02,0,x1,2,1,0x2000014E,0x2000014E,hoch,Status-Block 0x20000144 +4
+37003,max_discharge_power,W,u16,0x02,0,x1,2,1,0x20000150,0x20000150,hoch,Status-Block 0x20000144 +6
+37004,grid_sample_power,W,i16,0x12,0,x1,2,1,0x20014EB4,0x20014EA8,hoch,Alias 30006/32202 (Struct +0x18)
+37005,pack1_soc_scaled,%,u16,0x02,3,/10,2,1,0x20014FB8,0x20014FAC,hoch,"gleiche Quelle wie 34002, aber FW teilt hier durch 10"
+37006,pack1_max_cell_temp_mirror,degC,i16,0x12,0,x1,2,1,0x20014FC8,0x20014FBC,mittel,"Alias 30104 (Pack1-Struct +0x14), hier ohne FW-x10. Alte Map: 'max_cell_temp_mirror'"
+37007,pack1_max_cell_voltage,V,u16,0x02,0,x1,2,1,0x20014FC4,0x20014FB8,hoch,Alias 30102/34005; Rohwert in mV
+37008,pack1_min_cell_voltage,V,u16,0x02,0,x1,2,1,0x20014FC6,0x20014FBA,hoch,Alias 30103/34006; Rohwert in mV
+37009,block_34007_34008,,u16,0x02,0,x1,2,2,0x20014FCC,0x20014FC0,mittel,2 Elemente -> Register 37009-37010 (= 34007/34008)
+37011,block_34009_34010,,u16,0x02,0,x1,2,2,0x20014FD0,0x20014FC4,hoch,2 Elemente -> 37011-37012; 37012 = bms_version
+37013,error_code1,,u32,0x04,0,x1,4,1,0x20014EA4,0x20014E98,hoch,Alias 36100 (Micro-FW 'err1')
+37015,error_code2,,u32,0x04,0,x1,4,1,0x20014EA8,0x20014E9C,hoch,Alias 36102 (Micro-FW 'err2')
+37017,mppt1_power,W,u16,0x02,0,x1,2,1,0x20014F58,0x20014F4C,hoch,identische Quelle wie 30037 (Inverter-Struct +0x0c)
+37018,mppt2_power,W,u16,0x02,0,x1,2,1,0x20014F5E,0x20014F52,hoch,identische Quelle wie 30038 (Inverter-Struct +0x12)
+37019,mppt3_power,W,u16,0x02,0,x1,2,1,0x20014F64,0x20014F58,hoch,identische Quelle wie 30039 (Inverter-Struct +0x18)
+37020,mppt4_power,W,u16,0x02,0,x1,2,1,0x20014F6A,0x20014F5E,hoch,identische Quelle wie 30040 (Inverter-Struct +0x1e)
+37021,pv_year_capacity,,u32,0x04,0,x1,4,1,0x20014F78,0x20014F6C,mittel,"Inverter-Struct +0x2c 'PV_Year_Cap_10Wh' (u32, Einheit 10Wh). Tages-/Monats-Cap bei +0x20/+0x28 sind keine Register"
+37023,mppt_error,,u16,0x02,0,x1,2,1,0x20014F4E,0x20014F42,hoch,Inverter-Struct +0x02 'Mppt_Error'
+37024,mppt_warning,,u16,0x02,0,x1,2,1,0x20014F52,0x20014F46,hoch,Inverter-Struct +0x06 'Mppt_Warning'
+38000,can40_w1,,i16,0x12,0,x1,2,1,0x20000168,0x20000168,niedrig,"CAN-Frame ID 0x40, Wort 1/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000168. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38001,can40_w2,,u16,0x02,0,x1,2,1,0x2000016A,0x2000016A,niedrig,"CAN-Frame ID 0x40, Wort 2/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000168. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38002,can40_w3,,i16,0x12,0,x1,2,1,0x2000016C,0x2000016C,niedrig,"CAN-Frame ID 0x40, Wort 3/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000168. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38003,can40_w4,,u16,0x02,0,x1,2,1,0x2000016E,0x2000016E,niedrig,"CAN-Frame ID 0x40, Wort 4/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000168. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38004,can41_w1,,u16,0x02,0,x1,2,1,0x20000170,0x20000170,niedrig,"CAN-Frame ID 0x41, Wort 1/3 -> Telemetry_Store_EnergyCounters, Ziel 0x20000170. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38005,can41_w2,,i16,0x12,0,x1,2,1,0x20000172,0x20000172,niedrig,"CAN-Frame ID 0x41, Wort 2/3 -> Telemetry_Store_EnergyCounters, Ziel 0x20000170. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38006,can41_w3,,u16,0x02,0,x1,2,1,0x20000174,0x20000174,niedrig,"CAN-Frame ID 0x41, Wort 3/3 -> Telemetry_Store_EnergyCounters, Ziel 0x20000170. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38007,can42_w1,,u16,0x02,0,x1,2,1,0x20000176,0x20000176,niedrig,"CAN-Frame ID 0x42, Wort 1/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000176. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38008,can42_w2,,u16,0x02,0,x1,2,1,0x20000178,0x20000178,niedrig,"CAN-Frame ID 0x42, Wort 2/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000176. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38009,can42_w3,,u16,0x02,0,x1,2,1,0x2000017A,0x2000017A,niedrig,"CAN-Frame ID 0x42, Wort 3/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000176. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38010,can42_w4,,u16,0x02,0,x1,2,1,0x2000017C,0x2000017C,niedrig,"CAN-Frame ID 0x42, Wort 4/4 -> Telemetry_Store_EnergyCounters, Ziel 0x20000176. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38011,can43_w1,,u16,0x02,0,x1,2,1,0x2000017E,0x2000017E,niedrig,"CAN-Frame ID 0x43, Wort 1/4 -> Telemetry_Store_EnergyCounters, Ziel 0x2000017E. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38012,can43_w2,,u16,0x02,0,x1,2,1,0x20000180,0x20000180,niedrig,"CAN-Frame ID 0x43, Wort 2/4 -> Telemetry_Store_EnergyCounters, Ziel 0x2000017E. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38013,can43_w3,,u16,0x02,0,x1,2,1,0x20000182,0x20000182,niedrig,"CAN-Frame ID 0x43, Wort 3/4 -> Telemetry_Store_EnergyCounters, Ziel 0x2000017E. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"
+38014,can43_w4,,u16,0x02,0,x1,2,1,0x20000184,0x20000184,niedrig,"CAN-Frame ID 0x43, Wort 4/4 -> Telemetry_Store_EnergyCounters, Ziel 0x2000017E. Frame-Nutzdaten 1:1 als 16-Bit-Register; im getesteten Betrieb nicht befuellt"

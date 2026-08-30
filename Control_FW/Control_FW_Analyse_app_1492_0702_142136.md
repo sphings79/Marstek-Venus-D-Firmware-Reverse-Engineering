@@ -1804,6 +1804,8 @@ dokumentieren" aus `AES_Crypto_Stack_Analyse.md`. Alle intern ausgewerteten Nach
 
 **Bleibt blockiert (nur live/statisch nicht auflösbar):**
 1. **0xAA-Kommandotabelle** (RAM 0x2000018c, 17×8 Byte): Ghidra-Projekt bildet nur den Flash-Bereich ab, RAM ist nicht gemappt, keine Schreib-Xref im Image auffindbar — Command-IDs/Handler-Pointer nur per Live-RAM-Dump oder CAN-Sniffing klärbar.
+
+   > **KORREKTUR 2026-08-16:** Funktional gelöst. Die 8 Per-Pack-CAN-Store-Handler (0x0802f764–0x0802f8b8) wurden gefunden + benannt und die Register byte-genau gemappt (verifiziert gegen BMS `CAN_TX_PerPack_10Msgs`). Gruppe↔Offset↔Register sind bekannt. Nur die *rohen* Handler-Pointer stehen nirgends im Flash als Literal (Registrar liegt im nicht verteilten Sektor 7 / 0x0805F000+) → für die reine RAM-Slot-Reihenfolge weiterhin Live-Dump nötig, funktional aber irrelevant. Siehe `Modbus_RS485_TCP/Descriptor_Offene_Register_Ghidra_Befund.md` §13 + `Methodik_und_Meta/Doku_Audit_Offene_Punkte_2026-08-16.md`.
 2. **Zusammensetzung von Bits[23:20] ("Klasse") auf TX-Seite:** `Register_PackDescriptor` setzt dieses Feld nicht; der Consumer der TX-Queue (RAM 0x200000ec) wurde nicht gefunden (0 Xrefs).
 3. **Arbitrierungspriorität bei Bus-Konflikt:** reine bxCAN-Hardwareeigenschaft (niedrigste ID gewinnt), keine Software-Prioritätslogik im Code — nur per Bus-Messung verifizierbar.
 

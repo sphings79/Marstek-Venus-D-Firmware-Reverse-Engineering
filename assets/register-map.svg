@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 460" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img" aria-label="Modbus register landscape of the Marstek Venus D: telemetry, BMS, per-pack, config and WiFi, command and write blocks between register 30000 and 46544">
+  <defs><style>.t{fill:#c9d4e3}.m{fill:#7d8ba0}.mono{font-family:'SFMono-Regular',Consolas,Menlo,monospace}</style></defs>
+  <rect width="1000" height="460" rx="16" fill="#0b0f17"/>
+  <text x="40" y="52" class="t" font-size="24" font-weight="700">Modbus register landscape</text>
+  <text x="40" y="77" class="m" font-size="14">Same map over Modbus TCP (:502) and RS485 RTU · scale factors applied by the read serializer</text>
+
+  <!-- axis -->
+  <line x1="60" y1="120" x2="960" y2="120" stroke="#26374d"/>
+  <g class="mono" font-size="11" fill="#5f6b7d">
+    <text x="60" y="112">30000</text>
+    <text x="360" y="112">34000</text>
+    <text x="600" y="112">41000</text>
+    <text x="780" y="112">45000</text>
+    <text x="960" y="112" text-anchor="end">46544</text>
+  </g>
+
+  <!-- blocks -->
+  <g font-size="13">
+    <rect x="60" y="130" width="150" height="60" rx="9" fill="#12232b" stroke="#2b6f7a"/>
+    <text x="135" y="156" text-anchor="middle" class="t" font-weight="600">Telemetry</text>
+    <text x="135" y="176" text-anchor="middle" class="m mono" font-size="11">30000–32xxx · RO</text>
+
+    <rect x="220" y="130" width="130" height="60" rx="9" fill="#12232b" stroke="#2b6f7a"/>
+    <text x="285" y="156" text-anchor="middle" class="t" font-weight="600">BMS / cells</text>
+    <text x="285" y="176" text-anchor="middle" class="m mono" font-size="11">33xxx–34xxx</text>
+
+    <rect x="360" y="130" width="150" height="60" rx="9" fill="#12232b" stroke="#2b6f7a"/>
+    <text x="435" y="156" text-anchor="middle" class="t" font-weight="600">Per-pack health</text>
+    <text x="435" y="176" text-anchor="middle" class="m mono" font-size="11">34xxx · 6 packs</text>
+
+    <rect x="520" y="130" width="150" height="60" rx="9" fill="#241f14" stroke="#7a5f2b"/>
+    <text x="595" y="152" text-anchor="middle" class="t" font-weight="600">Config + WiFi</text>
+    <text x="595" y="172" text-anchor="middle" class="m mono" font-size="11">41xxx · R/W</text>
+    <text x="595" y="187" text-anchor="middle" fill="#f2b134" class="mono" font-size="10">wifi_cred_buf 41500</text>
+
+    <rect x="680" y="130" width="130" height="60" rx="9" fill="#1e1726" stroke="#5b3f7a"/>
+    <text x="745" y="156" text-anchor="middle" class="t" font-weight="600">Command</text>
+    <text x="745" y="176" text-anchor="middle" class="m mono" font-size="11">45000 block</text>
+
+    <rect x="820" y="130" width="140" height="60" rx="9" fill="#1e1726" stroke="#5b3f7a"/>
+    <text x="890" y="156" text-anchor="middle" class="t" font-weight="600">Write regs</text>
+    <text x="890" y="176" text-anchor="middle" class="m mono" font-size="11">46500–46544</text>
+  </g>
+
+  <!-- detail rows -->
+  <g class="mono" font-size="13">
+    <text x="60" y="240" class="m">Examples (name · scale · unit)</text>
+    <line x1="60" y1="252" x2="960" y2="252" stroke="#1b2636"/>
+
+    <text x="60" y="282" fill="#35d0ba">30256</text><text x="140" y="282" class="t">battery_soc</text><text x="360" y="282" class="m">÷1</text><text x="440" y="282" class="m">%</text>
+    <text x="60" y="308" fill="#35d0ba">30258</text><text x="140" y="308" class="t">battery_power</text><text x="360" y="308" class="m">÷1 (signed)</text><text x="440" y="308" class="m">W</text>
+    <text x="60" y="334" fill="#35d0ba">30304</text><text x="140" y="334" class="t">mac_address</text><text x="360" y="334" class="m">6 regs</text><text x="440" y="334" class="m">AA:BB:CC:DD:EE:FF</text>
+    <text x="60" y="360" fill="#f2b134">41500</text><text x="140" y="360" class="t">wifi_cred_buf</text><text x="360" y="360" class="m">32 bytes</text><text x="440" y="360" class="m">R/W · redacted</text>
+    <text x="60" y="386" fill="#a78bfa">45000</text><text x="140" y="386" class="t">command block</text><text x="360" y="386" class="m">FC06/10</text><text x="440" y="386" class="m">mode / setpoint</text>
+
+    <text x="620" y="282" class="m">Batch limit</text><text x="820" y="282" fill="#35d0ba">32 registers / read</text>
+    <text x="620" y="308" class="m">Transport</text><text x="820" y="308" class="t">TCP :502 · RTU 47400</text>
+    <text x="620" y="334" class="m">Full map</text><text x="820" y="334" class="t">CSV in repo</text>
+    <text x="620" y="360" class="m">Signed-scale bug</text><text x="820" y="360" fill="#f2b134">read serializer</text>
+    <text x="620" y="386" class="m">Persistence</text><text x="820" y="386" class="t">RAM vs EEPROM</text>
+  </g>
+
+  <rect x="40" y="418" width="920" height="1" fill="#1b2636"/>
+  <text x="40" y="442" class="m mono" font-size="12">All device identifiers shown are placeholders — see Modbus_RS485_TCP/ for the complete register map.</text>
+</svg>

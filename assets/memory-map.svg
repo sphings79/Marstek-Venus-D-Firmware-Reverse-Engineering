@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img" aria-label="Flash and SRAM memory map of the Marstek Venus D control firmware, from the vector table at 0x08000000 to the OTA slot and SRAM at 0x20000000">
+  <defs><style>.t{fill:#c9d4e3}.m{fill:#7d8ba0}.mono{font-family:'SFMono-Regular',Consolas,Menlo,monospace}</style></defs>
+  <rect width="1000" height="470" rx="16" fill="#0b0f17"/>
+  <text x="40" y="52" class="t" font-size="24" font-weight="700">Firmware memory map — Control / EMS</text>
+  <text x="40" y="77" class="m" font-size="14">STM32 Cortex-M4F · Flash base 0x08000000 · SRAM base 0x20000000</text>
+
+  <!-- FLASH column -->
+  <text x="60" y="118" class="m mono" font-size="13">FLASH · 376 KB</text>
+  <g>
+    <rect x="60" y="130" width="360" height="46" rx="8" fill="#12202e" stroke="#2b6f7a"/>
+    <text x="80" y="151" class="t" font-size="14" font-weight="600">Vector table</text>
+    <text x="80" y="169" class="m mono" font-size="12">initial SP 0x2001F7D8 · reset 0x08004A71</text>
+    <text x="404" y="157" text-anchor="end" class="mono" font-size="12" fill="#35d0ba">0x08000000</text>
+
+    <rect x="60" y="182" width="360" height="150" rx="8" fill="#111a28" stroke="#26374d"/>
+    <text x="80" y="206" class="t" font-size="14" font-weight="600">Code / .text</text>
+    <text x="80" y="228" class="m mono" font-size="12">FreeRTOS kernel · mbedTLS 2.28.10</text>
+    <text x="80" y="248" class="m mono" font-size="12">Modbus TCP/RTU server</text>
+    <text x="80" y="268" class="m mono" font-size="12">CAN + RS485 orchestration</text>
+    <text x="80" y="288" class="m mono" font-size="12">WiFi/Ethernet + cloud + OTA</text>
+    <text x="80" y="312" class="m mono" font-size="12">descriptor table (246 entries)</text>
+
+    <rect x="60" y="338" width="360" height="52" rx="8" fill="#1d1a12" stroke="#7a5f2b"/>
+    <text x="80" y="360" class="t" font-size="14" font-weight="600">Strings + cloud JSON field names</text>
+    <text x="80" y="379" class="m mono" font-size="12">di=%s&amp;sn=%s&amp;… · 1743 strings</text>
+    <text x="404" y="367" text-anchor="end" class="mono" font-size="12" fill="#f2b134">0x0805DFFF</text>
+  </g>
+
+  <!-- arrow -->
+  <g stroke="#35d0ba" stroke-width="2" fill="none">
+    <path d="M470 250 H540"/>
+  </g>
+  <polygon points="540,244 556,250 540,256" fill="#35d0ba"/>
+
+  <!-- SRAM column -->
+  <text x="600" y="118" class="m mono" font-size="13">SRAM · 128 KB</text>
+  <g>
+    <rect x="600" y="130" width="340" height="46" rx="8" fill="#12202e" stroke="#2b6f7a"/>
+    <text x="620" y="151" class="t" font-size="14" font-weight="600">.data / .bss</text>
+    <text x="620" y="169" class="m mono" font-size="12">runtime state</text>
+    <text x="924" y="157" text-anchor="end" class="mono" font-size="12" fill="#35d0ba">0x20000000</text>
+
+    <rect x="600" y="182" width="340" height="96" rx="8" fill="#111a28" stroke="#26374d"/>
+    <text x="620" y="206" class="t" font-size="14" font-weight="600">Modbus register mirror</text>
+    <text x="620" y="228" class="m mono" font-size="12">live values read by serializer</text>
+    <text x="620" y="250" class="m mono" font-size="12">wifi_cred_buf @ 0x20014DCC</text>
+    <text x="620" y="270" class="m mono" font-size="12">BLE runtime-info @ 0x2001884A</text>
+
+    <rect x="600" y="284" width="340" height="60" rx="8" fill="#111a28" stroke="#26374d"/>
+    <text x="620" y="308" class="t" font-size="14" font-weight="600">FreeRTOS heap_4 + stacks</text>
+    <text x="620" y="328" class="m mono" font-size="12">task stacks · ISR stack</text>
+  </g>
+
+  <!-- OTA note -->
+  <rect x="60" y="410" width="880" height="40" rx="10" fill="#0f1622" stroke="#26374d"/>
+  <text x="80" y="435" class="m" font-size="13"><tspan fill="#a78bfa" class="mono">OTA</tspan>  Micro/VNS and BMS images occupy a fixed flash slot regardless of function count — evidence of a per-type OTA slot size.</text>
+</svg>

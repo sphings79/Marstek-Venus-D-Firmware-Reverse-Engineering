@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" font-family="'Segoe UI',Helvetica,Arial,sans-serif" role="img" aria-label="Reverse engineering workflow: firmware image, Ghidra auto-analysis, diff-markup transfer between versions, per-function naming, register and struct documentation, Home Assistant integration">
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#35d0ba"/></marker>
+    <style>.t{fill:#c9d4e3}.m{fill:#7d8ba0}.mono{font-family:'SFMono-Regular',Consolas,Menlo,monospace}.step{fill:#111a28;stroke:#26374d}</style>
+  </defs>
+  <rect width="1000" height="300" rx="16" fill="#0b0f17"/>
+  <text x="40" y="48" class="t" font-size="22" font-weight="700">Reverse-engineering workflow</text>
+  <text x="40" y="72" class="m" font-size="14">Repeatable pipeline from raw OTA image to a documented, anonymized register map</text>
+
+  <g>
+    <!-- step 1 -->
+    <rect x="40" y="100" width="150" height="86" rx="12" class="step"/>
+    <text x="115" y="130" text-anchor="middle" class="t" font-size="14" font-weight="600">Firmware image</text>
+    <text x="115" y="150" text-anchor="middle" class="m mono" font-size="11">.bin / OTA slot</text>
+    <text x="115" y="168" text-anchor="middle" class="m mono" font-size="11">MD5 fingerprint</text>
+
+    <!-- step 2 -->
+    <rect x="230" y="100" width="150" height="86" rx="12" class="step"/>
+    <text x="305" y="130" text-anchor="middle" class="t" font-size="14" font-weight="600">Ghidra</text>
+    <text x="305" y="150" text-anchor="middle" class="m mono" font-size="11">auto-analysis</text>
+    <text x="305" y="168" text-anchor="middle" class="m mono" font-size="11">Cortex-M · Thumb-2</text>
+
+    <!-- step 3 -->
+    <rect x="420" y="100" width="160" height="86" rx="12" class="step"/>
+    <text x="500" y="126" text-anchor="middle" class="t" font-size="14" font-weight="600">Diff-markup</text>
+    <text x="500" y="144" text-anchor="middle" class="t" font-size="14" font-weight="600">transfer</text>
+    <text x="500" y="164" text-anchor="middle" class="m mono" font-size="11">149.2→147 · 117.7→118</text>
+    <text x="500" y="180" text-anchor="middle" class="m mono" font-size="11">names carried over</text>
+
+    <!-- step 4 -->
+    <rect x="620" y="100" width="160" height="86" rx="12" class="step"/>
+    <text x="700" y="126" text-anchor="middle" class="t" font-size="14" font-weight="600">Per-function</text>
+    <text x="700" y="144" text-anchor="middle" class="t" font-size="14" font-weight="600">naming</text>
+    <text x="700" y="164" text-anchor="middle" class="m mono" font-size="11">only-in-version funcs</text>
+    <text x="700" y="180" text-anchor="middle" class="m mono" font-size="11">artefacts flagged</text>
+
+    <!-- step 5 -->
+    <rect x="820" y="100" width="140" height="86" rx="12" fill="#12232b" stroke="#2b6f7a"/>
+    <text x="890" y="130" text-anchor="middle" class="t" font-size="14" font-weight="600">Docs + map</text>
+    <text x="890" y="150" text-anchor="middle" class="m mono" font-size="11">registers · structs</text>
+    <text x="890" y="168" text-anchor="middle" class="m mono" font-size="11">anonymized</text>
+  </g>
+
+  <g stroke="#35d0ba" stroke-width="2" marker-end="url(#ar)">
+    <path d="M190 143 H226"/>
+    <path d="M380 143 H416"/>
+    <path d="M580 143 H616"/>
+    <path d="M780 143 H816"/>
+  </g>
+
+  <!-- outcome -->
+  <rect x="40" y="214" width="920" height="52" rx="12" fill="#0f1622" stroke="#26374d"/>
+  <text x="60" y="238" class="t" font-size="14" font-weight="600">→ Home Assistant integration</text>
+  <text x="60" y="256" class="m mono" font-size="12">local Modbus TCP · scale factors · 32-register batch limit · cloud-free operation</text>
+  <text x="940" y="248" text-anchor="end" fill="#35d0ba" class="mono" font-size="12">static only — no SWD/JTAG</text>
+</svg>
